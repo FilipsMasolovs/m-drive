@@ -25,5 +25,5 @@ export default async function Home(props: { params: Promise<{ folderId: string }
     type: 'folder',
   }))
 
-  return <MDrive folders={folders} files={files} initialFolderId={parsedFolderId} />
+  return <MDrive folders={folders} files={files} />
 }
