@@ -12,7 +12,7 @@ type Item = {
   id: string
   name: string
   type: ItemType
-  size: number // size in bytes
+  size: number
   children?: Item[]
 }
 
@@ -79,7 +79,7 @@ export default function GoogleDriveClone() {
   const handleItemClick = (item: Item) => {
     if (item.type === "folder") {
       setBreadcrumbs([...breadcrumbs, item])
-      setCurrentFolder(item.children || [])
+      setCurrentFolder(item.children ?? [])
     } else {
       console.log(`Opening file: ${item.name}`)
     }
@@ -92,7 +92,7 @@ export default function GoogleDriveClone() {
     } else {
       const newBreadcrumbs = breadcrumbs.slice(0, index)
       setBreadcrumbs(newBreadcrumbs)
-      setCurrentFolder(newBreadcrumbs[newBreadcrumbs.length - 1].children || [])
+      setCurrentFolder(newBreadcrumbs[newBreadcrumbs.length - 1]?.children ?? [])
     }
   }
 
