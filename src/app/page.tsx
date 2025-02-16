@@ -107,7 +107,7 @@ export default function GoogleDriveClone() {
         <header className="flex justify-between items-center mb-8">
           <div className="flex items-center space-x-2 text-sm">
             <Button variant="ghost" className="hover:bg-gray-800" onClick={() => handleBreadcrumbClick(0)}>
-              My Drive
+              M-Drive
             </Button>
             {breadcrumbs.map((item, index) => (
               <div key={item.id} className="flex items-center">
