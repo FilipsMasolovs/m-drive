@@ -55,7 +55,7 @@
   &:hover {
     background-color: rgb(245, 245, 245);
 
-    svg {
+    :global(svg) {
       fill: rgb(0, 0, 0);
     }
   }
