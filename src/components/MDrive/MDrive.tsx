@@ -10,37 +10,33 @@ import GridItem from '~/components/GridItem/GridItem'
 import ListItem from '~/components/ListItem/ListItem'
 
 import type { FolderItem, FileItem } from '~/types/types'
-
 import styles from './MDrive.module.css'
 
 export type DriveItem = FolderItem | FileItem
 
 interface MDriveProps {
-  folders: FolderItem[] // full folder tree
-  files: FileItem[] // all files (for all folders)
+  folders: FolderItem[]
+  files: FileItem[]
   initialFolderId: number
 }
 
 export default function MDrive({ folders, files, initialFolderId }: MDriveProps) {
   const router = useRouter()
-  // Use the current folder ID as a single source of truth.
   const [currentFolderId, setCurrentFolderId] = useState<number>(initialFolderId)
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('list')
 
-  // Helper: Return all items whose parent equals folderId.
+  useEffect(() => {
+    setCurrentFolderId(initialFolderId)
+  }, [initialFolderId])
+
   const getFolderItems = (folderId: number): DriveItem[] => {
     const folderItems = folders.filter((f) => f.parent === folderId)
     const fileItems = files.filter((f) => f.parent === folderId)
     return [...folderItems, ...fileItems]
   }
 
-  // Derive current folder's items.
-  const currentFolderItems = useMemo(() => {
-    return getFolderItems(currentFolderId)
-  }, [currentFolderId, folders, files])
+  const currentFolderItems = useMemo(() => getFolderItems(currentFolderId), [currentFolderId, folders, files])
 
-  // Compute breadcrumbs by climbing from current folder upward.
-  // Return an empty array if current folder id is root.
   const computeBreadcrumbs = (folderId: number): FolderItem[] => {
     if (folderId === 0) return []
     const path: FolderItem[] = []
@@ -53,18 +49,11 @@ export default function MDrive({ folders, files, initialFolderId }: MDriveProps)
     return path
   }
 
-  // Create a properly typed synthetic root folder.
-  const rootFolder: FolderItem = {
-    id: 0,
-    name: 'M-Drive',
-    type: 'folder',
-    parent: null,
-  }
+  const syntheticRoot: FolderItem = { id: 0, name: 'M-Drive', type: 'folder', parent: null }
 
-  // Derive breadcrumbs and prepend the synthetic root.
   const breadcrumbs = useMemo(() => {
-    const computed = computeBreadcrumbs(currentFolderId)
-    return currentFolderId === 0 ? [rootFolder] : [rootFolder, ...computed]
+    const crumbs = computeBreadcrumbs(currentFolderId)
+    return currentFolderId === 0 ? [syntheticRoot] : [syntheticRoot, ...crumbs]
   }, [currentFolderId, folders])
 
   useEffect(() => {
@@ -79,7 +68,6 @@ export default function MDrive({ folders, files, initialFolderId }: MDriveProps)
     }
   }
 
-  // When a breadcrumb is clicked, update the current folder using its id.
   const handleBreadcrumbClick = (folderId: number) => {
     setCurrentFolderId(folderId)
   }

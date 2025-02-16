@@ -4,6 +4,7 @@ import { formatSize } from '~/lib/utils/formatSize'
 import { type FileItem, type FolderItem } from '~/types/types'
 
 import styles from './ListItem.module.css'
+import Link from 'next/link'
 
 interface ListItemProps {
   item: FileItem | FolderItem
@@ -12,8 +13,8 @@ interface ListItemProps {
 }
 
 export default function ListItem({ item, handleItemClick, handleDelete }: ListItemProps) {
-  return (
-    <div className={styles.listContainer} onClick={() => handleItemClick()}>
+  const commonContent = (
+    <>
       <div className={styles.infoContainer}>
         {getItemIcon(item.type)}
         <div className={styles.itemDetails}>
@@ -30,6 +31,20 @@ export default function ListItem({ item, handleItemClick, handleDelete }: ListIt
           <path d="M10.22 17a.76.76 0 0 1-.75-.75v-4.53a.75.75 0 0 1 1.5 0v4.52a.75.75 0 0 1-.75.76Zm3.56 0a.75.75 0 0 1-.75-.75v-4.53a.75.75 0 0 1 1.5 0v4.52a.76.76 0 0 1-.75.76Z" />
         </svg>
       </button>
-    </div>
+    </>
   )
+
+  if (item.type === 'folder') {
+    return (
+      <Link href={`/m/${item.id}`} className={styles.listContainer}>
+        {commonContent}
+      </Link>
+    )
+  } else {
+    return (
+      <div className={styles.listContainer} onClick={() => handleItemClick()}>
+        {commonContent}
+      </div>
+    )
+  }
 }
