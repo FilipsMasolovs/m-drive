@@ -12,7 +12,7 @@ interface BreadcrumbsProps {
 export default function Breadcrumbs({ breadcrumbs }: BreadcrumbsProps) {
   return (
     <div className={styles.breadcrumbsContainer}>
-      <Link href={`/m/0`}>M-Drive</Link>
+      <Link href={`/m/1`}>M-Drive</Link>
       {breadcrumbs.map((item) => (
         <div key={item.id} className={styles.breadcrumbContainer}>
           <ChevronRight />

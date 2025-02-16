@@ -16,9 +16,10 @@ export type DriveItem = FolderItem | FileItem
 interface MDriveProps {
   files: FileItem[]
   folders: FolderItem[]
+  parents: FolderItem[]
 }
 
-export default function MDrive({ files, folders }: MDriveProps) {
+export default function MDrive({ files, folders, parents }: MDriveProps) {
   const currentItems: DriveItem[] = [...folders, ...files]
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('list')
 
@@ -33,15 +34,15 @@ export default function MDrive({ files, folders }: MDriveProps) {
   return (
     <div className={styles.pageContainer}>
       <header className={styles.headerContainer}>
-        <Breadcrumbs breadcrumbs={[]} />
+        <Breadcrumbs breadcrumbs={parents} />
         <Actions viewMode={viewMode} setViewMode={setViewMode} />
       </header>
       <main className={viewMode === 'list' ? styles.listContainer : styles.gridContainer}>
-        {currentItems.map((item) =>
+        {currentItems.map((item, index) =>
           viewMode === 'list' ? (
-            <ListItem key={item.id} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
+            <ListItem key={`${item.id}+${index}`} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
           ) : (
-            <GridItem key={item.id} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
+            <GridItem key={`${item.id}+${index}`} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
           ),
         )}
       </main>
