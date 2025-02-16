@@ -1,60 +1,81 @@
 'use client'
 
 import type React from 'react'
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import { useRouter } from 'next/navigation'
 
 import Actions from '~/components/Actions/Actions'
 import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs'
 import GridItem from '~/components/GridItem/GridItem'
 import ListItem from '~/components/ListItem/ListItem'
 
-import { type FolderItem, type FileItem } from '~/types/types'
+import type { FolderItem, FileItem } from '~/types/types'
 
 import styles from './MDrive.module.css'
 
 export type DriveItem = FolderItem | FileItem
 
 interface MDriveProps {
-  folders: FolderItem[]
-  files: FileItem[]
+  folders: FolderItem[] // full folder tree
+  files: FileItem[]     // all files (for all folders)
+  initialFolderId: number
 }
 
-export default function MDrive({ folders, files }: MDriveProps) {
+export default function MDrive({ folders, files, initialFolderId }: MDriveProps) {
+  const router = useRouter()
+  // Use the current folder ID as our single source of truth.
+  const [currentFolderId, setCurrentFolderId] = useState<number>(initialFolderId)
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list')
+
+  // Returns all items whose parent equals the given folderId.
   const getFolderItems = (folderId: number): DriveItem[] => {
-    const filteredFolders = folders.filter((f) => f.parent === folderId)
-    const filteredFiles = files.filter((f) => f.parent === folderId)
-    return [...filteredFolders, ...filteredFiles]
+    const folderItems = folders.filter((f) => f.parent === folderId)
+    const fileItems = files.filter((f) => f.parent === folderId)
+    return [...folderItems, ...fileItems]
   }
 
-  const [currentFolder, setCurrentFolder] = useState<DriveItem[]>(getFolderItems(0))
-  const [breadcrumbs, setBreadcrumbs] = useState<FolderItem[]>([])
-  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list')
+  // Derive the current folder's items using useMemo.
+  const currentFolderItems = useMemo(() => {
+    return getFolderItems(currentFolderId)
+  }, [currentFolderId, folders, files])
+
+  // Compute breadcrumbs by walking up the folder tree.
+  // If the current folder is the root (id 0), return an empty array.
+  const computeBreadcrumbs = (folderId: number): FolderItem[] => {
+    if (folderId === 0) return []
+    const path: FolderItem[] = []
+    let current = folders.find((f) => f.id === folderId)
+    while (current && current.id !== 0) {
+      path.unshift(current)
+      // Stop if the next parent is root.
+      if (current.parent === 0) break
+      current = folders.find((f) => f.id === current.parent)
+    }
+    return path
+  }
+
+  // Prepend a synthetic root breadcrumb and then the computed breadcrumbs.
+  const breadcrumbs = useMemo(() => {
+    const computed = computeBreadcrumbs(currentFolderId)
+    return [{ id: 0, name: 'M-Drive', type: 'folder', parent: null }, ...computed]
+  }, [currentFolderId, folders])
+
+  // Update the URL when the current folder changes.
+  useEffect(() => {
+    router.push(`/m/${currentFolderId}`)
+  }, [currentFolderId, router])
 
   const handleItemClick = (item: DriveItem) => {
     if (item.type === 'folder') {
-      if (item.id !== 0) {
-        setBreadcrumbs([...breadcrumbs, item])
-      }
-      setCurrentFolder(getFolderItems(item.id))
+      setCurrentFolderId(item.id)
     } else {
       console.log(`Opening file: ${item.name}`)
     }
   }
 
-  const handleBreadcrumbClick = (index: number) => {
-    if (index === 0) {
-      setCurrentFolder(getFolderItems(0))
-      setBreadcrumbs([])
-    } else {
-      const newBreadcrumbs = breadcrumbs.slice(0, index)
-      setBreadcrumbs(newBreadcrumbs)
-      const lastFolder = newBreadcrumbs[newBreadcrumbs.length - 1]
-      if (lastFolder) {
-        setCurrentFolder(getFolderItems(lastFolder.id))
-      } else {
-        setCurrentFolder(getFolderItems(0))
-      }
-    }
+  // When a breadcrumb is clicked, use its folder id.
+  const handleBreadcrumbClick = (folderId: number) => {
+    setCurrentFolderId(folderId)
   }
 
   const handleDelete = (item: DriveItem) => {
@@ -64,16 +85,33 @@ export default function MDrive({ folders, files }: MDriveProps) {
   return (
     <div className={styles.pageContainer}>
       <header className={styles.headerContainer}>
-        <Breadcrumbs breadcrumbs={breadcrumbs} handleBreadcrumbClick={handleBreadcrumbClick} />
+        <Breadcrumbs
+          breadcrumbs={breadcrumbs}
+          onBreadcrumbClick={handleBreadcrumbClick}
+        />
         <Actions viewMode={viewMode} setViewMode={setViewMode} />
       </header>
-      <main className={viewMode === 'list' ? styles.listContainer : styles.gridContainer}>
-        {currentFolder.map((item) =>
+      <main
+        className={
+          viewMode === 'list' ? styles.listContainer : styles.gridContainer
+        }
+      >
+        {currentFolderItems.map((item) =>
           viewMode === 'list' ? (
-            <ListItem key={item.id} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
+            <ListItem
+              key={item.id}
+              item={item}
+              handleItemClick={() => handleItemClick(item)}
+              handleDelete={() => handleDelete(item)}
+            />
           ) : (
-            <GridItem key={item.id} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
-          ),
+            <GridItem
+              key={item.id}
+              item={item}
+              handleItemClick={() => handleItemClick(item)}
+              handleDelete={() => handleDelete(item)}
+            />
+          )
         )}
       </main>
       <footer className={styles.footerContainer}>M-Drive</footer>

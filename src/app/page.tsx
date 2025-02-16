@@ -1,21 +1,9 @@
-import MDrive from '~/components/MDrive/MDrive'
-import { db } from '~/server/db'
-import { files as filesSchema, folders as foldersSchema } from '~/server/db/schema'
-import type { FileItem, FolderItem, FileType } from '~/types/types'
+import styles from './page.module.css'
 
 export default async function Home() {
-  const filesData = await db.select().from(filesSchema)
-  const foldersData = await db.select().from(foldersSchema)
-
-  const files: FileItem[] = filesData.map((file) => ({
-    ...file,
-    type: file.type as FileType,
-  }))
-
-  const folders: FolderItem[] = foldersData.map((folder) => ({
-    ...folder,
-    type: 'folder',
-  }))
-
-  return <MDrive files={files} folders={folders} />
+  return (
+    <div className={styles.pageContainer}>
+      9 hours in, I broke navigation and breadcrumbs, but at least something works...
+    </div>
+  )
 }
