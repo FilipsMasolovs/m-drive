@@ -1,0 +1,29 @@
+.breadcrumbsContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  button {
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.4s ease;
+
+    &:hover {
+      background-color: rgb(31, 41, 55);
+    }
+  }
+}
+
+.breadcrumbContainer {
+  display: flex;
+  align-items: center;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  button {
+    margin-left: 8px;
+  }
+}

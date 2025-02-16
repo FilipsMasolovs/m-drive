@@ -1,0 +1,47 @@
+.actionsContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.layoutButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+  cursor: pointer;
+
+  svg {
+    transition: all 0.4s ease;
+  }
+
+  &:hover {
+    background-color: rgb(245, 245, 245);
+
+    svg {
+      color: rgb(0, 0, 0);
+    }
+  }
+}
+
+.fileUploadButton {
+  width: 96px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: rgb(31, 41, 55);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgb(55, 65, 81);
+  }
+}

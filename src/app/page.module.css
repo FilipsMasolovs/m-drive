@@ -1,0 +1,41 @@
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 32px;
+  background-image: linear-gradient(to right bottom, rgb(17, 24, 39), rgb(0, 0, 0));
+  color: rgb(209, 213, 219);
+  height: 100vh;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.gridContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footerContainer {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+}
+
+.headerContainer,
+.listContainer,
+.gridContainer {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}

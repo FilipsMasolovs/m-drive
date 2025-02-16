@@ -1,0 +1,62 @@
+.gridContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(31, 41, 55);
+  gap: 16px;
+  padding: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  width: 100%;
+  max-width: 220px;
+  position: relative;
+
+  &:hover {
+    background-color: rgb(55, 65, 81);
+
+    .deleteButton {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
+.itemDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.itemName {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+}
+
+.itemTypeSize {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: rgb(156, 163, 175);
+}
+
+.deleteButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: none;
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  transition: all 0.4s ease;
+
+  &:hover {
+    background-color: rgb(245, 245, 245);
+
+    svg {
+      fill: rgb(0, 0, 0);
+    }
+  }
+}
