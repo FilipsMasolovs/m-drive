@@ -1,17 +1,17 @@
 export type FileType = 'document' | 'spreadsheet' | 'image' | 'audio' | 'video' | 'pdf'
 
 export type FileItem = {
-  id: string
+  id: number
   name: string
   type: FileType
   url: string
-  parent: string
+  parent: number
   size: number
 }
 
 export type FolderItem = {
-  id: string
+  id: number
   name: string
   type: 'folder'
-  parent: string | null
+  parent: number | null
 }
