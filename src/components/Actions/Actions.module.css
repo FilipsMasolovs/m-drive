@@ -14,17 +14,17 @@
   transition: all 0.4s ease;
   cursor: pointer;
 
-  :global(svg) {
-    transition: all 0.4s ease;
-  }
-
   &:hover {
     background-color: rgb(245, 245, 245);
-
-    :global(svg) {
-      color: rgb(0, 0, 0);
-    }
   }
+}
+
+.layoutButton :global(svg) {
+  transition: all 0.4s ease;
+}
+
+.layoutButton:hover :global(svg) {
+  color: rgb(0, 0, 0);
 }
 
 .fileUploadButton {

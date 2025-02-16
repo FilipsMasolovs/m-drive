@@ -51,9 +51,9 @@
 
   &:hover {
     background-color: rgb(245, 245, 245);
-
-    :global(svg) {
-      fill: rgb(0, 0, 0);
-    }
   }
+}
+
+.deleteButton:hover :global(svg) {
+  fill: rgb(0, 0, 0);
 }
