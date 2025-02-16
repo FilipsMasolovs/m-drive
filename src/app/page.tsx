@@ -1,11 +1,10 @@
 "use client";
 
 import type React from "react";
-
 import { useState } from "react";
 import {
   Folder,
-  File,
+  File as FileIcon,
   Upload,
   LayoutGrid,
   LayoutList,
@@ -14,8 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "~/components/ui/button";
 
-type ItemType =
-  | "folder"
+type FileType =
   | "document"
   | "spreadsheet"
   | "image"
@@ -23,38 +21,91 @@ type ItemType =
   | "video"
   | "pdf";
 
-type Item = {
+type FileItem = {
   id: string;
   name: string;
-  type: ItemType;
+  type: FileType;
+  url?: string;
+  parent: string;
   size: number;
-  children?: Item[];
 };
 
-const mockData: Item[] = [
+type FolderItem = {
+  id: string;
+  name: string;
+  type: "folder";
+  parent: string | null;
+  children?: DriveItem[];
+};
+
+export type DriveItem = FileItem | FolderItem;
+
+const mockData: DriveItem[] = [
   {
     id: "1",
     name: "Documents",
     type: "folder",
-    size: 0,
+    parent: null,
     children: [
-      { id: "2", name: "Report.docx", type: "document", size: 2500000 },
-      { id: "3", name: "Spreadsheet.xlsx", type: "spreadsheet", size: 1800000 },
+      {
+        id: "2",
+        name: "Report.docx",
+        type: "document",
+        parent: "1",
+        size: 2500000,
+      },
+      {
+        id: "3",
+        name: "Spreadsheet.xlsx",
+        type: "spreadsheet",
+        parent: "1",
+        size: 1800000,
+      },
     ],
   },
   {
     id: "4",
     name: "Images",
     type: "folder",
-    size: 0,
+    parent: null,
     children: [
-      { id: "5", name: "Vacation.jpg", type: "image", size: 4200000 },
-      { id: "6", name: "Family.png", type: "image", size: 3100000 },
+      {
+        id: "5",
+        name: "Vacation.jpg",
+        type: "image",
+        parent: "4",
+        size: 4200000,
+      },
+      {
+        id: "6",
+        name: "Family.png",
+        type: "image",
+        parent: "4",
+        size: 3100000,
+      },
     ],
   },
-  { id: "7", name: "Music.mp3", type: "audio", size: 8500000 },
-  { id: "8", name: "Video.mp4", type: "video", size: 95000000 },
-  { id: "9", name: "Document.pdf", type: "pdf", size: 1200000 },
+  {
+    id: "7",
+    name: "Music.mp3",
+    type: "audio",
+    parent: "",
+    size: 8500000,
+  },
+  {
+    id: "8",
+    name: "Video.mp4",
+    type: "video",
+    parent: "",
+    size: 95000000,
+  },
+  {
+    id: "9",
+    name: "Document.pdf",
+    type: "pdf",
+    parent: "",
+    size: 1200000,
+  },
 ];
 
 const formatSize = (bytes: number): string => {
@@ -67,33 +118,33 @@ const formatSize = (bytes: number): string => {
   );
 };
 
-const getItemIcon = (type: ItemType) => {
+const getItemIcon = (type: "folder" | FileType) => {
   switch (type) {
     case "folder":
       return <Folder className="h-6 w-6 text-gray-400" />;
     case "document":
-      return <File className="h-6 w-6 text-blue-400" />;
+      return <FileIcon className="h-6 w-6 text-blue-400" />;
     case "spreadsheet":
-      return <File className="h-6 w-6 text-green-400" />;
+      return <FileIcon className="h-6 w-6 text-green-400" />;
     case "image":
-      return <File className="h-6 w-6 text-yellow-400" />;
+      return <FileIcon className="h-6 w-6 text-yellow-400" />;
     case "audio":
-      return <File className="h-6 w-6 text-purple-400" />;
+      return <FileIcon className="h-6 w-6 text-purple-400" />;
     case "video":
-      return <File className="h-6 w-6 text-red-400" />;
+      return <FileIcon className="h-6 w-6 text-red-400" />;
     case "pdf":
-      return <File className="h-6 w-6 text-orange-400" />;
+      return <FileIcon className="h-6 w-6 text-orange-400" />;
     default:
-      return <File className="h-6 w-6 text-gray-400" />;
+      return <FileIcon className="h-6 w-6 text-gray-400" />;
   }
 };
 
 export default function GoogleDriveClone() {
-  const [currentFolder, setCurrentFolder] = useState<Item[]>(mockData);
-  const [breadcrumbs, setBreadcrumbs] = useState<Item[]>([]);
+  const [currentFolder, setCurrentFolder] = useState<DriveItem[]>(mockData);
+  const [breadcrumbs, setBreadcrumbs] = useState<DriveItem[]>([]);
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
 
-  const handleItemClick = (item: Item) => {
+  const handleItemClick = (item: DriveItem) => {
     if (item.type === "folder") {
       setBreadcrumbs([...breadcrumbs, item]);
       setCurrentFolder(item.children ?? []);
@@ -109,13 +160,17 @@ export default function GoogleDriveClone() {
     } else {
       const newBreadcrumbs = breadcrumbs.slice(0, index);
       setBreadcrumbs(newBreadcrumbs);
-      setCurrentFolder(
-        newBreadcrumbs[newBreadcrumbs.length - 1]?.children ?? [],
-      );
+
+      const lastItem = newBreadcrumbs[newBreadcrumbs.length - 1];
+      if (lastItem && lastItem.type === "folder") {
+        setCurrentFolder(lastItem.children ?? []);
+      } else {
+        setCurrentFolder([]);
+      }
     }
   };
 
-  const handleDelete = (e: React.MouseEvent, item: Item) => {
+  const handleDelete = (e: React.MouseEvent, item: DriveItem) => {
     e.stopPropagation();
     console.log(`Deleting ${item.type}: ${item.name}`);
   };
@@ -132,7 +187,7 @@ export default function GoogleDriveClone() {
             >
               M-Drive
             </Button>
-            {breadcrumbs.map((item, index) => (
+            {breadcrumbs.map((item: DriveItem, index: number) => (
               <div key={item.id} className="flex items-center">
                 <ChevronRight className="mx-1 h-4 w-4 text-gray-500" />
                 <Button
@@ -170,7 +225,7 @@ export default function GoogleDriveClone() {
               : "space-y-2"
           }
         >
-          {currentFolder.map((item) => (
+          {currentFolder.map((item: DriveItem) => (
             <div
               key={item.id}
               className={`group cursor-pointer rounded-lg bg-gray-800 transition-colors duration-200 hover:bg-gray-700 ${
@@ -181,18 +236,22 @@ export default function GoogleDriveClone() {
               onClick={() => handleItemClick(item)}
             >
               <div
-                className={`flex items-center ${viewMode === "list" ? "w-full" : "flex-col"}`}
+                className={`flex items-center ${
+                  viewMode === "list" ? "w-full" : "flex-col"
+                }`}
               >
                 <div className={viewMode === "list" ? "mr-4" : "mb-3"}>
                   {getItemIcon(item.type)}
                 </div>
                 <div
-                  className={`flex-grow ${viewMode === "grid" ? "mt-2 text-center" : ""}`}
+                  className={`flex-grow ${
+                    viewMode === "grid" ? "mt-2 text-center" : ""
+                  }`}
                 >
                   <span className="block text-sm font-medium">{item.name}</span>
                   <span className="block text-xs text-gray-400">
                     {item.type.charAt(0).toUpperCase() + item.type.slice(1)}{" "}
-                    {item.type !== "folder" ? ` • ${formatSize(item.size)}` : ""}
+                    {item.type !== "folder" ? `• ${formatSize(item.size)}` : ""}
                   </span>
                 </div>
                 <Button
