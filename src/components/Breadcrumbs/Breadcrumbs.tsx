@@ -3,20 +3,20 @@ import { ChevronRight } from 'lucide-react'
 import { type FolderItem } from '~/types/types'
 
 import styles from './Breadcrumbs.module.css'
+import Link from 'next/link'
 
 interface BreadcrumbsProps {
   breadcrumbs: FolderItem[]
-  handleBreadcrumbClick: (index: number) => void
 }
 
-export default function Breadcrumbs({ breadcrumbs, handleBreadcrumbClick }: BreadcrumbsProps) {
+export default function Breadcrumbs({ breadcrumbs }: BreadcrumbsProps) {
   return (
     <div className={styles.breadcrumbsContainer}>
-      <button onClick={() => handleBreadcrumbClick(0)}>M-Drive</button>
-      {breadcrumbs.map((item, index) => (
+      <Link href={`/m/0`}>M-Drive</Link>
+      {breadcrumbs.map((item) => (
         <div key={item.id} className={styles.breadcrumbContainer}>
           <ChevronRight />
-          <button onClick={() => handleBreadcrumbClick(index + 1)}>{item.name}</button>
+          <Link href={`/m/${item.id}`}>{item.name}</Link>
         </div>
       ))}
     </div>
