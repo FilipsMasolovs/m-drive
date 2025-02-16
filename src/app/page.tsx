@@ -146,8 +146,7 @@ export default function MDrive() {
     }
   }
 
-  const handleDelete = (e: React.MouseEvent, item: DriveItem) => {
-    e.stopPropagation()
+  const handleDelete = (item: DriveItem) => {
     console.log(`Deleting ${item.type}: ${item.name}`)
   }
 
@@ -160,9 +159,23 @@ export default function MDrive() {
       <main className={viewMode === 'list' ? styles.listContainer : styles.gridContainer}>
         {currentFolder.map((item) =>
           viewMode === 'list' ? (
-            <ListItem key={item.id} item={item} handleItemClick={handleItemClick} handleDelete={handleDelete} />
+            <ListItem
+              key={item.id}
+              item={item}
+              handleItemClick={() => {
+                handleItemClick(item)
+              }}
+              handleDelete={() => handleDelete(item)}
+            />
           ) : (
-            <GridItem key={item.id} item={item} handleItemClick={handleItemClick} handleDelete={handleDelete} />
+            <GridItem
+              key={item.id}
+              item={item}
+              handleItemClick={() => {
+                handleItemClick(item)
+              }}
+              handleDelete={() => handleDelete(item)}
+            />
           ),
         )}
       </main>
