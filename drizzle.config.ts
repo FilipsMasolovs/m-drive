@@ -7,11 +7,11 @@ export default {
   dialect: "singlestore",
   tablesFilter: ["m-drive_*"],
   dbCredentials: {
-    host: "svc-7ba08cfa-3e59-458b-b9ae-ae06a80aaa95-dml.aws-virginia-8.svc.singlestore.com",
-    user: "admin",
-    password: "WXDf02Wq9I6LhqPVYq5UvCqMW6zW7J3i",
-    port: 3306,
-    database: "M_DRIVE_DB",
+    host: env.SINGLESTORE_HOST,
+    port: parseInt(env.SINGLESTORE_PORT),
+    user: env.SINGLESTORE_USER,
+    password: env.SINGLESTORE_PASS,
+    database: env.SINGLESTORE_DB_NAME,
     ssl: {},
-},
+  },
 } satisfies Config;
