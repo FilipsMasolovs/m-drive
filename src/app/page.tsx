@@ -21,92 +21,109 @@ type FileType =
   | "video"
   | "pdf";
 
-type FileItem = {
+export type FileItem = {
   id: string;
   name: string;
   type: FileType;
-  url?: string;
+  url: string;
   parent: string;
   size: number;
 };
 
-type FolderItem = {
+export type FolderItem = {
   id: string;
   name: string;
   type: "folder";
   parent: string | null;
-  children?: DriveItem[];
 };
 
-export type DriveItem = FileItem | FolderItem;
+export type DriveItem = FolderItem | FileItem;
 
-const mockData: DriveItem[] = [
+const mockFolders: FolderItem[] = [
+  {
+    id: "root",
+    name: "root",
+    type: "folder",
+    parent: null,
+  },
   {
     id: "1",
     name: "Documents",
     type: "folder",
-    parent: null,
-    children: [
-      {
-        id: "2",
-        name: "Report.docx",
-        type: "document",
-        parent: "1",
-        size: 2500000,
-      },
-      {
-        id: "3",
-        name: "Spreadsheet.xlsx",
-        type: "spreadsheet",
-        parent: "1",
-        size: 1800000,
-      },
-    ],
+    parent: "root",
+  },
+  {
+    id: "2",
+    name: "Images",
+    type: "folder",
+    parent: "root",
+  },
+];
+
+const mockFiles: FileItem[] = [
+  {
+    id: "3",
+    name: "Report.docx",
+    type: "document",
+    parent: "1",
+    size: 2500000,
+    url: "",
   },
   {
     id: "4",
-    name: "Images",
-    type: "folder",
-    parent: null,
-    children: [
-      {
-        id: "5",
-        name: "Vacation.jpg",
-        type: "image",
-        parent: "4",
-        size: 4200000,
-      },
-      {
-        id: "6",
-        name: "Family.png",
-        type: "image",
-        parent: "4",
-        size: 3100000,
-      },
-    ],
+    name: "Spreadsheet.xlsx",
+    type: "spreadsheet",
+    parent: "1",
+    size: 1800000,
+    url: "",
+  },
+  {
+    id: "5",
+    name: "Vacation.jpg",
+    type: "image",
+    parent: "2",
+    size: 4200000,
+    url: "",
+  },
+  {
+    id: "6",
+    name: "Family.png",
+    type: "image",
+    parent: "2",
+    size: 3100000,
+    url: "",
   },
   {
     id: "7",
     name: "Music.mp3",
     type: "audio",
-    parent: "",
+    parent: "root",
     size: 8500000,
+    url: "",
   },
   {
     id: "8",
     name: "Video.mp4",
     type: "video",
-    parent: "",
+    parent: "root",
     size: 95000000,
+    url: "",
   },
   {
     id: "9",
     name: "Document.pdf",
     type: "pdf",
-    parent: "",
+    parent: "root",
     size: 1200000,
+    url: "",
   },
 ];
+
+const getFolderItems = (folderId: string): DriveItem[] => {
+  const folders = mockFolders.filter((f) => f.parent === folderId);
+  const files = mockFiles.filter((f) => f.parent === folderId);
+  return [...folders, ...files];
+};
 
 const formatSize = (bytes: number): string => {
   if (bytes === 0) return "—";
@@ -139,15 +156,19 @@ const getItemIcon = (type: "folder" | FileType) => {
   }
 };
 
-export default function GoogleDriveClone() {
-  const [currentFolder, setCurrentFolder] = useState<DriveItem[]>(mockData);
-  const [breadcrumbs, setBreadcrumbs] = useState<DriveItem[]>([]);
+export default function MDrive() {
+  const [currentFolder, setCurrentFolder] = useState<DriveItem[]>(
+    getFolderItems("root"),
+  );
+  const [breadcrumbs, setBreadcrumbs] = useState<FolderItem[]>([]);
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
 
   const handleItemClick = (item: DriveItem) => {
     if (item.type === "folder") {
-      setBreadcrumbs([...breadcrumbs, item]);
-      setCurrentFolder(item.children ?? []);
+      if (item.id !== "root") {
+        setBreadcrumbs([...breadcrumbs, item]);
+      }
+      setCurrentFolder(getFolderItems(item.id));
     } else {
       console.log(`Opening file: ${item.name}`);
     }
@@ -155,17 +176,16 @@ export default function GoogleDriveClone() {
 
   const handleBreadcrumbClick = (index: number) => {
     if (index === 0) {
-      setCurrentFolder(mockData);
+      setCurrentFolder(getFolderItems("root"));
       setBreadcrumbs([]);
     } else {
       const newBreadcrumbs = breadcrumbs.slice(0, index);
       setBreadcrumbs(newBreadcrumbs);
-
-      const lastItem = newBreadcrumbs[newBreadcrumbs.length - 1];
-      if (lastItem && lastItem.type === "folder") {
-        setCurrentFolder(lastItem.children ?? []);
+      const lastFolder = newBreadcrumbs[newBreadcrumbs.length - 1];
+      if (lastFolder) {
+        setCurrentFolder(getFolderItems(lastFolder.id));
       } else {
-        setCurrentFolder([]);
+        setCurrentFolder(getFolderItems("root"));
       }
     }
   };
@@ -187,7 +207,7 @@ export default function GoogleDriveClone() {
             >
               M-Drive
             </Button>
-            {breadcrumbs.map((item: DriveItem, index: number) => (
+            {breadcrumbs.map((item, index) => (
               <div key={item.id} className="flex items-center">
                 <ChevronRight className="mx-1 h-4 w-4 text-gray-500" />
                 <Button
@@ -225,7 +245,7 @@ export default function GoogleDriveClone() {
               : "space-y-2"
           }
         >
-          {currentFolder.map((item: DriveItem) => (
+          {currentFolder.map((item) => (
             <div
               key={item.id}
               className={`group cursor-pointer rounded-lg bg-gray-800 transition-colors duration-200 hover:bg-gray-700 ${
