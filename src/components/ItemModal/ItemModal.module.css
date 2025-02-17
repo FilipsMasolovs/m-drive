@@ -9,7 +9,7 @@
   height: 100vh;
 }
 
-.modalContent {
+.modalWrapper {
   height: calc(100vh - 64px);
   width: calc(100vw - 64px);
   padding: 32px;
@@ -17,25 +17,31 @@
   background-color: rgb(55, 65, 81);
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.downloadButton {
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
-    width: 88px;
-    height: 32px;
-    border-radius: 8px;
-    background-color: #fff;
-    color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.modalContent {
+  max-height: 100%;
+  max-width: 100%;
 }
 
-.modalClose {
+.downloadButton {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 88px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -44,9 +50,4 @@
   border-radius: 50%;
   background-color: #fff;
   color: #000;
-}
-
-.modalContent {
-  height: 100%;
-  width: 100%;
 }
