@@ -11,6 +11,8 @@ export const getItemIcon = (type: 'folder' | FileType) => {
     case 'spreadsheet':
       return <FileIcon className="h-6 w-6 text-green-400" />
     case 'image':
+    case 'image/jpeg':
+    case 'image/png':
       return <FileIcon className="h-6 w-6 text-yellow-400" />
     case 'audio':
       return <FileIcon className="h-6 w-6 text-purple-400" />

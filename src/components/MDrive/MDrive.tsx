@@ -10,13 +10,11 @@ import ImageModal from '~/components/ImageModal/ImageModal'
 import ListItem from '~/components/ListItem/ListItem'
 import { UploadButton } from '~/components/UploadThing/uploadthing'
 
-
 import { useLocalStorage } from '~/lib/utils/useLocalStorage'
 
 import type { FolderItem, FileItem } from '~/types/types'
 
 import styles from './MDrive.module.css'
-
 
 export type DriveItem = FolderItem | FileItem
 
@@ -24,9 +22,10 @@ interface MDriveProps {
   files: FileItem[]
   folders: FolderItem[]
   parents: FolderItem[]
+  currentFolderId: number
 }
 
-export default function MDrive({ files, folders, parents }: MDriveProps) {
+export default function MDrive({ files, folders, parents, currentFolderId }: MDriveProps) {
   const currentItems: DriveItem[] = [...folders, ...files]
   const [viewMode, setViewMode] = useLocalStorage<'list' | 'grid'>('viewMode', 'list')
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -73,6 +72,9 @@ export default function MDrive({ files, folders, parents }: MDriveProps) {
           endpoint="driveUploader"
           onClientUploadComplete={() => {
             router.refresh()
+          }}
+          input={{
+            folderId: currentFolderId,
           }}
         />
       </div>

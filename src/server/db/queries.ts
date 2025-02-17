@@ -25,10 +25,14 @@ export const QUERIES = {
     parents.shift()
     return parents
   },
+  getFolderById: async function (folderId: number) {
+    const folder = await db.select().from(foldersSchema).where(eq(foldersSchema.id, folderId))
+    return folder[0]
+  },
 }
 
 export const MUTATONS = {
   createFile: async function (input: { file: { name: string; type: string; url: string; parent: number; size: number }; userId: string }) {
-    return await db.insert(filesSchema).values(input.file)
+    return await db.insert(filesSchema).values({ ...input.file, ownerId: input.userId })
   },
 }
