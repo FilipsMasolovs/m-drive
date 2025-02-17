@@ -24,6 +24,7 @@ export default function GridItem({ item, handleItemClick, handleDelete }: GridIt
         className={styles.deleteButton}
         onClick={(e) => {
           e.stopPropagation()
+          e.preventDefault()
           handleDelete()
         }}
       >

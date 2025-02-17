@@ -10,10 +10,11 @@ import ItemModal from '~/components/ItemModal/ItemModal'
 import ListItem from '~/components/ListItem/ListItem'
 
 import { useLocalStorage } from '~/lib/utils/useLocalStorage'
-import { deleteFile } from '~/server/actions/actions'
+import { deleteFile, deleteFolder } from '~/server/actions/actions'
 import type { FolderItem, FileItem } from '~/types/types'
 
 import styles from './MDrive.module.css'
+import { useRouter } from 'next/navigation'
 
 export type DriveItem = FolderItem | FileItem
 
@@ -26,6 +27,8 @@ interface MDriveProps {
 }
 
 export default function MDrive({ files, folders, parents, currentFolderId, rootFolderId }: MDriveProps) {
+  const router = useRouter()
+
   const currentItems: DriveItem[] = [...folders, ...files]
   const [viewMode, setViewMode] = useLocalStorage<'list' | 'grid'>('viewMode', 'list')
 
@@ -59,9 +62,13 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
 
   const handleDelete = async (item: DriveItem) => {
     if (item.type === 'folder') {
-      console.log(item)
+      await deleteFolder(item.id)
+
+      router.refresh()
     } else {
       await deleteFile(item.id)
+
+      router.refresh()
     }
   }
 
