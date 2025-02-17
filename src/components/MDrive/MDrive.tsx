@@ -9,7 +9,9 @@ import DriveActions from '~/components/DriveActions/DriveActions'
 import GridItem from '~/components/GridItem/GridItem'
 import ItemModal from '~/components/ItemModal/ItemModal'
 import ListItem from '~/components/ListItem/ListItem'
+import MobileComponent from '~/components/MobileComponent/MobileComponent'
 
+import { isMobileDevice } from '~/lib/utils/isMobile'
 import { useLocalStorage } from '~/lib/utils/useLocalStorage'
 import { deleteFile, deleteFolder } from '~/server/actions/actions'
 import type { FolderItem, FileItem } from '~/types/types'
@@ -65,6 +67,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
   }
 
   const [deleting, setDeleting] = useState(false)
+
   const handleDelete = async (item: DriveItem) => {
     setDeleting(true)
     if (item.type === 'folder') {
@@ -78,24 +81,32 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
     }
   }
 
+  const isMobile = isMobileDevice()
+
   return (
-    <div className={styles.pageContainer}>
-      <header className={styles.headerContainer}>
-        <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
-        <Actions viewMode={viewMode} setViewMode={setViewMode} />
-      </header>
-      <main className={viewMode === 'list' ? styles.listContainer : styles.gridContainer}>
-        {currentItems.map((item, index) =>
-          viewMode === 'list' ? (
-            <ListItem key={`${item.id}+${index}`} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
-          ) : (
-            <GridItem key={`${item.id}+${index}`} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
-          ),
-        )}
-      </main>
-      <DriveActions currentFolderId={currentFolderId} />
-      {modal.open && modal.type && <ItemModal type={modal.type} url={modal.url} name={modal.name} setIsModalOpen={(open) => setModal((prev) => ({ ...prev, open }))} />}
-      {deleting && <DeletingOverlay />}
-    </div>
+    <>
+      {isMobile ? (
+        <MobileComponent />
+      ) : (
+        <div className={styles.pageContainer}>
+          <header className={styles.headerContainer}>
+            <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
+            <Actions viewMode={viewMode} setViewMode={setViewMode} />
+          </header>
+          <main className={viewMode === 'list' ? styles.listContainer : styles.gridContainer}>
+            {currentItems.map((item, index) =>
+              viewMode === 'list' ? (
+                <ListItem key={`${item.id}+${index}`} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
+              ) : (
+                <GridItem key={`${item.id}+${index}`} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
+              ),
+            )}
+          </main>
+          <DriveActions currentFolderId={currentFolderId} />
+          {modal.open && modal.type && <ItemModal type={modal.type} url={modal.url} name={modal.name} setIsModalOpen={(open) => setModal((prev) => ({ ...prev, open }))} />}
+          {deleting && <DeletingOverlay />}
+        </div>
+      )}
+    </>
   )
 }

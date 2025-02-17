@@ -23,7 +23,7 @@ export default async function Home(props: { params: Promise<{ folderId: string }
     QUERIES.getFiles(parsedFolderId),
     QUERIES.getAllParentsForFolder(parsedFolderId),
     QUERIES.getRootFolderForUser(session.userId),
-    QUERIES.getFolderById(parsedFolderId)
+    QUERIES.getFolderById(parsedFolderId),
   ])
 
   if (!rootFolder || !folder) {
