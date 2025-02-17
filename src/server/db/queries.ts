@@ -6,10 +6,10 @@ import { eq } from 'drizzle-orm'
 
 export const QUERIES = {
   getFolders: function (folderId: number) {
-    return db.select().from(foldersSchema).where(eq(foldersSchema.parent, folderId))
+    return db.select().from(foldersSchema).where(eq(foldersSchema.parent, folderId)).orderBy(foldersSchema.id)
   },
   getFiles: function (folderId: number) {
-    return db.select().from(filesSchema).where(eq(filesSchema.parent, folderId))
+    return db.select().from(filesSchema).where(eq(filesSchema.parent, folderId)).orderBy(filesSchema.id)
   },
   getAllParentsForFolder: async function (folderId: number) {
     const parents = []
