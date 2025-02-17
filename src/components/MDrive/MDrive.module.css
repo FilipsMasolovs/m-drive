@@ -5,7 +5,7 @@
   padding: 32px;
   background-image: linear-gradient(to right bottom, rgb(17, 24, 39), rgb(0, 0, 0));
   color: rgb(209, 213, 219);
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .headerContainer {
@@ -20,15 +20,8 @@
   gap: 16px;
 }
 
-.gridContainer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
 .headerContainer,
-.listContainer,
-.gridContainer {
+.listContainer {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;

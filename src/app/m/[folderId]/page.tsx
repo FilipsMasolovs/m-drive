@@ -18,12 +18,13 @@ export default async function Home(props: { params: Promise<{ folderId: string }
     return <div>Invalid folder ID</div>
   }
 
-  const [foldersData, filesData, parentsData, rootFolder, folder] = await Promise.all([
+  const [foldersData, filesData, parentsData, rootFolder, folder, allFiles] = await Promise.all([
     QUERIES.getFolders(parsedFolderId),
     QUERIES.getFiles(parsedFolderId),
     QUERIES.getAllParentsForFolder(parsedFolderId),
     QUERIES.getRootFolderForUser(session.userId),
     QUERIES.getFolderById(parsedFolderId),
+    QUERIES.getAllFiles(session.userId),
   ])
 
   if (!rootFolder || !folder) {
@@ -49,5 +50,8 @@ export default async function Home(props: { params: Promise<{ folderId: string }
     type: 'folder',
   }))
 
-  return <MDrive folders={folders} files={files} parents={parents} currentFolderId={parsedFolderId} rootFolderId={rootFolder.id} />
+  let capacityUsed = 0
+  allFiles.forEach((file) => (capacityUsed = capacityUsed + file.size))
+
+  return <MDrive folders={folders} files={files} parents={parents} currentFolderId={parsedFolderId} rootFolderId={rootFolder.id} capacityUsed={capacityUsed} />
 }

@@ -6,13 +6,11 @@ import Actions from '~/components/Actions/Actions'
 import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs'
 import DeletingOverlay from '~/components/DeletingOverlay/DeletingOverlay'
 import DriveActions from '~/components/DriveActions/DriveActions'
-import GridItem from '~/components/GridItem/GridItem'
 import ItemModal from '~/components/ItemModal/ItemModal'
 import ListItem from '~/components/ListItem/ListItem'
 import MobileComponent from '~/components/MobileComponent/MobileComponent'
 
 import { isMobileDevice } from '~/lib/utils/isMobile'
-import { useLocalStorage } from '~/lib/utils/useLocalStorage'
 import { deleteFile, deleteFolder } from '~/server/actions/actions'
 import type { FolderItem, FileItem } from '~/types/types'
 
@@ -26,11 +24,11 @@ interface MDriveProps {
   parents: FolderItem[]
   currentFolderId: number
   rootFolderId: number
+  capacityUsed: number
 }
 
-export default function MDrive({ files, folders, parents, currentFolderId, rootFolderId }: MDriveProps) {
+export default function MDrive({ files, folders, parents, currentFolderId, rootFolderId, capacityUsed }: MDriveProps) {
   const currentItems: DriveItem[] = [...folders, ...files]
-  const [viewMode, setViewMode] = useLocalStorage<'list' | 'grid'>('viewMode', 'list')
 
   const [modal, setModal] = useState<{ open: boolean; type: 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | null; url: string; name: string }>({
     open: false,
@@ -82,6 +80,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
   }
 
   const isMobile = isMobileDevice()
+  const maxCapacity = 134217728
 
   return (
     <>
@@ -91,18 +90,14 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
         <div className={styles.pageContainer}>
           <header className={styles.headerContainer}>
             <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
-            <Actions viewMode={viewMode} setViewMode={setViewMode} />
+            <Actions capacityUsed={capacityUsed} maxCapacity={maxCapacity} />
           </header>
-          <main className={viewMode === 'list' ? styles.listContainer : styles.gridContainer}>
-            {currentItems.map((item, index) =>
-              viewMode === 'list' ? (
-                <ListItem key={`${item.id}+${index}`} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
-              ) : (
-                <GridItem key={`${item.id}+${index}`} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
-              ),
-            )}
+          <main className={styles.listContainer}>
+            {currentItems.map((item, index) => (
+              <ListItem key={`${item.id}+${index}`} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
+            ))}
           </main>
-          <DriveActions currentFolderId={currentFolderId} />
+          {capacityUsed + 5242880 <= maxCapacity ? <DriveActions currentFolderId={currentFolderId} /> : null}
           {modal.open && modal.type && <ItemModal type={modal.type} url={modal.url} name={modal.name} setIsModalOpen={(open) => setModal((prev) => ({ ...prev, open }))} />}
           {deleting && <DeletingOverlay />}
         </div>

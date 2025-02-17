@@ -1,27 +1,30 @@
-import { LayoutGrid, LayoutList } from 'lucide-react'
+import { UserButton } from '@clerk/nextjs'
+import { formatSize } from '~/lib/utils/formatSize'
 
 import styles from './Actions.module.css'
-import { SignedOut, SignInButton, SignedIn, UserButton } from '@clerk/nextjs'
-
-type ViewMode = 'list' | 'grid'
 
 interface ActionsProps {
-  viewMode: ViewMode
-  setViewMode: (viewMode: ViewMode) => void
+  capacityUsed: number
+  maxCapacity: number
 }
 
-export default function Actions({ viewMode, setViewMode }: ActionsProps) {
+export default function Actions({ capacityUsed, maxCapacity }: ActionsProps) {
+  const usedPercentage = Math.min((capacityUsed / maxCapacity) * 100, 100)
+
   return (
     <div className={styles.actionsContainer}>
-      <button onClick={() => setViewMode(viewMode === 'list' ? 'grid' : 'list')} className={styles.layoutButton}>
-        {viewMode === 'list' ? <LayoutGrid className="h-5 w-5" /> : <LayoutList className="h-5 w-5" />}
-      </button>
-      <SignedOut>
-        <SignInButton />
-      </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
+      <div className={styles.usageContainer}>
+        <span>0 MB</span>
+        <div className={styles.usageBar}>
+          <div className={styles.usageFill} style={{ width: `${usedPercentage}%` }} />
+          <span className={styles.capacityUsed} style={usedPercentage < 50 ? { left: `${usedPercentage + 2}px` } : { left: `${usedPercentage - 48}px`, color: "white" }}>
+            {formatSize(capacityUsed)}
+          </span>
+        </div>
+        <span>{formatSize(maxCapacity)}</span>
+        <span className={styles.usageDescription}>Your FREE capacity</span>
+      </div>
+      <UserButton />
     </div>
   )
 }

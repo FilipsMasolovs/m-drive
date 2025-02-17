@@ -36,6 +36,9 @@ export const QUERIES = {
       .where(and(eq(foldersSchema.ownerId, userId), isNull(foldersSchema.parent)))
     return folder[0]
   },
+  getAllFiles: function (userId: string) {
+    return db.select().from(filesSchema).where(eq(filesSchema.ownerId, userId))
+  },
 }
 
 export const MUTATIONS = {
@@ -60,19 +63,19 @@ export const MUTATIONS = {
 
     await db.insert(foldersSchema).values([
       {
-        name: 'Trash',
+        name: 'Pictures',
         type: 'folder',
         parent: rootFolderId,
         ownerId: userId,
       },
       {
-        name: 'Shared',
+        name: 'Videos',
         type: 'folder',
         parent: rootFolderId,
         ownerId: userId,
       },
       {
-        name: 'Documents',
+        name: 'Other',
         type: 'folder',
         parent: rootFolderId,
         ownerId: userId,

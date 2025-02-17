@@ -6,7 +6,7 @@
   padding: 32px;
   background-image: linear-gradient(to right bottom, rgb(17, 24, 39), rgb(0, 0, 0));
   color: rgb(209, 213, 219);
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .title {
