@@ -11,6 +11,7 @@ import ListItem from '~/components/ListItem/ListItem'
 import { UploadButton } from '~/components/UploadThing/uploadthing'
 
 import { useLocalStorage } from '~/lib/utils/useLocalStorage'
+import { deleteFile } from '~/server/actions/actions'
 
 import type { FolderItem, FileItem } from '~/types/types'
 
@@ -48,8 +49,12 @@ export default function MDrive({ files, folders, parents, currentFolderId }: MDr
     }
   }
 
-  const handleDelete = (item: DriveItem) => {
-    console.log(`Deleting ${item.type}: ${item.name}`)
+  const handleDelete = async (item: DriveItem) => {
+    if (item.type === "folder") {
+      console.log(item)
+    } else {
+      await deleteFile(item.id)
+    }
   }
 
   return (
