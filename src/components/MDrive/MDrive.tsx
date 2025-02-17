@@ -8,6 +8,7 @@ import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs'
 import GridItem from '~/components/GridItem/GridItem'
 import ImageModal from '~/components/ImageModal/ImageModal'
 import ListItem from '~/components/ListItem/ListItem'
+import { PdfModal } from '~/components/PdfModal/PdfModal'
 import { UploadButton } from '~/components/UploadThing/uploadthing'
 
 import { useLocalStorage } from '~/lib/utils/useLocalStorage'
@@ -30,23 +31,36 @@ interface MDriveProps {
 export default function MDrive({ files, folders, parents, currentFolderId, rootFolderId }: MDriveProps) {
   const currentItems: DriveItem[] = [...folders, ...files]
   const [viewMode, setViewMode] = useLocalStorage<'list' | 'grid'>('viewMode', 'list')
-  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false)
   const [modalImageUrl, setModalImageUrl] = useState('')
   const [modalImageName, setModalImageName] = useState('')
+
+  const [isPdfModalOpen, setIsPdfModalOpen] = useState(false)
+  const [modalPdfUrl, setModalPdfUrl] = useState('')
 
   const router = useRouter()
 
   const handleItemClick = (item: DriveItem) => {
-    if (typeof item.type === 'string' && item.type.startsWith('image')) {
-      if ((item as FileItem).url) {
-        setModalImageUrl((item as FileItem).url)
-        setModalImageName((item as FileItem).name)
-        setIsModalOpen(true)
+    if (typeof item.type === 'string') {
+      if (item.type.includes('image')) {
+        if ((item as FileItem).url) {
+          setModalImageUrl((item as FileItem).url)
+          setModalImageName((item as FileItem).name)
+          setIsImageModalOpen(true)
+        } else {
+          console.warn('No image URL provided')
+        }
+      } else if (item.type.includes('pdf')) {
+        if ((item as FileItem).url) {
+          setModalPdfUrl((item as FileItem).url)
+          setIsPdfModalOpen(true)
+        } else {
+          console.warn('No PDF URL provided')
+        }
       } else {
-        console.warn('No image URL provided')
+        console.log(`Opening file: ${item.name}`)
       }
-    } else {
-      console.log(`Opening file: ${item.name}`)
     }
   }
 
@@ -84,7 +98,8 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
           }}
         />
       </div>
-      {isModalOpen && <ImageModal url={modalImageUrl} name={modalImageName} setIsModalOpen={setIsModalOpen} />}
+      {isImageModalOpen && <ImageModal url={modalImageUrl} name={modalImageName} setIsModalOpen={setIsImageModalOpen} />}
+      {isPdfModalOpen && <PdfModal url={modalPdfUrl} setIsModalOpen={setIsPdfModalOpen} />}
     </div>
   )
 }
