@@ -10,6 +10,7 @@ import ImageModal from '~/components/ImageModal/ImageModal'
 import ListItem from '~/components/ListItem/ListItem'
 import { PdfModal } from '~/components/PdfModal/PdfModal'
 import { UploadButton } from '~/components/UploadThing/uploadthing'
+import { VideoModal } from '~/components/VideoModal/VideoModal'
 
 import { useLocalStorage } from '~/lib/utils/useLocalStorage'
 import { deleteFile } from '~/server/actions/actions'
@@ -29,6 +30,8 @@ interface MDriveProps {
 }
 
 export default function MDrive({ files, folders, parents, currentFolderId, rootFolderId }: MDriveProps) {
+  const router = useRouter()
+
   const currentItems: DriveItem[] = [...folders, ...files]
   const [viewMode, setViewMode] = useLocalStorage<'list' | 'grid'>('viewMode', 'list')
 
@@ -40,7 +43,9 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
   const [modalPdfUrl, setModalPdfUrl] = useState('')
   const [modalPdfName, setModalPdfName] = useState('')
 
-  const router = useRouter()
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
+  const [modalVideoUrl, setModalVideoUrl] = useState('')
+  const [modalVideoName, setModalVideoName] = useState('')
 
   const handleItemClick = (item: DriveItem) => {
     if (typeof item.type === 'string') {
@@ -59,6 +64,14 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
           setIsPdfModalOpen(true)
         } else {
           console.warn('No PDF URL provided')
+        }
+      } else if (item.type.includes('video')) {
+        if ((item as FileItem).url) {
+          setModalVideoUrl((item as FileItem).url)
+          setModalVideoName((item as FileItem).name)
+          setIsVideoModalOpen(true)
+        } else {
+          console.warn('No video URL provided')
         }
       } else {
         console.log(`Opening file: ${item.name}`)
@@ -102,6 +115,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
       </div>
       {isImageModalOpen && <ImageModal url={modalImageUrl} name={modalImageName} setIsModalOpen={setIsImageModalOpen} />}
       {isPdfModalOpen && <PdfModal url={modalPdfUrl} name={modalPdfName} setIsModalOpen={setIsPdfModalOpen} />}
+      {isVideoModalOpen && <VideoModal url={modalVideoUrl} name={modalVideoName} setIsModalOpen={setIsVideoModalOpen} />}
     </div>
   )
 }

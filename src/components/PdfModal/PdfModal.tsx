@@ -6,7 +6,7 @@ export function PdfModal({ url, name, setIsModalOpen }: { url: string; name: str
   return (
     <div className={styles.modalOverlay} onClick={() => setIsModalOpen(false)}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <object data={url} type="application/pdf" className={styles.modalPdf}>
+        <object data={url} type="application/pdf" className={styles.modalContent}>
           <p>
             Your browser does not support PDFs. <a href={url}>Download the PDF</a>.
           </p>

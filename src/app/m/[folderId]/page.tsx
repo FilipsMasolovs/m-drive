@@ -2,7 +2,7 @@ import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import MDrive from '~/components/MDrive/MDrive'
 import { QUERIES } from '~/server/db/queries'
-import { type FolderItem, type FileItem, type FileType } from '~/types/types'
+import { type FolderItem, type FileItem } from '~/types/types'
 
 export default async function Home(props: { params: Promise<{ folderId: string }> }) {
   const params = await props.params
@@ -41,7 +41,7 @@ export default async function Home(props: { params: Promise<{ folderId: string }
 
   const files: FileItem[] = filesData.map((file) => ({
     ...file,
-    type: file.type as FileType,
+    type: file.type,
   }))
 
   const parents: FolderItem[] = parentsData.map((folder) => ({

@@ -1,9 +1,7 @@
-export type FileType = 'document' | 'spreadsheet' | 'image' | 'image/jpeg' | 'image/png' | 'audio' | 'video' | 'pdf' | 'application/pdf'
-
 export type FileItem = {
   id: number
   name: string
-  type: FileType
+  type: string
   url: string
   parent: number
   size: number
