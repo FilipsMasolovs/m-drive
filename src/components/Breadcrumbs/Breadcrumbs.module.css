@@ -4,7 +4,7 @@
   gap: 8px;
 }
 
-.breadcrumbsContainer :global(button) {
+.breadcrumbsContainer :global(a) {
   padding: 8px;
   border-radius: 8px;
   transition: all 0.4s ease;
@@ -24,6 +24,6 @@
   height: 16px;
 }
 
-.breadcrumbContainer :global(button) {
+.breadcrumbContainer :global(a) {
   margin-left: 8px;
 }

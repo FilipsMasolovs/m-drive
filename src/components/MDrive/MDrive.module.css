@@ -26,16 +26,16 @@
   gap: 16px;
 }
 
-.footerContainer {
-  position: fixed;
-  bottom: 32px;
-  right: 32px;
-}
-
 .headerContainer,
 .listContainer,
 .gridContainer {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+}
+
+.fileUploadButton {
+position: fixed;
+right: 32px;
+bottom: 32px;
 }

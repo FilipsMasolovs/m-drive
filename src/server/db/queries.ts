@@ -26,3 +26,9 @@ export const QUERIES = {
     return parents
   },
 }
+
+export const MUTATONS = {
+  createFile: async function (input: { file: { name: string; type: string; url: string; parent: number; size: number }; userId: string }) {
+    return await db.insert(filesSchema).values(input.file)
+  },
+}

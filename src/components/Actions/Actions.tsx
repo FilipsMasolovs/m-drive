@@ -1,4 +1,4 @@
-import { Upload, LayoutGrid, LayoutList } from 'lucide-react'
+import { LayoutGrid, LayoutList } from 'lucide-react'
 
 import styles from './Actions.module.css'
 import { SignedOut, SignInButton, SignedIn, UserButton } from '@clerk/nextjs'
@@ -15,10 +15,6 @@ export default function Actions({ viewMode, setViewMode }: ActionsProps) {
     <div className={styles.actionsContainer}>
       <button onClick={() => setViewMode(viewMode === 'list' ? 'grid' : 'list')} className={styles.layoutButton}>
         {viewMode === 'list' ? <LayoutGrid className="h-5 w-5" /> : <LayoutList className="h-5 w-5" />}
-      </button>
-      <button className={styles.fileUploadButton}>
-        <Upload />
-        Upload
       </button>
       <SignedOut>
         <SignInButton />

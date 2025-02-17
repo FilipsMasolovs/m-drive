@@ -8,3 +8,4 @@
 - `deploy:` Netlify
 - `db:` SingleStore
 - `auth:` Clerk
+- `uploads:` UploadThing

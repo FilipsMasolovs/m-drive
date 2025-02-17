@@ -1,14 +1,22 @@
 'use client'
 
-import React from 'react'
+import { useRouter } from 'next/navigation'
+import React, { useState } from 'react'
+
 import Actions from '~/components/Actions/Actions'
 import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs'
 import GridItem from '~/components/GridItem/GridItem'
+import ImageModal from '~/components/ImageModal/ImageModal'
 import ListItem from '~/components/ListItem/ListItem'
+import { UploadButton } from '~/components/UploadThing/uploadthing'
+
+
+import { useLocalStorage } from '~/lib/utils/useLocalStorage'
 
 import type { FolderItem, FileItem } from '~/types/types'
+
 import styles from './MDrive.module.css'
-import { useLocalStorage } from '~/lib/utils/useLocalStorage'
+
 
 export type DriveItem = FolderItem | FileItem
 
@@ -21,9 +29,24 @@ interface MDriveProps {
 export default function MDrive({ files, folders, parents }: MDriveProps) {
   const currentItems: DriveItem[] = [...folders, ...files]
   const [viewMode, setViewMode] = useLocalStorage<'list' | 'grid'>('viewMode', 'list')
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalImageUrl, setModalImageUrl] = useState('')
+  const [modalImageName, setModalImageName] = useState('')
+
+  const router = useRouter()
 
   const handleItemClick = (item: DriveItem) => {
-    console.log(`Opening file: ${item.name}`)
+    if (typeof item.type === 'string' && item.type.startsWith('image')) {
+      if ((item as FileItem).url) {
+        setModalImageUrl((item as FileItem).url)
+        setModalImageName((item as FileItem).name)
+        setIsModalOpen(true)
+      } else {
+        console.warn('No image URL provided')
+      }
+    } else {
+      console.log(`Opening file: ${item.name}`)
+    }
   }
 
   const handleDelete = (item: DriveItem) => {
@@ -45,7 +68,15 @@ export default function MDrive({ files, folders, parents }: MDriveProps) {
           ),
         )}
       </main>
-      <footer className={styles.footerContainer}>M-DRIVE</footer>
+      <div className={styles.fileUploadButton}>
+        <UploadButton
+          endpoint="driveUploader"
+          onClientUploadComplete={() => {
+            router.refresh()
+          }}
+        />
+      </div>
+      {isModalOpen && <ImageModal url={modalImageUrl} name={modalImageName} setIsModalOpen={setIsModalOpen} />}
     </div>
   )
 }
