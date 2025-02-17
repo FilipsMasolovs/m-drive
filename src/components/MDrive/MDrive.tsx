@@ -1,7 +1,6 @@
 'use client'
 
-import type React from 'react'
-
+import React from 'react'
 import Actions from '~/components/Actions/Actions'
 import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs'
 import GridItem from '~/components/GridItem/GridItem'
@@ -9,7 +8,7 @@ import ListItem from '~/components/ListItem/ListItem'
 
 import type { FolderItem, FileItem } from '~/types/types'
 import styles from './MDrive.module.css'
-import { useState } from 'react'
+import { useLocalStorage } from '~/lib/utils/useLocalStorage'
 
 export type DriveItem = FolderItem | FileItem
 
@@ -21,7 +20,7 @@ interface MDriveProps {
 
 export default function MDrive({ files, folders, parents }: MDriveProps) {
   const currentItems: DriveItem[] = [...folders, ...files]
-  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list')
+  const [viewMode, setViewMode] = useLocalStorage<'list' | 'grid'>('viewMode', 'list')
 
   const handleItemClick = (item: DriveItem) => {
     console.log(`Opening file: ${item.name}`)
