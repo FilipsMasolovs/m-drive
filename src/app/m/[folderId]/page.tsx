@@ -18,15 +18,20 @@ export default async function Home(props: { params: Promise<{ folderId: string }
     return <div>Invalid folder ID</div>
   }
 
-  const [foldersData, filesData, parentsData, rootFolder] = await Promise.all([
+  const [foldersData, filesData, parentsData, rootFolder, folder] = await Promise.all([
     QUERIES.getFolders(parsedFolderId),
     QUERIES.getFiles(parsedFolderId),
     QUERIES.getAllParentsForFolder(parsedFolderId),
     QUERIES.getRootFolderForUser(session.userId),
+    QUERIES.getFolderById(parsedFolderId)
   ])
 
-  if (!rootFolder) {
+  if (!rootFolder || !folder) {
     return redirect('/drive')
+  }
+
+  if (session.userId !== folder.ownerId) {
+    return redirect(`/m/${rootFolder.id}`)
   }
 
   const folders: FolderItem[] = foldersData.map((folder) => ({
