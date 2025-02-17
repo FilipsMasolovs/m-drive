@@ -19,6 +19,7 @@ export const getItemIcon = (type: 'folder' | FileType) => {
     case 'video':
       return <FileIcon className="h-6 w-6 text-red-400" />
     case 'pdf':
+    case 'application/pdf':
       return <FileIcon className="h-6 w-6 text-orange-400" />
     default:
       return <FileIcon className="h-6 w-6 text-gray-400" />

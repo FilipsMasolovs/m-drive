@@ -10,7 +10,7 @@ interface BreadcrumbsProps {
   rootFolderId: number
 }
 
-export default async function Breadcrumbs({ breadcrumbs, rootFolderId }: BreadcrumbsProps) {
+export default function Breadcrumbs({ breadcrumbs, rootFolderId }: BreadcrumbsProps) {
   return (
     <div className={styles.breadcrumbsContainer}>
       <Link href={`/m/${rootFolderId}`}>M-DRIVE</Link>

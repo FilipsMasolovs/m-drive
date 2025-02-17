@@ -1,4 +1,4 @@
-export type FileType = 'document' | 'spreadsheet' | 'image' | 'image/jpeg' | "image/png" | 'audio' | 'video' | 'pdf'
+export type FileType = 'document' | 'spreadsheet' | 'image' | 'image/jpeg' | 'image/png' | 'audio' | 'video' | 'pdf' | 'application/pdf'
 
 export type FileItem = {
   id: number
