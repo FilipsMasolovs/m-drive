@@ -22,7 +22,7 @@ export default function DriveActions({ currentFolderId }: DriveActionsProps) {
 
     await createFolder(folderName, currentFolderId)
 
-    router.refresh()
+    setFolderName('')
   }
 
   return (

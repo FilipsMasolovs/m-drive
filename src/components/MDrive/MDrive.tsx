@@ -15,7 +15,6 @@ import { deleteFile, deleteFolder } from '~/server/actions/actions'
 import type { FolderItem, FileItem } from '~/types/types'
 
 import styles from './MDrive.module.css'
-import { useRouter } from 'next/navigation'
 
 export type DriveItem = FolderItem | FileItem
 
@@ -28,12 +27,10 @@ interface MDriveProps {
 }
 
 export default function MDrive({ files, folders, parents, currentFolderId, rootFolderId }: MDriveProps) {
-  const router = useRouter()
-
   const currentItems: DriveItem[] = [...folders, ...files]
   const [viewMode, setViewMode] = useLocalStorage<'list' | 'grid'>('viewMode', 'list')
 
-  const [modal, setModal] = useState<{ open: boolean; type: 'image' | 'pdf' | 'video' | null; url: string; name: string }>({
+  const [modal, setModal] = useState<{ open: boolean; type: 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | null; url: string; name: string }>({
     open: false,
     type: null,
     url: '',
@@ -53,6 +50,12 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
         setModal({ open: true, type: 'pdf', url: file.url, name: file.name })
       } else if (file.type.includes('video')) {
         setModal({ open: true, type: 'video', url: file.url, name: file.name })
+      } else if (file.type.includes('text/plain')) {
+        setModal({ open: true, type: 'text/plain', url: file.url, name: file.name })
+      } else if (file.type.includes('audio')) {
+        setModal({ open: true, type: 'audio', url: file.url, name: file.name })
+      } else if (file.type.includes('zip') || file.type.includes('rar') || file.type.includes('application')) {
+        setModal({ open: true, type: 'application', url: file.url, name: file.name })
       } else {
         console.log(`Opening file: ${file.name}`)
       }
@@ -92,7 +95,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
       </main>
       <DriveActions currentFolderId={currentFolderId} />
       {modal.open && modal.type && <ItemModal type={modal.type} url={modal.url} name={modal.name} setIsModalOpen={(open) => setModal((prev) => ({ ...prev, open }))} />}
-        {deleting && <DeletingOverlay />}
+      {deleting && <DeletingOverlay />}
     </div>
   )
 }
