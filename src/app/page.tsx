@@ -3,7 +3,11 @@ import styles from './page.module.css'
 export default async function Home() {
   return (
     <div className={styles.pageContainer}>
-      9 hours in, I broke navigation and breadcrumbs, but at least something works...
+      <h1 className={styles.title}>
+        M-DRIVE
+        <i>M-DRIVE</i>
+        <i>M-DRIVE</i>
+      </h1>
     </div>
   )
 }
