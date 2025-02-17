@@ -20,7 +20,7 @@ export default function ListItem({ item, handleItemClick, handleDelete }: ListIt
         <div className={styles.itemDetails}>
           <span className={styles.itemName}>{item.name}</span>
           <span className={styles.itemTypeSize}>
-            {`${(item.type?.[0]?.toUpperCase() ?? '') + (item.type?.slice(1) ?? '')}${item.type !== 'folder' ? ` • ${formatSize(item.size)}` : ''}`}
+            {`${item.type[0]!.toUpperCase()}${item.type.slice(1)}${item.type !== 'folder' && 'size' in item ? ` • ${formatSize(item.size)}` : ''}`}
           </span>
         </div>
       </div>
