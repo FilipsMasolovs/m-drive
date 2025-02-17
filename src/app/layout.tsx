@@ -1,6 +1,8 @@
 import { type Metadata } from 'next'
 import { ClerkProvider } from '@clerk/nextjs'
-import { GeistSans } from "geist/font/sans";
+import { GeistSans } from 'geist/font/sans'
+
+import { PostHogProvider } from './_providers/PostHogProvider'
 
 import '~/styles/global.css'
 
@@ -14,7 +16,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <ClerkProvider>
       <html lang="en" className={`${GeistSans.variable}`}>
-        <body>{children}</body>
+        <body>
+          <PostHogProvider>{children}</PostHogProvider>
+        </body>
       </html>
     </ClerkProvider>
   )

@@ -9,3 +9,4 @@
 - `db:` SingleStore
 - `auth:` Clerk
 - `uploads:` UploadThing
+- `analytics:` PostHog
