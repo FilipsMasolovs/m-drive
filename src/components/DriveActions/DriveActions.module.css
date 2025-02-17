@@ -1,0 +1,72 @@
+.createFolderForm {
+  position: fixed;
+  right: 32px;
+  bottom: 104px;
+  width: 160px;
+  display: flex;
+  justify-content: center;
+}
+
+.openFormButton {
+  width: 9rem;
+  height: 2.5rem;
+  cursor: pointer;
+  border-radius: calc(var(--radius) - 2px);
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.folderNameInput {
+  width: 9rem;
+  height: 2.5rem;
+  border-radius: calc(var(--radius) - 2px);
+  --tw-bg-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  outline: none;
+  border: 2px solid rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  padding: 4px;
+}
+
+.closeFormButton {
+  position: absolute;
+  top: -12px;
+  left: -6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.createFolderButton {
+  position: absolute;
+  right: -28px;
+  top: 4px;
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  width: 32px;
+  height: 32px;
+  font-size: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fileUploadButton {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  width: 160px;
+}

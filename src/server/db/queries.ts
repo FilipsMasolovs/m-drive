@@ -42,6 +42,9 @@ export const MUTATIONS = {
   createFile: async function (input: { file: { name: string; type: string; url: string; parent: number; size: number }; userId: string }) {
     return await db.insert(filesSchema).values({ ...input.file, ownerId: input.userId })
   },
+  createFolder: async function (folderName: string, parentFolder: number, userId: string) {
+    return await db.insert(foldersSchema).values({ name: folderName, type: 'folder', parent: parentFolder, ownerId: userId })
+  },
   onboardUser: async function (userId: string) {
     const rootFolder = await db
       .insert(foldersSchema)

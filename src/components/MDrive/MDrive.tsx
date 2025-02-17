@@ -1,15 +1,13 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
 
 import Actions from '~/components/Actions/Actions'
 import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs'
+import DriveActions from '~/components/DriveActions/DriveActions'
 import GridItem from '~/components/GridItem/GridItem'
 import ItemModal from '~/components/ItemModal/ItemModal'
 import ListItem from '~/components/ListItem/ListItem'
-
-import { UploadButton } from '~/components/UploadThing/uploadthing'
 
 import { useLocalStorage } from '~/lib/utils/useLocalStorage'
 import { deleteFile } from '~/server/actions/actions'
@@ -28,7 +26,6 @@ interface MDriveProps {
 }
 
 export default function MDrive({ files, folders, parents, currentFolderId, rootFolderId }: MDriveProps) {
-  const router = useRouter()
   const currentItems: DriveItem[] = [...folders, ...files]
   const [viewMode, setViewMode] = useLocalStorage<'list' | 'grid'>('viewMode', 'list')
 
@@ -83,17 +80,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
           ),
         )}
       </main>
-      <div className={styles.fileUploadButton}>
-        <UploadButton
-          endpoint="driveUploader"
-          onClientUploadComplete={() => {
-            router.refresh()
-          }}
-          input={{
-            folderId: currentFolderId,
-          }}
-        />
-      </div>
+      <DriveActions currentFolderId={currentFolderId} />
       {modal.open && modal.type && <ItemModal type={modal.type} url={modal.url} name={modal.name} setIsModalOpen={(open) => setModal((prev) => ({ ...prev, open }))} />}
     </div>
   )
