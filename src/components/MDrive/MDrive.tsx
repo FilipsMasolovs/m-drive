@@ -38,6 +38,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
 
   const [isPdfModalOpen, setIsPdfModalOpen] = useState(false)
   const [modalPdfUrl, setModalPdfUrl] = useState('')
+  const [modalPdfName, setModalPdfName] = useState('')
 
   const router = useRouter()
 
@@ -54,6 +55,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
       } else if (item.type.includes('pdf')) {
         if ((item as FileItem).url) {
           setModalPdfUrl((item as FileItem).url)
+          setModalPdfName((item as FileItem).name)
           setIsPdfModalOpen(true)
         } else {
           console.warn('No PDF URL provided')
@@ -99,7 +101,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
         />
       </div>
       {isImageModalOpen && <ImageModal url={modalImageUrl} name={modalImageName} setIsModalOpen={setIsImageModalOpen} />}
-      {isPdfModalOpen && <PdfModal url={modalPdfUrl} setIsModalOpen={setIsPdfModalOpen} />}
+      {isPdfModalOpen && <PdfModal url={modalPdfUrl} name={modalPdfName} setIsModalOpen={setIsPdfModalOpen} />}
     </div>
   )
 }
