@@ -5,7 +5,7 @@ import { GeistSans } from "geist/font/sans";
 import '~/styles/global.css'
 
 export const metadata: Metadata = {
-  title: 'M-Drive',
+  title: 'M-DRIVE',
   description: 'Slightly less functional, but way better looking Google Drive clone.',
   icons: [{ rel: 'icon', url: '/favicon.ico' }],
 }

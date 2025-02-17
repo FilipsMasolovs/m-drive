@@ -45,7 +45,7 @@ export default function MDrive({ files, folders, parents }: MDriveProps) {
           ),
         )}
       </main>
-      <footer className={styles.footerContainer}>M-Drive</footer>
+      <footer className={styles.footerContainer}>M-DRIVE</footer>
     </div>
   )
 }
