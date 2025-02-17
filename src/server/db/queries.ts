@@ -1,21 +1,21 @@
-import 'server only'
+import 'server-only'
 
-import { eq } from 'drizzle-orm'
 import { db } from '~/server/db'
-import { files_table, folders_table } from '~/server/db/schema'
+import { files_table as filesSchema, folders_table as foldersSchema } from '~/server/db/schema'
+import { eq } from 'drizzle-orm'
 
 export const QUERIES = {
   getFolders: function (folderId: number) {
-    return db.select().from(folders_table).where(eq(folders_table.parent, folderId))
+    return db.select().from(foldersSchema).where(eq(foldersSchema.parent, folderId))
   },
   getFiles: function (folderId: number) {
-    return db.select().from(files_table).where(eq(folders_table.parent, folderId))
+    return db.select().from(filesSchema).where(eq(filesSchema.parent, folderId))
   },
   getAllParentsForFolder: async function (folderId: number) {
     const parents = []
     let currentId: number | null = folderId
     while (currentId !== null) {
-      const folder = await db.selectDistinct().from(folders_table).where(eq(folders_table.id, currentId))
+      const folder = await db.selectDistinct().from(foldersSchema).where(eq(foldersSchema.id, currentId))
       if (!folder[0]) {
         throw new Error('Parent folder not found')
       }

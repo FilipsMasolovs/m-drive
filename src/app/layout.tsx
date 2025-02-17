@@ -1,20 +1,21 @@
-import "~/styles/globals.css";
-
+import { type Metadata } from 'next'
+import { ClerkProvider } from '@clerk/nextjs'
 import { GeistSans } from "geist/font/sans";
-import { type Metadata } from "next";
+
+import '~/styles/global.css'
 
 export const metadata: Metadata = {
-  title: "M-Drive",
-  description: "Slightly less functional, but way better looking Google Drive clone.",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
-};
+  title: 'M-Drive',
+  description: 'Slightly less functional, but way better looking Google Drive clone.',
+  icons: [{ rel: 'icon', url: '/favicon.ico' }],
+}
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <body>{children}</body>
-    </html>
-  );
+    <ClerkProvider>
+      <html lang="en" className={`${GeistSans.variable}`}>
+        <body>{children}</body>
+      </html>
+    </ClerkProvider>
+  )
 }
