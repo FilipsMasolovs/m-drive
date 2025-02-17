@@ -1,5 +1,5 @@
 import MDrive from '~/components/MDrive/MDrive'
-import { getAllParentsForFolder, getFiles, getFolders } from '~/server/db/queries'
+import { QUERIES } from '~/server/db/queries'
 import { type FolderItem, type FileItem, type FileType } from '~/types/types'
 
 export default async function Home(props: { params: Promise<{ folderId: string }> }) {
@@ -10,7 +10,11 @@ export default async function Home(props: { params: Promise<{ folderId: string }
     return <div>Invalid folder ID</div>
   }
 
-  const [foldersData, filesData, parentsData] = await Promise.all([getFolders(parsedFolderId), getFiles(parsedFolderId), getAllParentsForFolder(parsedFolderId)])
+  const [foldersData, filesData, parentsData] = await Promise.all([
+    QUERIES.getFolders(parsedFolderId),
+    QUERIES.getFiles(parsedFolderId),
+    QUERIES.getAllParentsForFolder(parsedFolderId),
+  ])
 
   const folders: FolderItem[] = foldersData.map((folder) => ({
     ...folder,
