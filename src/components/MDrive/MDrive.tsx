@@ -24,9 +24,10 @@ interface MDriveProps {
   folders: FolderItem[]
   parents: FolderItem[]
   currentFolderId: number
+  rootFolderId: number
 }
 
-export default function MDrive({ files, folders, parents, currentFolderId }: MDriveProps) {
+export default function MDrive({ files, folders, parents, currentFolderId, rootFolderId }: MDriveProps) {
   const currentItems: DriveItem[] = [...folders, ...files]
   const [viewMode, setViewMode] = useLocalStorage<'list' | 'grid'>('viewMode', 'list')
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -50,7 +51,7 @@ export default function MDrive({ files, folders, parents, currentFolderId }: MDr
   }
 
   const handleDelete = async (item: DriveItem) => {
-    if (item.type === "folder") {
+    if (item.type === 'folder') {
       console.log(item)
     } else {
       await deleteFile(item.id)
@@ -60,7 +61,7 @@ export default function MDrive({ files, folders, parents, currentFolderId }: MDr
   return (
     <div className={styles.pageContainer}>
       <header className={styles.headerContainer}>
-        <Breadcrumbs breadcrumbs={parents} />
+        <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
         <Actions viewMode={viewMode} setViewMode={setViewMode} />
       </header>
       <main className={viewMode === 'list' ? styles.listContainer : styles.gridContainer}>

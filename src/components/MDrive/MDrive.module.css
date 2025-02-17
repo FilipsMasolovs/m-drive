@@ -35,7 +35,8 @@
 }
 
 .fileUploadButton {
-position: fixed;
-right: 32px;
-bottom: 32px;
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  width: 160px;
 }

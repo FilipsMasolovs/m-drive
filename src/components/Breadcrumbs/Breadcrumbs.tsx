@@ -7,12 +7,13 @@ import Link from 'next/link'
 
 interface BreadcrumbsProps {
   breadcrumbs: FolderItem[]
+  rootFolderId: number
 }
 
-export default function Breadcrumbs({ breadcrumbs }: BreadcrumbsProps) {
+export default async function Breadcrumbs({ breadcrumbs, rootFolderId }: BreadcrumbsProps) {
   return (
     <div className={styles.breadcrumbsContainer}>
-      <Link href={`/m/1`}>M-DRIVE</Link>
+      <Link href={`/m/${rootFolderId}`}>M-DRIVE</Link>
       {breadcrumbs.map((item) => (
         <div key={item.id} className={styles.breadcrumbContainer}>
           <ChevronRight />
