@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 
 import Actions from '~/components/Actions/Actions'
 import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs'
+import DeletingOverlay from '~/components/DeletingOverlay/DeletingOverlay'
 import DriveActions from '~/components/DriveActions/DriveActions'
 import GridItem from '~/components/GridItem/GridItem'
 import ItemModal from '~/components/ItemModal/ItemModal'
@@ -60,15 +61,17 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
     }
   }
 
+  const [deleting, setDeleting] = useState(false)
   const handleDelete = async (item: DriveItem) => {
+    setDeleting(true)
     if (item.type === 'folder') {
       await deleteFolder(item.id)
 
-      router.refresh()
+      setDeleting(false)
     } else {
       await deleteFile(item.id)
 
-      router.refresh()
+      setDeleting(false)
     }
   }
 
@@ -89,6 +92,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
       </main>
       <DriveActions currentFolderId={currentFolderId} />
       {modal.open && modal.type && <ItemModal type={modal.type} url={modal.url} name={modal.name} setIsModalOpen={(open) => setModal((prev) => ({ ...prev, open }))} />}
+        {deleting && <DeletingOverlay />}
     </div>
   )
 }
