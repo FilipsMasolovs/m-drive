@@ -26,3 +26,13 @@
   max-width: 1400px;
   margin: 0 auto;
 }
+
+@media all and (max-width: 768px) {
+  .pageContainer {
+    padding: 16px;
+  }
+
+  .listContainer {
+    gap: 8px;
+  }
+}

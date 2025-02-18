@@ -31,3 +31,21 @@
   --tw-text-opacity: 1;
   color: rgb(75 85 99 / var(--tw-text-opacity, 1));
 }
+
+@media all and (max-width: 768px) {
+  .formContainer {
+    right: 16px;
+    bottom: 16px;
+    width: 120px;
+  }
+
+  .formButton {
+    width: 7rem;
+    height: 2rem;
+    font-size: 0.85rem;
+  }
+
+  .formDetails {
+    font-size: 0.65rem;
+  }
+}

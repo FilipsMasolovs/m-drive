@@ -45,3 +45,21 @@
   bottom: -20px;
   left: 44px;
 }
+
+@media all and (max-width: 768px) {
+  .actionsContainer {
+    gap: 8px;
+  }
+
+  .usageContainer {
+    gap: 4px;
+  }
+
+  .usageContainer > span:nth-of-type(-n + 2) {
+    font-size: 0.8rem;
+  }
+
+  .usageDescription {
+    left: 30px;
+  }
+}

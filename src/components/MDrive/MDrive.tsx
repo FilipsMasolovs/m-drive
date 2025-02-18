@@ -8,9 +8,7 @@ import DeletingOverlay from '~/components/DeletingOverlay/DeletingOverlay'
 import DriveActions from '~/components/DriveActions/DriveActions'
 import ItemModal from '~/components/ItemModal/ItemModal'
 import ListItem from '~/components/ListItem/ListItem'
-import MobileComponent from '~/components/MobileComponent/MobileComponent'
 
-import { isMobileDevice } from '~/lib/utils/isMobile'
 import { deleteFile, deleteFolder } from '~/server/actions/actions'
 import type { FolderItem, FileItem } from '~/types/types'
 
@@ -79,29 +77,22 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
     }
   }
 
-  const isMobile = isMobileDevice()
   const maxCapacity = 134217728
 
   return (
-    <>
-      {isMobile ? (
-        <MobileComponent />
-      ) : (
-        <div className={styles.pageContainer}>
-          <header className={styles.headerContainer}>
-            <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
-            <Actions capacityUsed={capacityUsed} maxCapacity={maxCapacity} />
-          </header>
-          <main className={styles.listContainer}>
-            {currentItems.map((item, index) => (
-              <ListItem key={`${item.id}+${index}`} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
-            ))}
-          </main>
-          {capacityUsed + 5242880 <= maxCapacity ? <DriveActions currentFolderId={currentFolderId} /> : null}
-          {modal.open && modal.type && <ItemModal type={modal.type} url={modal.url} name={modal.name} setIsModalOpen={(open) => setModal((prev) => ({ ...prev, open }))} />}
-          {deleting && <DeletingOverlay />}
-        </div>
-      )}
-    </>
+    <div className={styles.pageContainer}>
+      <header className={styles.headerContainer}>
+        <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
+        <Actions capacityUsed={capacityUsed} maxCapacity={maxCapacity} />
+      </header>
+      <main className={styles.listContainer}>
+        {currentItems.map((item, index) => (
+          <ListItem key={`${item.id}+${index}`} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
+        ))}
+      </main>
+      {capacityUsed + 5242880 <= maxCapacity ? <DriveActions currentFolderId={currentFolderId} /> : null}
+      {modal.open && modal.type && <ItemModal type={modal.type} url={modal.url} name={modal.name} setIsModalOpen={(open) => setModal((prev) => ({ ...prev, open }))} />}
+      {deleting && <DeletingOverlay />}
+    </div>
   )
 }
