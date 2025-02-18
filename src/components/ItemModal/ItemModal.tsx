@@ -48,14 +48,32 @@ export default function ItemModal({ type, url, name, setIsModalOpen }: ItemModal
           </audio>
         )
       default:
-        return null
+        return (
+          <div className={styles.modalContent}>
+            <p>File preview not available. Please download to view the file.</p>
+          </div>
+        )
     }
   }
 
   return (
-    <div className={styles.modalOverlay} onClick={() => setIsModalOpen(false)}>
-      <div className={styles.modalWrapper} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeButton} onClick={() => setIsModalOpen(false)}>
+    <div
+      className={styles.modalOverlay}
+      onClick={() => setIsModalOpen(false)}
+      role="presentation"
+    >
+      <div
+        className={styles.modalWrapper}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${type} preview for ${name}`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          className={styles.closeButton}
+          onClick={() => setIsModalOpen(false)}
+          aria-label="Close modal"
+        >
           X
         </button>
         {renderContent()}
@@ -64,6 +82,7 @@ export default function ItemModal({ type, url, name, setIsModalOpen }: ItemModal
             await forceDownload(url, name)
           }}
           className={styles.downloadButton}
+          aria-label="Download file"
         >
           Download
         </button>

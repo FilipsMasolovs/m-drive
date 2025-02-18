@@ -51,29 +51,11 @@
     font-size: 4rem;
   }
 
-  .title i {
-    z-index: 10;
-    -webkit-text-stroke-width: 3px;
-    -webkit-text-stroke-color: #fff;
-    -webkit-text-fill-color: transparent;
-    position: absolute;
-    left: -30px;
-    display: block;
-    -webkit-clip-path: inset(56% 0 0 0);
-    clip-path: inset(56% 0 0 0);
-    box-sizing: border-box;
-    padding: 0 30px;
-    transition: all 0.85s cubic-bezier(0.25, 1, 0.33, 1);
-    white-space: nowrap;
-  }
-
   .title i:first-of-type {
     top: 16px;
-    opacity: 0.5;
   }
 
   .title i:last-of-type {
     top: 35px;
-    opacity: 0.2;
   }
 }
