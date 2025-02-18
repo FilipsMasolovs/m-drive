@@ -27,7 +27,7 @@ export default async function DrivePage() {
 
             const rootFolderId = await MUTATIONS.onboardUser(session.userId)
 
-            return redirect(`/f/${rootFolderId}`)
+            return redirect(`/m/${rootFolderId}`)
           }}
         >
           <button>Create new Drive</button>
