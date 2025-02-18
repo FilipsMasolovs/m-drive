@@ -34,7 +34,7 @@ export async function deleteFile(fileId: number) {
 
   const c = await cookies()
 
-  c.set('force-refresh', JSON.stringify(Math.random()))
+  c.set('delete-file-force-refresh', JSON.stringify(Math.random()))
 
   return { success: true }
 }
@@ -46,11 +46,18 @@ export async function createFolder(folderName: string, parentFolder: number) {
     return redirect('/')
   }
 
+  const allChildrenFolders = await QUERIES.getFolders(parentFolder)
+  allChildrenFolders.forEach((folder) => {
+    if (folder.name === folderName) {
+      console.log(folderName)
+    }
+  })
+
   await MUTATIONS.createFolder(folderName, parentFolder, session.userId)
 
   const c = await cookies()
 
-  c.set('force-refresh', JSON.stringify(Math.random()))
+  c.set('create-folder-force-refresh', JSON.stringify(Math.random()))
 
   return { success: true }
 }
@@ -95,7 +102,7 @@ export async function deleteFolder(folderId: number) {
 
   const c = await cookies()
 
-  c.set('force-refresh', JSON.stringify(Math.random()))
+  c.set('delete-folder-force-refresh', JSON.stringify(Math.random()))
 
   return { success: true }
 }

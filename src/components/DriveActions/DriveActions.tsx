@@ -22,7 +22,7 @@ export default function DriveActions({ currentFolderId }: DriveActionsProps) {
 
     await createFolder(folderName, currentFolderId)
 
-    setFolderName('')
+    router.refresh()
   }
 
   return (
@@ -31,7 +31,7 @@ export default function DriveActions({ currentFolderId }: DriveActionsProps) {
         {isCreatingFolder ? (
           <form onSubmit={handleSubmit}>
             <input className={styles.folderNameInput} type="text" placeholder="Folder name..." value={folderName} onChange={(e) => setFolderName(e.target.value)} />
-            <button className={styles.createFolderButton} type="submit">
+            <button className={styles.createFolderButton} type='submit' onClick={() => handleSubmit()}>
               +
             </button>
             <button className={styles.closeFormButton} type="button" onClick={() => setIsCreatingFolder(false)}>
