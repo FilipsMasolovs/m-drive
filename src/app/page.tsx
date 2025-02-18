@@ -15,7 +15,9 @@ export default async function Home() {
     buttonComponent = (
       <div className={styles.formContainer}>
         <div className={styles.formButton}>
-          <SignInButton forceRedirectUrl={'/drive'}>GET STARTED</SignInButton>
+          <SignInButton forceRedirectUrl={'/drive'} fallbackRedirectUrl={'/drive'} signUpForceRedirectUrl={'/drive'} signUpFallbackRedirectUrl={'/drive'}>
+            LOGIN
+          </SignInButton>
         </div>
         <span className={styles.formDetails}>with M-DRIVE</span>
       </div>
