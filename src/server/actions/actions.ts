@@ -47,11 +47,12 @@ export async function createFolder(folderName: string, parentFolder: number) {
   }
 
   const allChildrenFolders = await QUERIES.getFolders(parentFolder)
-  allChildrenFolders.forEach((folder) => {
-    if (folder.name === folderName) {
-      console.log(folderName)
-    }
-  })
+
+  const duplicate = allChildrenFolders.find((folder) => folder.name.trim() === folderName.trim())
+
+  if (duplicate) {
+    throw new Error(`Folder "${folderName}" already exists.`)
+  }
 
   await MUTATIONS.createFolder(folderName, parentFolder, session.userId)
 

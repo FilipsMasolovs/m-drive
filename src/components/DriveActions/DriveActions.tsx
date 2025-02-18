@@ -15,14 +15,19 @@ export default function DriveActions({ currentFolderId }: DriveActionsProps) {
   const [isCreatingFolder, setIsCreatingFolder] = useState(false)
   const [folderName, setFolderName] = useState('')
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!folderName.trim()) {
-      return
+      return;
     }
-
-    await createFolder(folderName, currentFolderId)
-
-    router.refresh()
+    try {
+      await createFolder(folderName, currentFolderId);
+      setFolderName('');
+      setIsCreatingFolder(false);
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -31,7 +36,7 @@ export default function DriveActions({ currentFolderId }: DriveActionsProps) {
         {isCreatingFolder ? (
           <form onSubmit={handleSubmit}>
             <input className={styles.folderNameInput} type="text" placeholder="Folder name..." value={folderName} onChange={(e) => setFolderName(e.target.value)} />
-            <button className={styles.createFolderButton} type='submit' onClick={() => handleSubmit()}>
+            <button className={styles.createFolderButton} type='submit'>
               +
             </button>
             <button className={styles.closeFormButton} type="button" onClick={() => setIsCreatingFolder(false)}>
