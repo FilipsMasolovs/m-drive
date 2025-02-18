@@ -1,6 +1,5 @@
-import DeletingOverlay from "~/components/DeletingOverlay/DeletingOverlay";
+import LoadingComponent from '~/components/LoadingComponent/LoadingComponent'
 
 export default function Loading() {
-    return <DeletingOverlay />
-  }
-  
+  return <LoadingComponent />
+}

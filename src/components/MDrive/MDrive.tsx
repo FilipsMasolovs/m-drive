@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 
 import Actions from '~/components/Actions/Actions'
 import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs'
-import DeletingOverlay from '~/components/DeletingOverlay/DeletingOverlay'
+import LoadingComponent from '~/components/LoadingComponent/LoadingComponent'
 import DriveActions from '~/components/DriveActions/DriveActions'
 import ItemModal from '~/components/ItemModal/ItemModal'
 import ListItem from '~/components/ListItem/ListItem'
@@ -92,7 +92,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
       </main>
       {capacityUsed + 5242880 <= maxCapacity ? <DriveActions currentFolderId={currentFolderId} /> : null}
       {modal.open && modal.type && <ItemModal type={modal.type} url={modal.url} name={modal.name} setIsModalOpen={(open) => setModal((prev) => ({ ...prev, open }))} />}
-      {deleting && <DeletingOverlay />}
+      {deleting && <LoadingComponent />}
     </div>
   )
 }
