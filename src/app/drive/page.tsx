@@ -11,7 +11,7 @@ export default async function DrivePage() {
 
   let roodFolderId = null
 
-  let rootFolder = await QUERIES.getRootFolderForUser(session.userId)
+  const rootFolder = await QUERIES.getRootFolderForUser(session.userId)
 
   if (!rootFolder) {
     roodFolderId = await MUTATIONS.onboardUser(session.userId)
