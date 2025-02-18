@@ -1,7 +1,5 @@
 import React from 'react'
-
 import { forceDownload } from '~/lib/utils/forceDownload'
-
 import styles from './ItemModal.module.css'
 
 interface ItemModalProps {
@@ -57,23 +55,9 @@ export default function ItemModal({ type, url, name, setIsModalOpen }: ItemModal
   }
 
   return (
-    <div
-      className={styles.modalOverlay}
-      onClick={() => setIsModalOpen(false)}
-      role="presentation"
-    >
-      <div
-        className={styles.modalWrapper}
-        role="dialog"
-        aria-modal="true"
-        aria-label={`${type} preview for ${name}`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          className={styles.closeButton}
-          onClick={() => setIsModalOpen(false)}
-          aria-label="Close modal"
-        >
+    <div className={styles.modalOverlay} onClick={() => setIsModalOpen(false)} role="presentation">
+      <div className={styles.modalWrapper} role="dialog" aria-modal="true" aria-label={`${type} preview for ${name}`} onClick={(e) => e.stopPropagation()}>
+        <button className={styles.closeButton} onClick={() => setIsModalOpen(false)} aria-label="Close modal">
           X
         </button>
         {renderContent()}
