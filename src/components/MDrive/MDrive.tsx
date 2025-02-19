@@ -28,7 +28,7 @@ interface MDriveProps {
 export default function MDrive({ files, folders, parents, currentFolderId, rootFolderId, capacityUsed }: MDriveProps) {
   const currentItems: DriveItem[] = [...folders, ...files]
 
-  const [modal, setModal] = useState<{ open: boolean; type: 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | null; url: string; name: string }>({
+  const [modal, setModal] = useState<{ open: boolean; type: 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | 'docx' | null; url: string; name: string }>({
     open: false,
     type: null,
     url: '',
@@ -52,6 +52,8 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
         setModal({ open: true, type: 'text/plain', url: file.url, name: file.name })
       } else if (file.type.includes('audio')) {
         setModal({ open: true, type: 'audio', url: file.url, name: file.name })
+      } else if (file.type.includes('docx') || file.type.includes('officedocument')) {
+        setModal({ open: true, type: 'docx', url: file.url, name: file.name })
       } else if (file.type.includes('zip') || file.type.includes('rar') || file.type.includes('application')) {
         setModal({ open: true, type: 'application', url: file.url, name: file.name })
       } else {

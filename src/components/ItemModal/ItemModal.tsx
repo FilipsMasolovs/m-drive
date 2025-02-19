@@ -1,9 +1,10 @@
 import React from 'react'
 import { forceDownload } from '~/lib/utils/forceDownload'
 import styles from './ItemModal.module.css'
+import DocxModal from '../DocxModal/DocxModal'
 
 interface ItemModalProps {
-  type: 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio'
+  type: 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | 'docx'
   url: string
   name: string
   setIsModalOpen: (open: boolean) => void
@@ -45,6 +46,8 @@ export default function ItemModal({ type, url, name, setIsModalOpen }: ItemModal
             Your browser does not support the audio element.
           </audio>
         )
+      case 'docx':
+        return <DocxModal url={url} name={name} setIsModalOpen={setIsModalOpen} />
       default:
         return (
           <div className={styles.modalContent}>
