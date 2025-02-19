@@ -12,7 +12,10 @@
   --tw-text-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-text-opacity, 1));
   outline: none;
-  border: 2px solid rgb(37 99 235 / var(--tw-bg-opacity, 1));
+
+  &:focus-within {
+    outline: 2px solid rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  }
 }
 
 .searchSuggestions {
@@ -21,14 +24,14 @@
   border-radius: 4px;
   overflow: hidden;
   position: absolute;
-  top: 64px;
+  top: 66px;
   font-size: 0.8rem;
   line-height: 1.25rem;
   --tw-bg-opacity: 1;
   color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-text-opacity, 1));
-  border: 2px solid rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  /* border: 2px solid rgb(37 99 235 / var(--tw-bg-opacity, 1)); */
   overflow-y: scroll;
 }
 
@@ -47,7 +50,7 @@
 .suggestionItem {
   display: flex;
   align-items: center;
-  width: 196px;
+  width: 200px;
   cursor: pointer;
   height: 24px;
   padding: 4px;
