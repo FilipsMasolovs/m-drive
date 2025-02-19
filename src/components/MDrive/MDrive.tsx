@@ -6,6 +6,7 @@ import Actions from '~/components/Actions/Actions'
 import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs'
 import LoadingComponent from '~/components/LoadingComponent/LoadingComponent'
 import DriveActions from '~/components/DriveActions/DriveActions'
+import GlobalSearch from '~/components/GlobalSearch/GlobalSearch'
 import ItemModal from '~/components/ItemModal/ItemModal'
 import ListItem from '~/components/ListItem/ListItem'
 
@@ -84,10 +85,11 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
   return (
     <div className={styles.pageContainer}>
       <header className={styles.headerContainer}>
-        <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
+        <GlobalSearch handleItemClick={handleItemClick} />
         <Actions capacityUsed={capacityUsed} maxCapacity={maxCapacity} />
       </header>
       <main className={styles.listContainer}>
+        <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
         {currentItems.map((item, index) => (
           <ListItem key={`${item.id}+${index}`} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
         ))}

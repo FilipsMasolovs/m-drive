@@ -2,7 +2,7 @@ import 'server-only'
 
 import { db } from '~/server/db'
 import { files_table as filesSchema, folders_table as foldersSchema } from '~/server/db/schema'
-import { eq, and, isNull } from 'drizzle-orm'
+import { eq, and, isNull, like } from 'drizzle-orm'
 
 export const QUERIES = {
   getFolders: function (folderId: number) {
@@ -38,6 +38,21 @@ export const QUERIES = {
   },
   getAllFiles: function (userId: string) {
     return db.select().from(filesSchema).where(eq(filesSchema.ownerId, userId))
+  },
+  searchFilesAndFolders: async function (userId: string, searchTerm: string) {
+    const folders = await db
+      .select()
+      .from(foldersSchema)
+      .where(and(eq(foldersSchema.ownerId, userId), like(foldersSchema.name, `%${searchTerm}%`)))
+      .orderBy(foldersSchema.id)
+
+    const files = await db
+      .select()
+      .from(filesSchema)
+      .where(and(eq(filesSchema.ownerId, userId), like(filesSchema.name, `%${searchTerm}%`)))
+      .orderBy(filesSchema.id)
+
+    return { folders, files }
   },
 }
 

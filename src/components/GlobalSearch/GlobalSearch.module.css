@@ -1,0 +1,83 @@
+.searchInput {
+  width: 200px;
+  height: 28px;
+  border-radius: 4px;
+  padding: 4px;
+  overflow: hidden;
+  position: relative;
+  font-size: 0.8rem;
+  line-height: 1.25rem;
+  --tw-bg-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  outline: none;
+  border: 2px solid rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+
+.searchSuggestions {
+  width: 200px;
+  max-height: 300px;
+  border-radius: 4px;
+  overflow: hidden;
+  position: absolute;
+  top: 64px;
+  font-size: 0.8rem;
+  line-height: 1.25rem;
+  --tw-bg-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  border: 2px solid rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  overflow-y: scroll;
+}
+
+.searchSuggestionsPlaceholder {
+  padding: 4px;
+}
+
+.suggestionType {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  padding: 4px;
+}
+
+.suggestionItem {
+  display: flex;
+  align-items: center;
+  width: 196px;
+  cursor: pointer;
+  height: 24px;
+  padding: 4px;
+
+  &:hover {
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+    background-color: #374151;
+  }
+}
+
+.suggestionItem a,
+.suggestionItem span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 0;
+  width: 100%;
+}
+
+@media all and (max-width: 768px) {
+  .searchInput {
+    width: 100px;
+    padding: 2px;
+    border-width: 1px;
+    font-size: 0.6rem;
+  }
+
+  .searchSuggestions {
+    width: 100px;
+    max-height: 200px;
+  }
+}
