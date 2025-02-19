@@ -1,16 +1,15 @@
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import { MUTATIONS, QUERIES } from '~/server/db/queries'
+import DriveRedirector from '~/components/DriveRedirector/DriveRedirector'
 
 export default async function DrivePage() {
   const session = await auth()
-
   if (!session.userId) {
     return redirect('/')
   }
 
-  let rootFolderId = null
-
+  let rootFolderId: number | null = null
   const rootFolder = await QUERIES.getRootFolderForUser(session.userId)
 
   if (!rootFolder) {
@@ -19,5 +18,5 @@ export default async function DrivePage() {
     rootFolderId = rootFolder.id
   }
 
-  return redirect(`/m/${rootFolderId}`)
+  return <DriveRedirector targetFolderId={rootFolderId} />
 }
