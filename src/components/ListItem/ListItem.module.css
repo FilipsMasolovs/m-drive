@@ -12,7 +12,7 @@
   &:hover {
     background-color: rgb(55, 65, 81);
 
-    .deleteButton {
+    .actionButtons {
       display: flex;
     }
   }
@@ -41,12 +41,18 @@
   color: rgb(156, 163, 175);
 }
 
-.deleteButton {
+.actionButtons {
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+
+.renameButton {
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  display: none;
   transition: all 0.4s ease;
+  display: flex;
   justify-content: center;
   align-items: center;
 
@@ -55,8 +61,26 @@
   }
 }
 
-.deleteButton:hover :global(svg) {
-  fill: rgb(0, 0, 0);
+.renameButton:hover svg path {
+  stroke: black;
+}
+
+.deleteButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  transition: all 0.4s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: rgb(245, 245, 245);
+  }
+}
+
+.deleteButton:hover svg path {
+  stroke: black;
 }
 
 @media all and (max-width: 768px) {

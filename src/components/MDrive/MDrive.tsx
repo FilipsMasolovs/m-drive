@@ -9,8 +9,9 @@ import DriveActions from '~/components/DriveActions/DriveActions'
 import GlobalSearch from '~/components/GlobalSearch/GlobalSearch'
 import ItemModal from '~/components/ItemModal/ItemModal'
 import ListItem from '~/components/ListItem/ListItem'
+import RenameModal from '~/components/RenameModal/RenameModal'
 
-import { deleteFile, deleteFolder } from '~/server/actions/actions'
+import { deleteFile, deleteFolder, renameItem } from '~/server/actions/actions'
 import type { FolderItem, FileItem } from '~/types/types'
 
 import styles from './MDrive.module.css'
@@ -35,6 +36,12 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
     url: '',
     name: '',
   })
+
+  const [renameModal, setRenameModal] = useState<{
+    open: boolean
+    itemId: number
+    currentName: string
+  } | null>(null)
 
   const handleItemClick = (item: DriveItem) => {
     if (typeof item.type === 'string' && !item.type.includes('folder')) {
@@ -80,6 +87,19 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
     }
   }
 
+  const handleRenameClick = (item: FileItem | FolderItem) => {
+    setRenameModal({ open: true, itemId: item.id, currentName: item.name })
+  }
+
+  const handleRename = async (itemId: number, newName: string) => {
+    try {
+      await renameItem(itemId, newName)
+      setRenameModal((prev) => (prev ? { ...prev, open: false } : null))
+    } catch (error) {
+      console.error('Rename failed:', error)
+    }
+  }
+
   const maxCapacity = 134217728
 
   return (
@@ -91,11 +111,25 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
       <main className={styles.listContainer}>
         <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
         {currentItems.map((item, index) => (
-          <ListItem key={`${item.id}+${index}`} item={item} handleItemClick={() => handleItemClick(item)} handleDelete={() => handleDelete(item)} />
+          <ListItem
+            key={`${item.id}+${index}`}
+            item={item}
+            handleItemClick={() => handleItemClick(item)}
+            handleDelete={() => handleDelete(item)}
+            handleRename={() => handleRenameClick(item)}
+          />
         ))}
       </main>
       {capacityUsed + 5242880 <= maxCapacity ? <DriveActions currentFolderId={currentFolderId} /> : null}
       {modal.open && modal.type && <ItemModal type={modal.type} url={modal.url} name={modal.name} setIsModalOpen={(open) => setModal((prev) => ({ ...prev, open }))} />}
+      {renameModal?.open && (
+        <RenameModal
+          currentName={renameModal.currentName}
+          itemId={renameModal.itemId}
+          setIsModalOpen={(open) => setRenameModal((prev) => (prev ? { ...prev, open } : null))}
+          onRename={handleRename}
+        />
+      )}
       {deleting && <LoadingComponent />}
     </div>
   )

@@ -10,9 +10,10 @@ interface ListItemProps {
   item: FileItem | FolderItem
   handleItemClick: () => void
   handleDelete: () => void
+  handleRename: () => void
 }
 
-export default function ListItem({ item, handleItemClick, handleDelete }: ListItemProps) {
+export default function ListItem({ item, handleItemClick, handleDelete, handleRename }: ListItemProps) {
   const commonContent = (
     <>
       <div className={styles.infoContainer}>
@@ -24,21 +25,47 @@ export default function ListItem({ item, handleItemClick, handleDelete }: ListIt
           </span>
         </div>
       </div>
-      <button
-        className={styles.deleteButton}
-        onClick={(e) => {
-          e.stopPropagation()
-          e.preventDefault()
-          handleDelete()
-        }}
-        aria-label="Delete file"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20 8.7H4a.75.75 0 1 1 0-1.5h16a.75.75 0 0 1 0 1.5Z" />
-          <path d="M16.44 20.75H7.56A2.4 2.4 0 0 1 5 18.49V8a.75.75 0 0 1 1.5 0v10.49c0 .41.47.76 1 .76h8.88c.56 0 1-.35 1-.76V8A.75.75 0 1 1 19 8v10.49a2.4 2.4 0 0 1-2.56 2.26Zm.12-13a.74.74 0 0 1-.75-.75V5.51c0-.41-.48-.76-1-.76H9.22c-.55 0-1 .35-1 .76V7a.75.75 0 1 1-1.5 0V5.51a2.41 2.41 0 0 1 2.5-2.26h5.56a2.41 2.41 0 0 1 2.53 2.26V7a.75.75 0 0 1-.75.76Z" />
-          <path d="M10.22 17a.76.76 0 0 1-.75-.75v-4.53a.75.75 0 0 1 1.5 0v4.52a.75.75 0 0 1-.75.76Zm3.56 0a.75.75 0 0 1-.75-.75v-4.53a.75.75 0 0 1 1.5 0v4.52a.76.76 0 0 1-.75.76Z" />
-        </svg>
-      </button>
+      <div className={styles.actionButtons}>
+        <button
+          className={styles.renameButton}
+          onClick={(e) => {
+            e.stopPropagation()
+            e.preventDefault()
+            handleRename()
+          }}
+          aria-label="Rename item"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M9 5H14M14 5H19M14 5V19M9 19H14M14 19H19" stroke="white" />
+            <path d="M11 9H4C2.89543 9 2 9.89543 2 11V15H11" stroke="white" />
+            <path d="M17 15H20C21.1046 15 22 14.1046 22 13V9H17" stroke="white" />
+          </svg>
+        </button>
+        <button
+          className={styles.deleteButton}
+          onClick={(e) => {
+            e.stopPropagation()
+            e.preventDefault()
+            handleDelete()
+          }}
+          aria-label="Delete file"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M20.5001 6H3.5" stroke="white" strokeLinecap="round" />
+            <path
+              d="M18.8332 8.5L18.3732 15.3991C18.1962 18.054 18.1077 19.3815 17.2427 20.1907C16.3777 21 15.0473 21 12.3865 21H11.6132C8.95235 21 7.62195 21 6.75694 20.1907C5.89194 19.3815 5.80344 18.054 5.62644 15.3991L5.1665 8.5"
+              stroke="white"
+              strokeLinecap="round"
+            />
+            <path d="M9.5 11L10 16" stroke="white" strokeLinecap="round" />
+            <path d="M14.5 11L14 16" stroke="white" strokeLinecap="round" />
+            <path
+              d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6"
+              stroke="white"
+            />
+          </svg>
+        </button>
+      </div>
     </>
   )
 

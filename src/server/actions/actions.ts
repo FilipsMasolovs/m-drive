@@ -105,3 +105,27 @@ export async function deleteFile(fileId: number) {
 
   return { success: true }
 }
+
+export async function renameItem(itemId: number, newName: string) {
+  const session = await auth()
+
+  if (!session.userId) {
+    return redirect('/')
+  }
+
+  const folderResult = await db
+    .update(folders_table)
+    .set({ name: newName })
+    .where(and(eq(folders_table.id, itemId), eq(folders_table.ownerId, session.userId)))
+
+  if (!(folderResult as any).affectedRows || (folderResult as any).affectedRows === 0) {
+    await db
+      .update(files_table)
+      .set({ name: newName })
+      .where(and(eq(files_table.id, itemId), eq(files_table.ownerId, session.userId)))
+  }
+
+  await setForceRefreshCookie('rename-item-force-refresh')
+
+  return { success: true }
+}
