@@ -7,6 +7,8 @@
 .breadcrumbsContainer :global(a) {
   padding: 8px;
   border-radius: 8px;
+  margin-left: 8px;
+  white-space: nowrap;
   transition: all 0.4s ease;
 
   &:hover {
@@ -24,6 +26,22 @@
   height: 16px;
 }
 
-.breadcrumbContainer :global(a) {
-  margin-left: 8px;
+.breadcrumbDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: rgb(55, 65, 81);
+  padding: 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.dropdownItem {
+  padding: 4px 8px;
+  transition: background-color 0.2s ease;
+}
+
+.dropdownItem:hover {
+  background-color: rgb(31, 41, 55);
 }
