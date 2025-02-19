@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
-import type { DriveItem } from '../MDrive/MDrive' // Use `import type` because it is only used as a type
+import type { DriveItem } from '~/components/MDrive/MDrive'
+
 import type { FileItem, FolderItem } from '~/types/types'
 
 import styles from './GlobalSearch.module.css'
