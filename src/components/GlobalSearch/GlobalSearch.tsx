@@ -30,7 +30,7 @@ export default function GlobalSearch({ handleItemClick }: { handleItemClick: (it
       void (async () => {
         try {
           const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`)
-          const data: SearchResults = await res.json()
+          const data = (await res.json()) as SearchResults
           setResults(data)
         } catch (error) {
           console.error('Search failed:', error)
