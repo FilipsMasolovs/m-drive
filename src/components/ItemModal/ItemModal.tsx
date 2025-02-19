@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { forceDownload } from '~/lib/utils/forceDownload'
 import styles from './ItemModal.module.css'
 import DocxModal from '../DocxModal/DocxModal'
@@ -11,6 +11,19 @@ interface ItemModalProps {
 }
 
 export default function ItemModal({ type, url, name, setIsModalOpen }: ItemModalProps) {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsModalOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [setIsModalOpen])
+
   const renderContent = () => {
     switch (type) {
       case 'image':
