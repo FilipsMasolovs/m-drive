@@ -9,6 +9,12 @@
   min-height: 100vh;
 }
 
+.logoContainer {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+}
+
 .title {
   font-weight: 900;
   font-style: italic;
