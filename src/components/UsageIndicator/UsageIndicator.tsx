@@ -17,7 +17,7 @@ export default function UsageIndicator({ capacityUsed, maxCapacity }: UsageIndic
         <div className={styles.usageFill} style={{ width: `${usedPercentage}%` }} />
         <span
           className={styles.capacityUsed}
-          style={usedPercentage < 50 ? { left: `${usedPercentage + 2}px`, color: 'black' } : { left: `${usedPercentage - 48}px`, color: 'white' }}
+          style={usedPercentage < 50 ? { right: '6px', textAlign: 'right', color: 'black' } : { left: '6px', color: 'white' }}
         >
           {formatSize(capacityUsed)}
         </span>
