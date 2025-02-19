@@ -22,7 +22,7 @@ export default function DocxModal({ url }: DocxModalProps) {
         setHtmlContent('<p>Error loading preview.</p>')
       }
     }
-    convertDocxToHtml()
+    void convertDocxToHtml()
   }, [url])
 
   return <div style={{ width: '100%', height: '100%', backgroundColor: 'white', color: 'black' }} dangerouslySetInnerHTML={{ __html: htmlContent }} />
