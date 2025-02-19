@@ -106,19 +106,21 @@ export async function deleteFile(fileId: number) {
   return { success: true }
 }
 
+interface UpdateResult {
+  affectedRows: number
+}
+
 export async function renameItem(itemId: number, newName: string) {
   const session = await auth()
 
-  if (!session.userId) {
-    return redirect('/')
-  }
+  if (!session.userId) return redirect('/')
 
-  const folderResult = await db
+  const folderResult = (await db
     .update(folders_table)
     .set({ name: newName })
-    .where(and(eq(folders_table.id, itemId), eq(folders_table.ownerId, session.userId)))
+    .where(and(eq(folders_table.id, itemId), eq(folders_table.ownerId, session.userId)))) as unknown as UpdateResult
 
-  if (!(folderResult as any).affectedRows || (folderResult as any).affectedRows === 0) {
+  if (folderResult.affectedRows === 0) {
     await db
       .update(files_table)
       .set({ name: newName })
