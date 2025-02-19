@@ -35,6 +35,7 @@
   margin: 0 auto;
 }
 
+/* ONLY TEMPORARY STYLES */
 @media all and (max-width: 768px) {
   .pageContainer {
     padding: 16px;

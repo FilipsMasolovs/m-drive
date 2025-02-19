@@ -28,6 +28,7 @@
   margin-left: 8px;
 }
 
+/* ONLY TEMPORARY STYLES */
 @media all and (max-width: 768px) {
   .breadcrumbsContainer div {
     display: none;

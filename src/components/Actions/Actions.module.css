@@ -46,6 +46,7 @@
   left: 44px;
 }
 
+/* ONLY TEMPORARY STYLES */
 @media all and (max-width: 768px) {
   .actionsContainer {
     gap: 8px;

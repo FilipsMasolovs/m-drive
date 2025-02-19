@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import Actions from '~/components/Actions/Actions'
 import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs'
 import LoadingComponent from '~/components/LoadingComponent/LoadingComponent'
-import DriveActions from '~/components/DriveActions/DriveActions'
+import FileFolderUploads from '~/components/FileFolderUploads/FileFolderUploads'
 import GlobalSearch from '~/components/GlobalSearch/GlobalSearch'
 import ItemModal from '~/components/ItemModal/ItemModal'
 import ListItem from '~/components/ListItem/ListItem'
@@ -129,7 +129,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
           />
         ))}
       </main>
-      {capacityUsed + 5242880 <= maxCapacity ? <DriveActions currentFolderId={currentFolderId} /> : null}
+      {capacityUsed + 5242880 <= maxCapacity ? <FileFolderUploads currentFolderId={currentFolderId} /> : null}
       {modal.open && modal.type && <ItemModal type={modal.type} url={modal.url} name={modal.name} setIsModalOpen={(open) => setModal((prev) => ({ ...prev, open }))} />}
       {renameModal?.open && (
         <RenameModal

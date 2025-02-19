@@ -76,7 +76,7 @@ Choose any means of production deploys you are comfortable with. One great optio
   - api/: API routes (e.g., for file uploads with UploadThing).
   - drive/: Routes for the drive page.
   - m/[folderId]/: Dynamic routes for folder views.
-- src/components/: Reusable UI components (HomeComponent, Actions, DriveActions, modals, ListItem, Breadcrumbs, etc.).
+- src/components/: Reusable UI components (HomeComponent, Actions, FileFolderUploads, modals, ListItem, Breadcrumbs, etc.).
 - src/server/: Server-side actions, database queries, mutations, and schema definitions.
 - src/lib/utils/: Utility functions (e.g., forceDownload, formatSize, getItemIcon, className merging).
 - src/styles/: Global CSS files.

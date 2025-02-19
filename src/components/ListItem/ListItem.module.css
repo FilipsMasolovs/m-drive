@@ -83,6 +83,7 @@
   stroke: black;
 }
 
+/* ONLY TEMPORARY STYLES */
 @media all and (max-width: 768px) {
   .listContainer {
     padding: 8px;

@@ -70,6 +70,7 @@
   width: 100%;
 }
 
+/* ONLY TEMPORARY STYLES */
 @media all and (max-width: 768px) {
   .searchInput {
     width: 100px;

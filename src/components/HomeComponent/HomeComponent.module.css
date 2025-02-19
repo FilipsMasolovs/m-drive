@@ -46,6 +46,7 @@
   opacity: 0.2;
 }
 
+/* ONLY TEMPORARY STYLES */
 @media all and (max-width: 768px) {
   .title {
     font-size: 4rem;
