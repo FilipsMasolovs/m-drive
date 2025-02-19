@@ -12,14 +12,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 54px;
-}
-
-.headerLeftSide {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
+  height: 56px;
 }
 
 .listContainer {

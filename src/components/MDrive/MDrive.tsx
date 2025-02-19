@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react'
 
-import Actions from '~/components/Actions/Actions'
 import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs'
 import LoadingComponent from '~/components/LoadingComponent/LoadingComponent'
 import FileFolderUploads from '~/components/FileFolderUploads/FileFolderUploads'
@@ -15,6 +14,10 @@ import { deleteFile, deleteFolder, renameItem } from '~/server/actions/actions'
 import type { FolderItem, FileItem } from '~/types/types'
 
 import styles from './MDrive.module.css'
+import HeaderItemsContainer from '~/components/HeaderItemsContainer/HeaderItemsContainer'
+import AppLogo from '~/components/AppLogo/AppLogo'
+import UsageIndicator from '~/components/UsageIndicator/UsageIndicator'
+import { UserButton } from '@clerk/nextjs'
 
 export type DriveItem = FolderItem | FileItem
 
@@ -105,17 +108,14 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
   return (
     <div className={styles.pageContainer}>
       <header className={styles.headerContainer}>
-        <div className={styles.headerLeftSide}>
-          <a href={`/m/${rootFolderId}`}>
-            <svg width="54" height="54" viewBox="0 0 32 32" fill="none">
-              <rect width="32" height="32" rx="8" fill="#1f2937" />
-              <path d="M7 16L16 7L25 16L16 25L7 16Z" fill="#2C4F7C" stroke="#2C4F7C" strokeWidth="2" strokeLinejoin="round" />
-              <path d="M16 7V25" stroke="#0A1622" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </a>
+        <HeaderItemsContainer>
+          <AppLogo redirectPath={`/m/${rootFolderId}`} />
           <GlobalSearch handleItemClick={handleItemClick} />
-        </div>
-        <Actions capacityUsed={capacityUsed} maxCapacity={maxCapacity} />
+        </HeaderItemsContainer>
+        <HeaderItemsContainer>
+          <UsageIndicator capacityUsed={capacityUsed} maxCapacity={maxCapacity} />
+          <UserButton />
+        </HeaderItemsContainer>
       </header>
       <main className={styles.listContainer}>
         <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />

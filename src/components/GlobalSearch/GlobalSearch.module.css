@@ -1,37 +1,45 @@
-.searchInput {
+.searchInput,
+.searchSuggestions {
   width: 200px;
-  height: 28px;
-  border-radius: 4px;
-  padding: 4px;
-  overflow: hidden;
-  position: relative;
-  font-size: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
   line-height: 1.25rem;
-  --tw-bg-opacity: 1;
-  color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
-  --tw-text-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  background-color: rgb(299, 299, 299);
+  color: rgb(37, 99, 235);
+}
+
+.searchInput {
+  height: 32px;
+  padding: 4px;
+  position: relative;
   outline: none;
+  cursor: text;
 
   &:focus-within {
-    outline: 2px solid rgb(37 99 235 / var(--tw-bg-opacity, 1));
+    outline: 2px solid rgb(37, 99, 235);
   }
 }
 
 .searchSuggestions {
-  width: 200px;
   max-height: 300px;
-  border-radius: 4px;
   overflow: hidden;
   position: absolute;
-  top: 79px;
-  font-size: 0.8rem;
-  line-height: 1.25rem;
-  --tw-bg-opacity: 1;
-  color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
-  --tw-text-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  top: 82px;
   overflow-y: scroll;
+}
+
+.searchSuggestions::-webkit-scrollbar {
+  width: 4px;
+}
+
+.searchSuggestions::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 6px;
+}
+
+.searchSuggestions::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 6px;
 }
 
 .searchSuggestionsPlaceholder {
@@ -39,10 +47,8 @@
 }
 
 .suggestionType {
-  --tw-bg-opacity: 1;
-  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  color: rgb(299, 299, 299);
+  background-color: rgb(37, 99, 235);
   padding: 4px;
 }
 
@@ -55,9 +61,8 @@
   padding: 4px;
 
   &:hover {
-    --tw-text-opacity: 1;
-    color: rgb(255 255 255 / var(--tw-text-opacity, 1));
-    background-color: #374151;
+    color: rgb(299, 299, 299);
+    background-color: rgb(37, 99, 235);
   }
 }
 
