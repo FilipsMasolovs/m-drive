@@ -1,0 +1,11 @@
+.appLogo svg {
+  width: 56px;
+  height: 56px;
+}
+
+@media all and (max-width: 768px) {
+  .appLogo svg {
+    width: 32px;
+    height: 32px;
+  }
+}

@@ -29,3 +29,9 @@
   font-size: 0.6rem;
   line-height: 1.25rem;
 }
+
+@media all and (max-width: 768px) {
+  .usageIndicatorContainer > span {
+    display: none;
+  }
+}

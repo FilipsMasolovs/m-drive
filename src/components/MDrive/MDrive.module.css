@@ -33,6 +33,10 @@
     padding: 16px;
   }
 
+  .headerContainer {
+    height: 32px;
+  }
+
   .listContainer {
     gap: 8px;
   }
