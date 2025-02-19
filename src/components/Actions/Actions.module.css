@@ -1,7 +1,7 @@
 .actionsContainer {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 16px;
 }
 
 .usageContainer {
