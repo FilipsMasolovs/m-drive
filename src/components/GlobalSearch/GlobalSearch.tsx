@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react'
 
+import type { DriveItem } from '../MDrive/MDrive' // Use `import type` because it is only used as a type
 import type { FileItem, FolderItem } from '~/types/types'
 
 import styles from './GlobalSearch.module.css'
-import { DriveItem } from '../MDrive/MDrive'
+
+interface SearchResults {
+  files: FileItem[]
+  folders: FolderItem[]
+}
 
 export default function GlobalSearch({ handleItemClick }: { handleItemClick: (item: DriveItem) => void }) {
   const [query, setQuery] = useState<string>('')
@@ -20,21 +25,24 @@ export default function GlobalSearch({ handleItemClick }: { handleItemClick: (it
       setResults({ files: [], folders: [] })
       return
     }
-
-    const timer = setTimeout(async () => {
+    const timer = setTimeout(() => {
       setLoading(true)
-      try {
-        const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`)
-        const data = await res.json()
-        setResults(data)
-      } catch (error) {
-        console.error('Search failed:', error)
-      } finally {
-        setLoading(false)
-      }
+      void (async () => {
+        try {
+          const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`)
+          const data: SearchResults = await res.json()
+          setResults(data)
+        } catch (error) {
+          console.error('Search failed:', error)
+        } finally {
+          setLoading(false)
+        }
+      })()
     }, DEBOUNCE_DELAY)
 
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+    }
   }, [query])
 
   return (
