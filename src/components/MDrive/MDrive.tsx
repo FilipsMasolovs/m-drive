@@ -19,7 +19,7 @@ import type { FolderItem, FileItem } from '~/types/types'
 
 import styles from './MDrive.module.css'
 import { useSessionPreloadedFiles } from '~/lib/utils/useSessionPreloadedFiles'
-import { PreloadedFile } from '~/lib/utils/sessionPreloadedFiles'
+import type { PreloadedFile } from '~/lib/utils/sessionPreloadedFiles'
 import { useRouter } from 'next/navigation'
 
 export type DriveItem = FolderItem | FileItem
@@ -75,8 +75,8 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
       )
       setPreloadedFiles(loaded)
     }
-    preloadFiles()
-  }, [files])
+    void preloadFiles()
+  }, [files, setPreloadedFiles])
 
   useEffect(() => {
     return () => {
@@ -136,7 +136,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
       <main className={styles.listContainer}>
         <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
         {currentItems.map((item, index) => {
-          const displayedItem = typeof item.type === 'string' && !item.type.includes('folder') ? { ...item, name: preloadedFiles[item.id]?.name || item.name } : item
+          const displayedItem = typeof item.type === 'string' && !item.type.includes('folder') ? { ...item, name: preloadedFiles[item.id]?.name ?? item.name } : item
           return (
             <ListItem
               key={`${item.id}-${index}`}
