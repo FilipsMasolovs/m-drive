@@ -84,7 +84,9 @@ export default function ItemModal({ type, url, name, setIsModalOpen, onRename, o
             onClick={(e) => {
               e.stopPropagation()
               e.preventDefault()
-              void forceDownload(url, name)
+              void forceDownload(url, name).catch((err) => {
+                console.error('Download failed', err)
+              })
             }}
             className={styles.actionButton}
             aria-label="Download file"
