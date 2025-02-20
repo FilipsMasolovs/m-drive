@@ -33,7 +33,9 @@ export default function ListItem({ item, handleItemClick, handleDelete, handleRe
             onClick={(e) => {
               e.stopPropagation()
               e.preventDefault()
-              forceDownload(item.url, item.name)
+              void forceDownload(item.url, item.name).catch((err) => {
+                console.error('Download failed', err)
+              })
             }}
             aria-label="Download item"
           >
