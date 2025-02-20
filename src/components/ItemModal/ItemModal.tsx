@@ -5,7 +5,7 @@ import DocxModal from '~/components/DocxModal/DocxModal'
 import { isMobileDevice } from '~/lib/utils/isMobileDevice'
 
 interface ItemModalProps {
-  type: 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | 'docx' | string
+  type: string
   url: string
   uploadThingUrl: string
   name: string
