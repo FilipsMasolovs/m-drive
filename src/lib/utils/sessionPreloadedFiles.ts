@@ -8,7 +8,7 @@ const STORAGE_KEY = 'preloadedFiles'
 export function getPreloadedFiles(): Record<number, PreloadedFile> {
   try {
     const stored = sessionStorage.getItem(STORAGE_KEY)
-    return stored ? JSON.parse(stored) : {}
+    return stored ? (JSON.parse(stored) as Record<number, PreloadedFile>) : {}
   } catch (error) {
     console.error('Error parsing preloadedFiles from sessionStorage:', error)
     return {}

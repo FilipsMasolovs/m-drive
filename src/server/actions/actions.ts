@@ -15,10 +15,6 @@ import { MUTATIONS, QUERIES } from '~/server/db/queries'
 
 const utApi = new UTApi()
 
-interface UpdateResult {
-  affectedRows: number
-}
-
 export default async function ACTIONS() {
   return {
     CREATIONS: {

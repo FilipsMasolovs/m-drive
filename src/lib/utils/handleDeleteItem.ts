@@ -1,6 +1,6 @@
 'use server'
 
-import { DriveItem } from '~/components/MDrive/MDrive'
+import type { DriveItem } from '~/components/MDrive/MDrive'
 
 import ACTIONS from '~/server/actions/actions'
 
