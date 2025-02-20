@@ -51,7 +51,7 @@
   width: 32px;
   height: 32px;
   font-size: 16px;
-  border-radius: 50%;
+  border-radius: var(--border-radius);
 }
 
 .itemActions {
@@ -75,18 +75,19 @@
   .closeButton {
     top: -8px;
     right: -8px;
-    width: 16px;
-    height: 16px;
-    font-size: 8px;
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
   }
 
   .itemActions {
     bottom: 16px;
     right: 16px;
+    gap: 8px;
   }
 
   .actionButton {
-    width: 120px;
+    width: 32px;
     height: 32px;
   }
 }
