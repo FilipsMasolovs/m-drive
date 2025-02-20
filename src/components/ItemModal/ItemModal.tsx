@@ -5,15 +5,16 @@ import DocxModal from '~/components/DocxModal/DocxModal'
 import { isMobileDevice } from '~/lib/utils/isMobileDevice'
 
 interface ItemModalProps {
-  type: 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | 'docx' | null
+  type: 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | 'docx' | string
   url: string
+  uploadThingUrl: string
   name: string
   setIsModalOpen: (open: boolean) => void
   onRename?: () => void
   onDelete?: () => void
 }
 
-export default function ItemModal({ type, url, name, setIsModalOpen, onRename, onDelete }: ItemModalProps) {
+export default function ItemModal({ type, url, uploadThingUrl, name, setIsModalOpen, onRename, onDelete }: ItemModalProps) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -85,7 +86,7 @@ export default function ItemModal({ type, url, name, setIsModalOpen, onRename, o
             onClick={(e) => {
               e.stopPropagation()
               e.preventDefault()
-              void forceDownload(url, name).catch((err) => {
+              void forceDownload(uploadThingUrl, name).catch((err) => {
                 console.error('Download failed', err)
               })
             }}

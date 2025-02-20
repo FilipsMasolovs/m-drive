@@ -29,8 +29,9 @@ type FilePreviewType = 'image' | 'pdf' | 'video' | 'application' | 'text/plain' 
 interface ModalState {
   open: boolean
   id?: number
-  type: FilePreviewType | null
+  type: FilePreviewType | string
   url: string
+  uploadThingUrl: string
   name: string
 }
 
@@ -55,8 +56,9 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
 
   const [modal, setModal] = useState<ModalState>({
     open: false,
-    type: null,
+    type: '',
     url: '',
+    uploadThingUrl: '',
     name: '',
   })
 
@@ -98,9 +100,23 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
     }
   }, [preloadedFiles])
 
+  type FilePreviewType = 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | 'docx' | string
+
+  const getPreviewType = (file: FileItem): FilePreviewType => {
+    if (file.type.includes('image')) return 'image'
+    if (file.type.includes('pdf')) return 'pdf'
+    if (file.type.includes('video')) return 'video'
+    if (file.type.includes('text/plain')) return 'text/plain'
+    if (file.type.includes('audio')) return 'audio'
+    if (file.type.includes('docx') || file.type.includes('officedocument')) return 'docx'
+    if (file.type.includes('zip') || file.type.includes('rar') || file.type.includes('application')) return 'application'
+    return file.type
+  }
+
   const handleItemClick = (item: DriveItem) => {
     if (typeof item.type === 'string' && !item.type.includes('folder')) {
       const file = item as FileItem
+
       if (!file.url) {
         console.warn('No URL provided')
         return
@@ -108,26 +124,20 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
 
       const preview = preloadedFiles[file.id]?.url ?? file.url
       const currentName = preloadedFiles[file.id]?.name ?? file.name
+      const previewType = getPreviewType(file)
 
-      if (file.type.includes('image')) {
-        setModal({ open: true, id: file.id, type: 'image', url: preview, name: currentName })
-      } else if (file.type.includes('pdf')) {
-        setModal({ open: true, id: file.id, type: 'pdf', url: preview, name: currentName })
-      } else if (file.type.includes('video')) {
-        setModal({ open: true, id: file.id, type: 'video', url: preview, name: currentName })
-      } else if (file.type.includes('text/plain')) {
-        setModal({ open: true, id: file.id, type: 'text/plain', url: preview, name: currentName })
-      } else if (file.type.includes('audio')) {
-        setModal({ open: true, id: file.id, type: 'audio', url: preview, name: currentName })
-      } else if (file.type.includes('docx') || file.type.includes('officedocument')) {
-        setModal({ open: true, id: file.id, type: 'docx', url: preview, name: currentName })
-      } else if (file.type.includes('zip') || file.type.includes('rar') || file.type.includes('application')) {
-        setModal({ open: true, id: file.id, type: 'application', url: preview, name: currentName })
+      if (previewType) {
+        setModal({
+          open: true,
+          id: file.id,
+          type: previewType,
+          url: preview,
+          uploadThingUrl: file.url,
+          name: currentName,
+        })
       } else {
         console.log(`Opening file: ${file.name}`)
       }
-    } else {
-      console.log(`Folder ${item.name} clicked.`)
     }
   }
 
@@ -171,6 +181,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
         <ItemModal
           type={modal.type}
           url={modal.url}
+          uploadThingUrl={modal.uploadThingUrl}
           name={modal.name}
           setIsModalOpen={(open) => setModal((prev) => ({ ...prev, open }))}
           onRename={() => {
