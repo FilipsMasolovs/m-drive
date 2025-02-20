@@ -4,30 +4,26 @@ import { handleRenameItem } from '~/lib/utils/handleRenameItem'
 
 import styles from './RenameModal.module.css'
 
-interface RenameModalProps {
+export interface RenameModalProps {
   currentName: string
   itemId: number
   setIsModalOpen: (open: boolean) => void
   setRenameModal: React.Dispatch<React.SetStateAction<{ open: boolean; itemId: number; currentName: string } | null>>
+  onRenameSuccess: (newName: string) => void
 }
 
-export default function RenameModal({ currentName, itemId, setIsModalOpen, setRenameModal }: RenameModalProps) {
+export default function RenameModal({ currentName, itemId, setIsModalOpen, setRenameModal, onRenameSuccess }: RenameModalProps) {
   const [newName, setNewName] = useState(currentName)
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log('DATA:')
-    console.log('itemId:', itemId)
-    console.log('newName:', newName)
-    console.log('====')
-
     e.preventDefault()
     if (!newName.trim()) return
     setLoading(true)
     try {
       await handleRenameItem(itemId, newName)
-
-      setRenameModal((prev): { open: boolean; itemId: number; currentName: string } | null => (prev ? { ...prev, open: false } : null))
+      onRenameSuccess(newName)
+      setRenameModal((prev) => (prev ? { ...prev, open: false } : null))
     } catch (error) {
       console.error('Rename failed:', error)
     } finally {

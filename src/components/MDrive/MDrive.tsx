@@ -14,11 +14,13 @@ import LoadingComponent from '~/components/LoadingComponent/LoadingComponent'
 import RenameModal from '~/components/RenameModal/RenameModal'
 import UsageIndicator from '~/components/UsageIndicator/UsageIndicator'
 
-import ACTIONS from '~/server/actions/actions'
+import { handleDeleteItem } from '~/lib/utils/handleDeleteItem'
 import type { FolderItem, FileItem } from '~/types/types'
 
 import styles from './MDrive.module.css'
-import { handleDeleteItem } from '~/lib/utils/handleDeleteItem'
+import { useSessionPreloadedFiles } from '~/lib/utils/useSessionPreloadedFiles'
+import { PreloadedFile } from '~/lib/utils/sessionPreloadedFiles'
+import { useRouter } from 'next/navigation'
 
 export type DriveItem = FolderItem | FileItem
 
@@ -33,29 +35,28 @@ interface MDriveProps {
 }
 
 export default function MDrive({ files, folders, parents, currentFolderId, rootFolderId, capacityUsed, maxCapacity }: MDriveProps) {
+  const router = useRouter()
+
   const currentItems: DriveItem[] = [...folders, ...files]
 
-  const [preloadedFiles, setPreloadedFiles] = useState<Record<number, string>>({})
+  const { files: preloadedFiles, setFiles: setPreloadedFiles } = useSessionPreloadedFiles()
 
   const [deleting, setDeleting] = useState(false)
 
-  const [modal, setModal] = useState<{
-    open: boolean
-    type: 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | 'docx' | null
-    url: string
-    name: string
-  }>({ open: false, type: null, url: '', name: '' })
+  const [modal, setModal] = useState<{ open: boolean; type: 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | 'docx' | null; url: string; name: string }>({
+    open: false,
+    type: null,
+    url: '',
+    name: '',
+  })
 
-  const [renameModal, setRenameModal] = useState<{
-    open: boolean
-    itemId: number
-    currentName: string
-  } | null>(null)
+  const [renameModal, setRenameModal] = useState<{ open: boolean; itemId: number; currentName: string } | null>(null)
 
   useEffect(() => {
     async function preloadFiles() {
       const fileItems = files.filter((file) => file.url !== '')
-      const preloaded: Record<number, string> = {}
+      const loaded: Record<number, PreloadedFile> = { ...preloadedFiles }
+
       await Promise.all(
         fileItems.map(async (file) => {
           try {
@@ -63,7 +64,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
             if (res.ok) {
               const blob = await res.blob()
               const blobUrl = URL.createObjectURL(blob)
-              preloaded[file.id] = blobUrl
+              loaded[file.id] = { url: blobUrl, name: file.name }
             } else {
               console.warn(`Failed to preload file ${file.name}`)
             }
@@ -72,14 +73,14 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
           }
         }),
       )
-      setPreloadedFiles(preloaded)
+      setPreloadedFiles(loaded)
     }
     preloadFiles()
   }, [files])
 
   useEffect(() => {
     return () => {
-      Object.values(preloadedFiles).forEach((blobUrl) => URL.revokeObjectURL(blobUrl))
+      Object.values(preloadedFiles).forEach((entry) => URL.revokeObjectURL(entry.url))
     }
   }, [preloadedFiles])
 
@@ -91,22 +92,23 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
         return
       }
 
-      const previewUrl = preloadedFiles[file.id] || file.url
+      const preview = preloadedFiles[file.id]?.url ?? file.url
+      const currentName = preloadedFiles[file.id]?.name ?? file.name
 
       if (file.type.includes('image')) {
-        setModal({ open: true, type: 'image', url: previewUrl, name: file.name })
+        setModal({ open: true, type: 'image', url: preview, name: currentName })
       } else if (file.type.includes('pdf')) {
-        setModal({ open: true, type: 'pdf', url: previewUrl, name: file.name })
+        setModal({ open: true, type: 'pdf', url: preview, name: currentName })
       } else if (file.type.includes('video')) {
-        setModal({ open: true, type: 'video', url: previewUrl, name: file.name })
+        setModal({ open: true, type: 'video', url: preview, name: currentName })
       } else if (file.type.includes('text/plain')) {
-        setModal({ open: true, type: 'text/plain', url: previewUrl, name: file.name })
+        setModal({ open: true, type: 'text/plain', url: preview, name: currentName })
       } else if (file.type.includes('audio')) {
-        setModal({ open: true, type: 'audio', url: previewUrl, name: file.name })
+        setModal({ open: true, type: 'audio', url: preview, name: currentName })
       } else if (file.type.includes('docx') || file.type.includes('officedocument')) {
-        setModal({ open: true, type: 'docx', url: previewUrl, name: file.name })
+        setModal({ open: true, type: 'docx', url: preview, name: currentName })
       } else if (file.type.includes('zip') || file.type.includes('rar') || file.type.includes('application')) {
-        setModal({ open: true, type: 'application', url: previewUrl, name: file.name })
+        setModal({ open: true, type: 'application', url: preview, name: currentName })
       } else {
         console.log(`Opening file: ${file.name}`)
       }
@@ -133,19 +135,22 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
       </header>
       <main className={styles.listContainer}>
         <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
-        {currentItems.map((item, index) => (
-          <ListItem
-            key={`${item.id}-${index}`}
-            item={item}
-            handleItemClick={() => handleItemClick(item)}
-            handleDelete={async () => {
-              setDeleting(true)
-              await handleDeleteItem(item)
-              setDeleting(false)
-            }}
-            handleRename={() => handleRenameClick(item)}
-          />
-        ))}
+        {currentItems.map((item, index) => {
+          const displayedItem = typeof item.type === 'string' && !item.type.includes('folder') ? { ...item, name: preloadedFiles[item.id]?.name || item.name } : item
+          return (
+            <ListItem
+              key={`${item.id}-${index}`}
+              item={displayedItem}
+              handleItemClick={() => handleItemClick(item)}
+              handleDelete={async () => {
+                setDeleting(true)
+                await handleDeleteItem(item)
+                setDeleting(false)
+              }}
+              handleRename={() => handleRenameClick(item)}
+            />
+          )
+        })}
       </main>
       {capacityUsed <= maxCapacity && <FileFolderUploads currentFolderId={currentFolderId} />}
       {modal.open && modal.type && <ItemModal type={modal.type} url={modal.url} name={modal.name} setIsModalOpen={(open) => setModal((prev) => ({ ...prev, open }))} />}
@@ -154,6 +159,21 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
           currentName={renameModal.currentName}
           itemId={renameModal.itemId}
           setIsModalOpen={(open) => setRenameModal((prev) => (prev ? { ...prev, open } : null))}
+          onRenameSuccess={(newName: string) => {
+            setPreloadedFiles((prev) => {
+              if (prev[renameModal.itemId]) {
+                return {
+                  ...prev,
+                  [renameModal.itemId]: {
+                    url: prev[renameModal.itemId]!.url,
+                    name: newName,
+                  },
+                }
+              }
+              return prev
+            })
+            router.refresh()
+          }}
           setRenameModal={setRenameModal}
         />
       )}

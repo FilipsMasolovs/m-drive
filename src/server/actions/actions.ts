@@ -85,19 +85,16 @@ export default async function ACTIONS() {
     },
     MUTATIONS: {
       renameItem: async function (itemId: number, newName: string) {
-
-        console.log("DATA:")
-        console.log("itemId:", itemId)
-        console.log("newName:", newName)
-        console.log("====")
         const session = await checkIfUserInSession()
 
-        const folderResult = (await db
+        const folderResult = await db
           .update(folders_table)
           .set({ name: newName })
-          .where(and(eq(folders_table.id, itemId), eq(folders_table.ownerId, session.userId)))) as unknown as UpdateResult
+          .where(and(eq(folders_table.id, itemId), eq(folders_table.ownerId, session.userId)))
 
-        if (folderResult.affectedRows === 0) {
+        const affectedRows = (folderResult as any).affectedRows ?? (folderResult as any).rowCount ?? 0
+
+        if (affectedRows === 0) {
           await db
             .update(files_table)
             .set({ name: newName })
