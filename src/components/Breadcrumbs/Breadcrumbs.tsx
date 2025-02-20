@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ChevronRight, ChevronDown } from 'lucide-react'
 import type { FolderItem } from '~/types/types'
 import Link from 'next/link'
@@ -67,16 +67,23 @@ export default function Breadcrumbs({ breadcrumbs, rootFolderId }: BreadcrumbsPr
     return () => document.removeEventListener('click', handleClickOutside)
   }, [dropdownOpen])
 
-  const renderFullBreadcrumbs = () => (
-    <>
-      <Link href={`/m/${rootFolderId}`}>M‑DRIVE</Link>
-      {breadcrumbs.map((item) => (
-        <div key={item.id} className={styles.breadcrumbContainer}>
-          <ChevronRight />
-          <Link href={`/m/${item.id}`}>{item.name}</Link>
-        </div>
-      ))}
-    </>
+  const renderFullBreadcrumbs = useCallback(
+    () => (
+      <>
+        <Link href={`/m/${rootFolderId}`} aria-label="Go to root folder">
+          M‑DRIVE
+        </Link>
+        {breadcrumbs.map((item, index) => (
+          <div key={item.id} className={styles.breadcrumbContainer} role="listitem">
+            <ChevronRight aria-hidden="true" />
+            <Link href={`/m/${item.id}`} aria-label={`Go to ${item.name}`} aria-current={index === breadcrumbs.length - 1 ? 'page' : undefined}>
+              {item.name}
+            </Link>
+          </div>
+        ))}
+      </>
+    ),
+    [rootFolderId, breadcrumbs],
   )
 
   const renderCollapsedBreadcrumbs = () => (
