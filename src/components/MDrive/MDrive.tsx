@@ -26,8 +26,10 @@ export type DriveItem = FolderItem | FileItem
 
 interface ModalState {
   open: boolean
-  id?: number
+  id: number
   type: string
+  realType: string
+  size: number
   url: string
   uploadThingUrl: string
   name: string
@@ -54,7 +56,10 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
 
   const [modal, setModal] = useState<ModalState>({
     open: false,
+    id: 0,
     type: '',
+    realType: '',
+    size: 0,
     url: '',
     uploadThingUrl: '',
     name: '',
@@ -127,6 +132,8 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
           open: true,
           id: file.id,
           type: previewType,
+          realType: file.type,
+          size: file.size,
           url: preview,
           uploadThingUrl: file.url,
           name: currentName,
@@ -143,39 +150,45 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
 
   return (
     <div className={styles.pageContainer}>
-      <header className={styles.headerContainer}>
-        <HeaderItemsContainer>
-          <AppLogo redirectPath={`/m/${rootFolderId}`} />
-          <GlobalSearch handleItemClick={handleItemClick} />
-        </HeaderItemsContainer>
-        <HeaderItemsContainer>
-          <UsageIndicator capacityUsed={capacityUsed} maxCapacity={maxCapacity} />
-          <UserButton />
-        </HeaderItemsContainer>
-      </header>
-      <main className={styles.listContainer}>
-        <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
-        {currentItems.map((item, index) => {
-          const displayedItem = typeof item.type === 'string' && !item.type.includes('folder') ? { ...item, name: preloadedFiles[item.id]?.name ?? item.name } : item
-          return (
-            <ListItem
-              key={`${item.id}-${index}`}
-              item={displayedItem}
-              handleItemClick={() => handleItemClick(item)}
-              handleDelete={async () => {
-                setDeleting(true)
-                await handleDeleteItem(item)
-                setDeleting(false)
-              }}
-              handleRename={() => handleRenameClick(item)}
-            />
-          )
-        })}
-      </main>
-      {capacityUsed <= maxCapacity && <FileFolderUploads currentFolderId={currentFolderId} />}
+      {!modal.open && (
+        <>
+          <header className={styles.headerContainer}>
+            <HeaderItemsContainer>
+              <AppLogo redirectPath={`/m/${rootFolderId}`} />
+              <GlobalSearch handleItemClick={handleItemClick} />
+            </HeaderItemsContainer>
+            <HeaderItemsContainer>
+              <UsageIndicator capacityUsed={capacityUsed} maxCapacity={maxCapacity} />
+              <UserButton />
+            </HeaderItemsContainer>
+          </header>
+          <main className={styles.listContainer}>
+            <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
+            {currentItems.map((item, index) => {
+              const displayedItem = typeof item.type === 'string' && !item.type.includes('folder') ? { ...item, name: preloadedFiles[item.id]?.name ?? item.name } : item
+              return (
+                <ListItem
+                  key={`${item.id}-${index}`}
+                  item={displayedItem}
+                  handleItemClick={() => handleItemClick(item)}
+                  handleDelete={async () => {
+                    setDeleting(true)
+                    await handleDeleteItem(item)
+                    setDeleting(false)
+                  }}
+                  handleRename={() => handleRenameClick(item)}
+                />
+              )
+            })}
+          </main>
+        </>
+      )}
+      {!modal.open && capacityUsed <= maxCapacity && <FileFolderUploads currentFolderId={currentFolderId} />}
       {modal.open && modal.type && (
         <ItemModal
           type={modal.type}
+          realType={modal.realType}
+          size={modal.size}
           url={modal.url}
           uploadThingUrl={modal.uploadThingUrl}
           name={modal.name}

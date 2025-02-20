@@ -27,6 +27,8 @@
 .modalContent {
   max-height: 100%;
   max-width: 100%;
+  padding-top: 48px;
+  padding-bottom: 48px;
 }
 
 .actionButton,
@@ -50,8 +52,21 @@
   right: -12px;
   width: 32px;
   height: 32px;
-  font-size: 16px;
+  font-size: 20px;
   border-radius: var(--border-radius);
+}
+
+.itemInformation {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  font-size: 16px;
+}
+
+.itemInformation span:last-of-type {
+  font-size: 10px;
 }
 
 .itemActions {
@@ -75,9 +90,6 @@
   .closeButton {
     top: -8px;
     right: -8px;
-    width: 32px;
-    height: 32px;
-    font-size: 20px;
   }
 
   .itemActions {

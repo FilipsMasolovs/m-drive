@@ -3,9 +3,12 @@ import { forceDownload } from '~/lib/utils/forceDownload'
 import styles from './ItemModal.module.css'
 import DocxModal from '~/components/DocxModal/DocxModal'
 import { isMobileDevice } from '~/lib/utils/isMobileDevice'
+import { formatSize } from '~/lib/utils/formatSize'
 
 interface ItemModalProps {
   type: string
+  realType: string
+  size: number
   url: string
   uploadThingUrl: string
   name: string
@@ -14,7 +17,8 @@ interface ItemModalProps {
   onDelete?: () => void
 }
 
-export default function ItemModal({ type, url, uploadThingUrl, name, setIsModalOpen, onRename, onDelete }: ItemModalProps) {
+export default function ItemModal({ type, realType, size, url, uploadThingUrl, name, setIsModalOpen, onRename, onDelete }: ItemModalProps) {
+  // console.log("name: ",name)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -80,6 +84,10 @@ export default function ItemModal({ type, url, uploadThingUrl, name, setIsModalO
         <button className={styles.closeButton} onClick={() => setIsModalOpen(false)} aria-label="Close modal">
           X
         </button>
+        <div className={styles.itemInformation}>
+          <span>{name}</span>
+          <span>{realType} • {formatSize(size)}</span>
+        </div>
         {renderContent()}
         <div className={styles.itemActions}>
           <button
