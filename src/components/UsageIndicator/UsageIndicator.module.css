@@ -10,7 +10,7 @@
   width: 100px;
   height: 32px;
   background-color: #eee;
-  border-radius: 6px;
+  border-radius: var(--border-radius);
   overflow: hidden;
   position: relative;
 }

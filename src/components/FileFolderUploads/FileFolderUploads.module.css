@@ -9,10 +9,10 @@
 
 .openFormButton,
 .folderNameInput,
-.uploadFileButton {
+.uploadFileButton label {
   width: 144px;
   height: 40px;
-  border-radius: 6px;
+  border-radius: var(--border-radius);
   background-color: rgb(37, 99, 235);
   color: rgb(229, 229, 229);
   cursor: pointer;
@@ -58,14 +58,9 @@
 
   .openFormButton,
   .folderNameInput,
-  .uploadFileButton {
-    width: 120px;
-    height: 32px;
-    border-radius: 4px;
-  }
-
   .uploadFileButton label {
     width: 120px;
+    height: 32px;
   }
 
   .folderNameInput {

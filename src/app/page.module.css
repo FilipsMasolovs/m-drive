@@ -14,7 +14,7 @@
   width: 9rem;
   height: 2.5rem;
   cursor: pointer;
-  border-radius: calc(var(--radius) - 2px);
+  border-radius: var(--border-radius);
   --tw-bg-opacity: 1;
   background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;

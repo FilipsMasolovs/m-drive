@@ -1,7 +1,7 @@
 .searchInput,
 .searchSuggestions {
   width: 200px;
-  border-radius: 6px;
+  border-radius: var(--border-radius);
   font-size: 0.9rem;
   line-height: 1.25rem;
   background-color: rgb(299, 299, 299);
@@ -34,12 +34,12 @@
 
 .searchSuggestions::-webkit-scrollbar-track {
   background: #f1f1f1;
-  border-radius: 6px;
+  border-radius: var(--border-radius);
 }
 
 .searchSuggestions::-webkit-scrollbar-thumb {
   background: #888;
-  border-radius: 6px;
+  border-radius: var(--border-radius);
 }
 
 .searchSuggestionsPlaceholder {

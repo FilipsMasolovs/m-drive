@@ -14,7 +14,7 @@
   height: 100%;
   width: 100%;
   padding: var(--modal-padding);
-  border-radius: 6px;
+  border-radius: var(--border-radius);
   background-color: var(--color-midnight-express);
   position: relative;
   display: flex;
@@ -35,7 +35,7 @@
   right: 16px;
   width: 88px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   background-color: #fff;
   color: #000;
   display: flex;

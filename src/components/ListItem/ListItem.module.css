@@ -4,7 +4,7 @@
   align-items: center;
   background-color: var(--color-midnight-express);
   padding: 16px;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   cursor: pointer;
   transition: all 0.4s ease;
   overflow: hidden;
@@ -39,20 +39,11 @@
   gap: 4px;
 }
 
-.renameButton {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  transition: all 0.4s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
+.renameButton,
 .deleteButton {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   transition: all 0.4s ease;
   display: flex;
   justify-content: center;
