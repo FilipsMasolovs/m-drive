@@ -52,5 +52,5 @@ export default async function Home(props: { params: Promise<{ folderId: string }
 
   const capacityUsed = allFiles.reduce((acc, file) => acc + file.size, 0)
 
-  return <MDrive folders={folders} files={files} parents={parents} currentFolderId={parsedFolderId} rootFolderId={rootFolder.id} capacityUsed={capacityUsed} />
+  return <MDrive folders={folders} files={files} parents={parents} currentFolderId={parsedFolderId} rootFolderId={rootFolder.id} capacityUsed={capacityUsed} maxCapacity={134217728} />
 }
