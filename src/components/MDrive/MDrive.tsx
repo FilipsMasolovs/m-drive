@@ -14,11 +14,11 @@ import LoadingComponent from '~/components/LoadingComponent/LoadingComponent'
 import RenameModal from '~/components/RenameModal/RenameModal'
 import UsageIndicator from '~/components/UsageIndicator/UsageIndicator'
 
-import { deleteFile, deleteFolder } from '~/server/actions/actions'
-import { renameItem } from '~/server/actions/actions'
+import ACTIONS from '~/server/actions/actions'
 import type { FolderItem, FileItem } from '~/types/types'
 
 import styles from './MDrive.module.css'
+import { handleDeleteItem } from '~/lib/utils/handleDeleteItem'
 
 export type DriveItem = FolderItem | FileItem
 
@@ -35,6 +35,10 @@ interface MDriveProps {
 export default function MDrive({ files, folders, parents, currentFolderId, rootFolderId, capacityUsed, maxCapacity }: MDriveProps) {
   const currentItems: DriveItem[] = [...folders, ...files]
 
+  const [preloadedFiles, setPreloadedFiles] = useState<Record<number, string>>({})
+
+  const [deleting, setDeleting] = useState(false)
+
   const [modal, setModal] = useState<{
     open: boolean
     type: 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | 'docx' | null
@@ -47,8 +51,6 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
     itemId: number
     currentName: string
   } | null>(null)
-
-  const [preloadedFiles, setPreloadedFiles] = useState<Record<number, string>>({})
 
   useEffect(() => {
     async function preloadFiles() {
@@ -113,34 +115,8 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
     }
   }
 
-  const [deleting, setDeleting] = useState(false)
-
-  const handleDelete = async (item: DriveItem) => {
-    setDeleting(true)
-    try {
-      if (item.type === 'folder') {
-        await deleteFolder(item.id)
-      } else {
-        await deleteFile(item.id)
-      }
-    } catch (error) {
-      console.error('Deletion failed:', error)
-    } finally {
-      setDeleting(false)
-    }
-  }
-
   const handleRenameClick = (item: FileItem | FolderItem) => {
     setRenameModal({ open: true, itemId: item.id, currentName: item.name })
-  }
-
-  const handleRename = async (itemId: number, newName: string) => {
-    try {
-      await renameItem(itemId, newName)
-      setRenameModal((prev) => (prev ? { ...prev, open: false } : null))
-    } catch (error) {
-      console.error('Rename failed:', error)
-    }
   }
 
   return (
@@ -162,7 +138,11 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
             key={`${item.id}-${index}`}
             item={item}
             handleItemClick={() => handleItemClick(item)}
-            handleDelete={() => handleDelete(item)}
+            handleDelete={async () => {
+              setDeleting(true)
+              await handleDeleteItem(item)
+              setDeleting(false)
+            }}
             handleRename={() => handleRenameClick(item)}
           />
         ))}
@@ -174,7 +154,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
           currentName={renameModal.currentName}
           itemId={renameModal.itemId}
           setIsModalOpen={(open) => setRenameModal((prev) => (prev ? { ...prev, open } : null))}
-          onRename={handleRename}
+          setRenameModal={setRenameModal}
         />
       )}
       {deleting && <LoadingComponent />}

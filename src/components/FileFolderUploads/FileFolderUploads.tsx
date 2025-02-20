@@ -4,7 +4,7 @@ import { UploadButton } from '~/components/UploadThing/uploadthing'
 
 import styles from './FileFolderUploads.module.css'
 import { useEffect, useRef, useState } from 'react'
-import { createFolder } from '~/server/actions/actions'
+import { handleCreateFolder } from '~/lib/utils/handleCreateFolder'
 
 interface FileFolderUploadsProps {
   currentFolderId: number
@@ -18,17 +18,12 @@ export default function FileFolderUploads({ currentFolderId }: FileFolderUploads
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!folderName.trim()) {
-      return
-    }
-    try {
-      await createFolder(folderName, currentFolderId)
-      setFolderName('')
-      setIsCreatingFolder(false)
-      router.refresh()
-    } catch (error) {
-      console.error(error)
-    }
+
+    await handleCreateFolder(folderName, currentFolderId)
+
+    setFolderName('')
+    setIsCreatingFolder(false)
+    router.refresh()
   }
 
   useEffect(() => {
