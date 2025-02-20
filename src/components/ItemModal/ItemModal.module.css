@@ -4,24 +4,24 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.8);
-  padding: 32px;
+  background-color: var(--color-overlay-black);
+  padding: var(--modal-padding);
   height: 100vh;
-  animation: fadeIn 0.6s ease-in-out;
+  animation: fadeIn 0.4s ease-in-out;
 }
 
 .modalWrapper {
-  height: calc(100vh - 64px);
-  width: calc(100vw - 64px);
-  padding: 32px;
-  border-radius: 8px;
-  background-color: rgb(55, 65, 81);
+  height: 100%;
+  width: 100%;
+  padding: var(--modal-padding);
+  border-radius: 6px;
+  background-color: var(--color-midnight-express);
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  animation: fadeIn 1.2s ease-in-out;
+  animation: fadeIn 0.8s ease-in-out;
 }
 
 .modalContent {
