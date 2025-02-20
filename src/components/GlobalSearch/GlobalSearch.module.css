@@ -59,6 +59,17 @@
   cursor: pointer;
   height: 24px;
   padding: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.suggestionItem.selected {
+  background-color: var(--color-azul);
+  color: rgb(299, 299, 299);
+}
+
+.suggestionItem.selected a,
+.suggestionItem.selected span {
+  color: rgb(299, 299, 299);
 }
 
 .suggestionItem a,
