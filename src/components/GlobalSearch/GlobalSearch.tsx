@@ -19,7 +19,6 @@ export default function GlobalSearch({ handleItemClick }: { handleItemClick: (it
     folders: [],
   })
   const [loading, setLoading] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
   const [selectedIndex, setSelectedIndex] = useState<number>(-1)
   const resultsRef = useRef<HTMLDivElement>(null)
 
@@ -32,7 +31,6 @@ export default function GlobalSearch({ handleItemClick }: { handleItemClick: (it
     }
 
     setLoading(true)
-    setError(null)
 
     try {
       const res = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`)
@@ -41,7 +39,6 @@ export default function GlobalSearch({ handleItemClick }: { handleItemClick: (it
       const data = (await res.json()) as SearchResults
       setResults(data)
     } catch (err) {
-      setError('Search failed. Please try again.')
       console.error('Search failed:', err)
     } finally {
       setLoading(false)
@@ -132,15 +129,7 @@ export default function GlobalSearch({ handleItemClick }: { handleItemClick: (it
         aria-label="Search files and folders"
         aria-expanded={query.trim() !== ''}
         aria-controls="search-results"
-        aria-describedby={error ? 'search-error' : undefined}
       />
-
-      {error && (
-        <div id="search-error" className={styles.error} role="alert">
-          {error}
-        </div>
-      )}
-
       {query.trim() !== '' && (
         <div id="search-results" className={styles.searchSuggestions} ref={resultsRef} role="listbox">
           {loading ? (
