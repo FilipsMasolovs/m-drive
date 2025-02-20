@@ -17,8 +17,7 @@ interface ItemModalProps {
   onDelete?: () => void
 }
 
-export default function ItemModal({ type, realType, size, url, uploadThingUrl, name, setIsModalOpen, onRename, onDelete }: ItemModalProps) {
-  // console.log("name: ",name)
+export default React.memo(function ItemModal({ type, realType, size, url, uploadThingUrl, name, setIsModalOpen, onRename, onDelete }: ItemModalProps) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -86,7 +85,9 @@ export default function ItemModal({ type, realType, size, url, uploadThingUrl, n
         </button>
         <div className={styles.itemInformation}>
           <span>{name}</span>
-          <span>{realType} • {formatSize(size)}</span>
+          <span>
+            {realType} • {formatSize(size)}
+          </span>
         </div>
         {renderContent()}
         <div className={styles.itemActions}>
@@ -163,4 +164,4 @@ export default function ItemModal({ type, realType, size, url, uploadThingUrl, n
       </div>
     </div>
   )
-}
+})

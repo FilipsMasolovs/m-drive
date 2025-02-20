@@ -2,7 +2,7 @@
 
 import { UserButton } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 
 import AppLogo from '~/components/AppLogo/AppLogo'
 import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs'
@@ -74,28 +74,33 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
   useEffect(() => {
     async function preloadFiles() {
       const fileItems = files.filter((file) => file.url !== '')
-      const loaded: Record<number, PreloadedFile> = { ...preloadedFiles }
+      const loaded: Record<number, PreloadedFile> = {}
 
       await Promise.all(
         fileItems.map(async (file) => {
-          try {
-            const res = await fetch(file.url)
-            if (res.ok) {
-              const blob = await res.blob()
-              const blobUrl = URL.createObjectURL(blob)
-              loaded[file.id] = { url: blobUrl, name: file.name }
-            } else {
-              console.warn(`Failed to preload file ${file.name}`)
+          if (!preloadedFiles[file.id]) {
+            try {
+              const res = await fetch(file.url)
+              if (res.ok) {
+                const blob = await res.blob()
+                const blobUrl = URL.createObjectURL(blob)
+                loaded[file.id] = { url: blobUrl, name: file.name }
+              } else {
+                console.warn(`Failed to preload file ${file.name}`)
+              }
+            } catch (error) {
+              console.error('Error preloading file', file.name, error)
             }
-          } catch (error) {
-            console.error('Error preloading file', file.name, error)
           }
         }),
       )
-      setPreloadedFiles(loaded)
+
+      if (Object.keys(loaded).length > 0) {
+        setPreloadedFiles((prev) => ({ ...prev, ...loaded }))
+      }
     }
     void preloadFiles()
-  }, [files, setPreloadedFiles, preloadedFiles])
+  }, [files, setPreloadedFiles])
 
   useEffect(() => {
     return () => {
@@ -148,6 +153,29 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
     setRenameModal({ open: true, itemId: item.id, currentName: item.name })
   }
 
+  const handleModalClose = useCallback((open: boolean) => {
+    setModal((prev) => ({ ...prev, open }))
+  }, [])
+
+  const handleRename = useCallback(() => {
+    if (modal.id) {
+      setRenameModal({ open: true, itemId: modal.id, currentName: modal.name })
+    }
+  }, [modal.id, modal.name])
+
+  const handleDelete = useCallback(async () => {
+    if (modal.id) {
+      setDeleting(true)
+      const fileToDelete = files.find((item) => item.id === modal.id)
+      if (fileToDelete) {
+        await handleDeleteItem(fileToDelete)
+      }
+      setDeleting(false)
+      setModal((prev) => ({ ...prev, open: false }))
+      router.refresh()
+    }
+  }, [modal.id, files, router])
+
   return (
     <div className={styles.pageContainer}>
       {!modal.open && (
@@ -192,24 +220,9 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
           url={modal.url}
           uploadThingUrl={modal.uploadThingUrl}
           name={modal.name}
-          setIsModalOpen={(open) => setModal((prev) => ({ ...prev, open }))}
-          onRename={() => {
-            if (modal.id) {
-              setRenameModal({ open: true, itemId: modal.id, currentName: modal.name })
-            }
-          }}
-          onDelete={async () => {
-            if (modal.id) {
-              setDeleting(true)
-              const fileToDelete = files.find((item) => item.id === modal.id)
-              if (fileToDelete) {
-                await handleDeleteItem(fileToDelete)
-              }
-              setDeleting(false)
-              setModal((prev) => ({ ...prev, open: false }))
-              router.refresh()
-            }
-          }}
+          setIsModalOpen={handleModalClose}
+          onRename={handleRename}
+          onDelete={handleDelete}
         />
       )}
       {renameModal?.open && (
