@@ -81,8 +81,10 @@ export default function ItemModal({ type, url, name, setIsModalOpen, onRename, o
         {renderContent()}
         <div className={styles.itemActions}>
           <button
-            onClick={async () => {
-              await forceDownload(url, name)
+            onClick={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+              void forceDownload(url, name)
             }}
             className={styles.actionButton}
             aria-label="Download file"

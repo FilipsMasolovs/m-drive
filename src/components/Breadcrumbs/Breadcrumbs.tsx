@@ -8,24 +8,21 @@ function useContainerWidth(ref: React.RefObject<HTMLElement>): number {
   const [width, setWidth] = useState<number>(0)
 
   useEffect(() => {
-    if (!ref.current) return
+    const node = ref.current
+
+    if (!node) return
 
     const updateWidth = () => {
-      if (ref.current) {
-        setWidth(ref.current.getBoundingClientRect().width)
-      }
+      setWidth(node.getBoundingClientRect().width)
     }
 
     updateWidth()
 
     const resizeObserver = new ResizeObserver(() => updateWidth())
-
-    resizeObserver.observe(ref.current)
+    resizeObserver.observe(node)
 
     return () => {
-      if (ref.current) {
-        resizeObserver.unobserve(ref.current)
-      }
+      resizeObserver.unobserve(node)
     }
   }, [ref])
 
