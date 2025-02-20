@@ -31,7 +31,7 @@
   padding-bottom: 48px;
 }
 
-.actionButton,
+.itemActions button,
 .closeButton {
   background-color: var(--color-azul);
   color: var(--color-cold-morning);
@@ -40,7 +40,7 @@
   justify-content: center;
 }
 
-.actionButton {
+.itemActions button {
   border-radius: var(--border-radius);
   width: 144px;
   height: 40px;
@@ -98,7 +98,7 @@
     gap: 8px;
   }
 
-  .actionButton {
+  .itemActions button {
     width: 32px;
     height: 32px;
   }
