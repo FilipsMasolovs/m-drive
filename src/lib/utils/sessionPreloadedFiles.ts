@@ -6,6 +6,8 @@ export interface PreloadedFile {
 const STORAGE_KEY = 'preloadedFiles'
 
 export function getPreloadedFiles(): Record<number, PreloadedFile> {
+  if (typeof window === 'undefined') return {}
+
   try {
     const stored = sessionStorage.getItem(STORAGE_KEY)
     return stored ? (JSON.parse(stored) as Record<number, PreloadedFile>) : {}
@@ -16,6 +18,8 @@ export function getPreloadedFiles(): Record<number, PreloadedFile> {
 }
 
 export function setPreloadedFiles(files: Record<number, PreloadedFile>): void {
+  if (typeof window === 'undefined') return
+
   try {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(files))
   } catch (error) {
