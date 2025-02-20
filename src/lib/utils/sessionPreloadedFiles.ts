@@ -1,6 +1,6 @@
 export interface PreloadedFile {
-  url: string
   name: string
+  originalUrl: string
 }
 
 const STORAGE_KEY = 'preloadedFiles'

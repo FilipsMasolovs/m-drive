@@ -2,7 +2,7 @@
 
 import { UserButton } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 
 import AppLogo from '~/components/AppLogo/AppLogo'
 import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs'
@@ -16,7 +16,6 @@ import RenameModal from '~/components/RenameModal/RenameModal'
 import UsageIndicator from '~/components/UsageIndicator/UsageIndicator'
 
 import { handleDeleteItem } from '~/lib/utils/handleDeleteItem'
-import type { PreloadedFile } from '~/lib/utils/sessionPreloadedFiles'
 import { useSessionPreloadedFiles } from '~/lib/utils/useSessionPreloadedFiles'
 import type { FolderItem, FileItem } from '~/types/types'
 
@@ -52,6 +51,8 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
 
   const { files: preloadedFiles, setFiles: setPreloadedFiles } = useSessionPreloadedFiles()
 
+  const blobUrlsRef = useRef<Record<number, string>>({})
+
   const [deleting, setDeleting] = useState(false)
 
   const [modal, setModal] = useState<ModalState>({
@@ -74,37 +75,49 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
   useEffect(() => {
     async function preloadFiles() {
       const fileItems = files.filter((file) => file.url !== '')
-      const loaded: Record<number, PreloadedFile> = {}
 
       await Promise.all(
         fileItems.map(async (file) => {
-          if (!preloadedFiles[file.id]) {
-            try {
+          try {
+            if (!preloadedFiles[file.id] || preloadedFiles[file.id]!.originalUrl !== file.url) {
               const res = await fetch(file.url)
               if (res.ok) {
                 const blob = await res.blob()
                 const blobUrl = URL.createObjectURL(blob)
-                loaded[file.id] = { url: blobUrl, name: file.name }
+
+                blobUrlsRef.current[file.id] = blobUrl
+
+                setPreloadedFiles((prev) => ({
+                  ...prev,
+                  [file.id]: {
+                    name: file.name,
+                    originalUrl: file.url,
+                  },
+                }))
               } else {
                 console.warn(`Failed to preload file ${file.name}`)
               }
-            } catch (error) {
-              console.error('Error preloading file', file.name, error)
+            } else {
+              if (!blobUrlsRef.current[file.id]) {
+                const res = await fetch(file.url)
+                if (res.ok) {
+                  const blob = await res.blob()
+                  blobUrlsRef.current[file.id] = URL.createObjectURL(blob)
+                }
+              }
             }
+          } catch (error) {
+            console.error('Error preloading file', file.name, error)
           }
         }),
       )
-
-      if (Object.keys(loaded).length > 0) {
-        setPreloadedFiles((prev) => ({ ...prev, ...loaded }))
-      }
     }
     void preloadFiles()
   }, [files, setPreloadedFiles])
 
   useEffect(() => {
     return () => {
-      Object.values(preloadedFiles).forEach((entry) => URL.revokeObjectURL(entry.url))
+      Object.values(preloadedFiles).forEach((entry) => URL.revokeObjectURL(entry.originalUrl))
     }
   }, [preloadedFiles])
 
@@ -119,6 +132,13 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
     return file.type
   }
 
+  useEffect(() => {
+    return () => {
+      Object.values(blobUrlsRef.current).forEach(URL.revokeObjectURL)
+      blobUrlsRef.current = {}
+    }
+  }, [])
+
   const handleItemClick = (item: DriveItem) => {
     if (typeof item.type === 'string' && !item.type.includes('folder')) {
       const file = item as FileItem
@@ -128,24 +148,20 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
         return
       }
 
-      const preview = preloadedFiles[file.id]?.url ?? file.url
+      const preview = blobUrlsRef.current[file.id] ?? file.url
       const currentName = preloadedFiles[file.id]?.name ?? file.name
       const previewType = getPreviewType(file)
 
-      if (previewType) {
-        setModal({
-          open: true,
-          id: file.id,
-          type: previewType,
-          realType: file.type,
-          size: file.size,
-          url: preview,
-          uploadThingUrl: file.url,
-          name: currentName,
-        })
-      } else {
-        console.log(`Opening file: ${file.name}`)
-      }
+      setModal({
+        open: true,
+        id: file.id,
+        type: previewType,
+        realType: file.type,
+        size: file.size,
+        url: preview,
+        uploadThingUrl: file.url,
+        name: currentName,
+      })
     }
   }
 
@@ -236,7 +252,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
                 return {
                   ...prev,
                   [renameModal.itemId]: {
-                    url: prev[renameModal.itemId]!.url,
+                    originalUrl: prev[renameModal.itemId]!.originalUrl,
                     name: newName,
                   },
                 }
