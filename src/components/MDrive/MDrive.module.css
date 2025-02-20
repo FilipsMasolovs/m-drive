@@ -21,12 +21,6 @@
   gap: 16px;
 }
 
-.listContainer {
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
 /* ONLY TEMPORARY STYLES */
 @media all and (max-width: 768px) {
   .pageContainer {
