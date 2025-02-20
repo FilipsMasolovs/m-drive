@@ -1,4 +1,5 @@
-import AppLogo from '../AppLogo/AppLogo'
+import AppLogo from '~/components/AppLogo/AppLogo'
+
 import styles from './HomeComponent.module.css'
 
 interface HomeComponentProps {

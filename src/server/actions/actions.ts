@@ -83,12 +83,19 @@ export default async function ACTIONS() {
       renameItem: async function (itemId: number, newName: string) {
         const session = await checkIfUserInSession()
 
-        const folderResult = await db
+        const folderResult = (await db
           .update(folders_table)
           .set({ name: newName })
-          .where(and(eq(folders_table.id, itemId), eq(folders_table.ownerId, session.userId)))
+          .where(and(eq(folders_table.id, itemId), eq(folders_table.ownerId, session.userId)))) as unknown
 
-        const affectedRows = (folderResult as any).affectedRows ?? (folderResult as any).rowCount ?? 0
+        interface UpdateResult {
+          affectedRows?: number
+          rowCount?: number
+        }
+
+        const result = folderResult as UpdateResult
+
+        const affectedRows: number = result.affectedRows ?? result.rowCount ?? 0
 
         if (affectedRows === 0) {
           await db

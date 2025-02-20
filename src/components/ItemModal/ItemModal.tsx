@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { forceDownload } from '~/lib/utils/forceDownload'
 import styles from './ItemModal.module.css'
-import DocxModal from '../DocxModal/DocxModal'
+import DocxModal from '~/components/DocxModal/DocxModal'
 
 interface ItemModalProps {
   type: 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | 'docx'
