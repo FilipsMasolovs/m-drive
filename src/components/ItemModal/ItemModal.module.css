@@ -29,29 +29,37 @@
   max-width: 100%;
 }
 
-.downloadButton {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  width: 88px;
-  height: 32px;
-  border-radius: var(--border-radius);
-  background-color: #fff;
-  color: #000;
+.actionButton,
+.closeButton {
+  background-color: var(--color-azul);
+  color: var(--color-cold-morning);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.actionButton {
+  border-radius: var(--border-radius);
+  width: 144px;
+  height: 40px;
+}
+
 .closeButton {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: -12px;
+  right: -12px;
   width: 32px;
   height: 32px;
+  font-size: 16px;
   border-radius: 50%;
-  background-color: #fff;
-  color: #000;
+}
+
+.itemActions {
+  display: flex;
+  gap: 16px;
+  position: absolute;
+  bottom: 32px;
+  right: 32px;
 }
 
 @keyframes fadeIn {
@@ -60,5 +68,25 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+@media all and (max-width: 768px) {
+  .closeButton {
+    top: -8px;
+    right: -8px;
+    width: 16px;
+    height: 16px;
+    font-size: 8px;
+  }
+
+  .itemActions {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .actionButton {
+    width: 120px;
+    height: 32px;
   }
 }

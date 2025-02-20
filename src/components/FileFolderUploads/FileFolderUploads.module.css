@@ -9,22 +9,26 @@
 
 .openFormButton,
 .folderNameInput,
-.uploadFileButton label {
+.uploadFileButton {
   width: 144px;
   height: 40px;
   border-radius: var(--border-radius);
-  background-color: rgb(37, 99, 235);
-  color: rgb(229, 229, 229);
+  background-color: var(--color-azul);
+  color: var(--color-cold-morning);
   cursor: pointer;
+}
+
+.uploadFileButton label {
+  color: var(--color-cold-morning);
 }
 
 .folderNameInput {
   padding-right: 10px;
   padding: 4px;
-  border: 2px solid rgb(37, 99, 235);
+  border: 2px solid var(--color-azul);
   outline: none;
   background-color: rgb(299, 299, 299);
-  color: rgb(37, 99, 235);
+  color: var(--color-azul);
   cursor: text;
 }
 
@@ -40,8 +44,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(37, 99, 235);
-  color: rgb(229, 229, 229);
+  background-color: var(--color-azul);
+  color: var(--color-cold-morning);
   cursor: pointer;
 }
 

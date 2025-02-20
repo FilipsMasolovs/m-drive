@@ -5,7 +5,7 @@
   font-size: 0.9rem;
   line-height: 1.25rem;
   background-color: rgb(299, 299, 299);
-  color: rgb(37, 99, 235);
+  color: var(--color-azul);
 }
 
 .searchInput {
@@ -16,7 +16,7 @@
   cursor: text;
 
   &:focus-within {
-    outline: 2px solid rgb(37, 99, 235);
+    outline: 2px solid var(--color-azul);
   }
 }
 
@@ -48,7 +48,7 @@
 
 .suggestionType {
   color: rgb(299, 299, 299);
-  background-color: rgb(37, 99, 235);
+  background-color: var(--color-azul);
   padding: 4px;
 }
 
@@ -88,6 +88,6 @@
 @media (hover: hover) and (pointer: fine) {
   .suggestionItem:hover {
     color: rgb(299, 299, 299);
-    background-color: rgb(37, 99, 235);
+    background-color: var(--color-azul);
   }
 }

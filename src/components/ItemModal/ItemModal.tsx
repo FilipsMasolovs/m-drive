@@ -4,13 +4,15 @@ import styles from './ItemModal.module.css'
 import DocxModal from '~/components/DocxModal/DocxModal'
 
 interface ItemModalProps {
-  type: 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | 'docx'
+  type: 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | 'docx' | null
   url: string
   name: string
   setIsModalOpen: (open: boolean) => void
+  onRename?: () => void
+  onDelete?: () => void
 }
 
-export default function ItemModal({ type, url, name, setIsModalOpen }: ItemModalProps) {
+export default function ItemModal({ type, url, name, setIsModalOpen, onRename, onDelete }: ItemModalProps) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -77,15 +79,35 @@ export default function ItemModal({ type, url, name, setIsModalOpen }: ItemModal
           X
         </button>
         {renderContent()}
-        <button
-          onClick={async () => {
-            await forceDownload(url, name)
-          }}
-          className={styles.downloadButton}
-          aria-label="Download file"
-        >
-          Download
-        </button>
+        <div className={styles.itemActions}>
+          <button
+            onClick={async () => {
+              await forceDownload(url, name)
+            }}
+            className={styles.actionButton}
+            aria-label="Download file"
+          >
+            Download
+          </button>
+          <button
+            onClick={() => {
+              if (onRename) onRename()
+            }}
+            className={styles.actionButton}
+            aria-label="Rename file"
+          >
+            Rename
+          </button>
+          <button
+            onClick={() => {
+              if (onDelete) onDelete()
+            }}
+            className={styles.actionButton}
+            aria-label="Delete file"
+          >
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   )

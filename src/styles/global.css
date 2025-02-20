@@ -71,6 +71,8 @@
 
   --color-midnight-express: rgb(31, 41, 55);
   --color-overlay-black: rgba(0, 0, 0, 0.8);
+  --color-azul: rgb(37, 99, 235);
+  --color-cold-morning: rgb(229, 229, 229);
 }
 @media all and (max-width: 768px) {
   :root {

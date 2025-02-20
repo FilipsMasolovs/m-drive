@@ -17,7 +17,7 @@
 
 .usageFill {
   height: 100%;
-  background-color: rgb(37, 99, 235);
+  background-color: var(--color-azul);
   transition: width 0.3s ease;
 }
 
