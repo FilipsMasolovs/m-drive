@@ -24,7 +24,7 @@ import styles from './MDrive.module.css'
 
 export type DriveItem = FolderItem | FileItem
 
-type FilePreviewType = 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | 'docx'
+type FilePreviewType = 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | 'docx' | string
 
 interface ModalState {
   open: boolean
@@ -99,8 +99,6 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
       Object.values(preloadedFiles).forEach((entry) => URL.revokeObjectURL(entry.url))
     }
   }, [preloadedFiles])
-
-  type FilePreviewType = 'image' | 'pdf' | 'video' | 'application' | 'text/plain' | 'audio' | 'docx' | string
 
   const getPreviewType = (file: FileItem): FilePreviewType => {
     if (file.type.includes('image')) return 'image'
