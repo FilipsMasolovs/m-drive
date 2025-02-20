@@ -1,5 +1,7 @@
 export function isMobileDevice(): boolean {
-  if (typeof window === 'undefined') false
+  if (typeof window === 'undefined') {
+    return false
+  }
 
   const opera = (window as Window & { opera?: string }).opera ?? ''
   const userAgent: string = navigator.userAgent || navigator.vendor || opera
