@@ -43,7 +43,8 @@ export default function FileFolderUploads({ currentFolderId }: FileFolderUploads
       setIsCreatingFolder(false)
       router.refresh()
     } catch (err) {
-      setError('Failed to create folder. Please try again.')
+      setError('Failed to create folder. Please try again. More details in the console.')
+      console.error('err: ', err)
     } finally {
       setIsSubmitting(false)
     }
