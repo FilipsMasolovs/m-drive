@@ -1,52 +1,81 @@
-.formContainer {
-  position: fixed;
-  right: 32px;
-  bottom: 32px;
+.pageContainer {
   display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
   align-items: center;
   justify-content: center;
-  width: 160px;
+  background-image: linear-gradient(to right bottom, rgb(17, 24, 39), rgb(0, 0, 0));
+  color: rgb(209, 213, 219);
+  min-height: 100vh;
 }
 
-.formButton {
-  width: 9rem;
-  height: 2.5rem;
-  cursor: pointer;
+.title {
+  font-weight: 900;
+  font-style: italic;
+  font-size: 4rem;
+  line-height: 1.2;
+  letter-spacing: -7px;
+  position: relative;
+  margin-bottom: 76px;
+  margin-top: -40px;
+}
+
+.title i {
+  z-index: 10;
+  -webkit-text-stroke-width: 3px;
+  -webkit-text-stroke-color: #fff;
+  -webkit-text-fill-color: transparent;
+  position: absolute;
+  left: -30px;
+  display: block;
+  -webkit-clip-path: inset(56% 0 0 0);
+  clip-path: inset(56% 0 0 0);
+  box-sizing: border-box;
+  padding: 0 30px;
+  transition: all 0.85s cubic-bezier(0.25, 1, 0.33, 1);
+  white-space: nowrap;
+}
+
+.title i:first-of-type {
+  top: 16px;
+  opacity: 0.5;
+}
+
+.title i:last-of-type {
+  top: 35px;
+  opacity: 0.2;
+}
+
+.loginButton {
+  position: absolute;
+  width: 120px;
+  height: 30px;
+  right: 8px;
+  bottom: 8px;
   border-radius: var(--border-radius);
-  --tw-bg-opacity: 1;
-  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  background-color: var(--color-azul);
+  color: var(--color-cold-morning);
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.formDetails {
-  height: 1.25rem;
-  line-height: 1.25rem;
-  font-size: 0.75rem;
-  --tw-text-opacity: 1;
-  color: rgb(75 85 99 / var(--tw-text-opacity, 1));
-}
+@media all and (min-width: 768px) {
+  .title {
+    font-size: 12rem;
+  }
 
-/* ONLY TEMPORARY STYLES */
-@media all and (max-width: 768px) {
-  .formContainer {
+  .title i:first-of-type {
+    top: 60px;
+  }
+
+  .title i:last-of-type {
+    top: 120px;
+  }
+
+  .loginButton {
+    width: 144px;
+    height: 40px;
     right: 16px;
     bottom: 16px;
-    width: 120px;
-  }
-
-  .formButton {
-    width: 7rem;
-    height: 2rem;
-    font-size: 0.85rem;
-  }
-
-  .formDetails {
-    font-size: 0.65rem;
   }
 }

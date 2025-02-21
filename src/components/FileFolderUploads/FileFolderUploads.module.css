@@ -1,7 +1,7 @@
 .fileAndFolderCreationContainer {
   position: fixed;
-  right: 32px;
-  bottom: 32px;
+  right: 16px;
+  bottom: 16px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -23,8 +23,8 @@
 }
 
 .folderNameInput {
-  padding-right: 10px;
   padding: 4px;
+  padding-right: 26px;
   border: 2px solid var(--color-azul);
   outline: none;
   background-color: rgb(299, 299, 299);
@@ -34,7 +34,7 @@
 
 .createFolderButton {
   position: absolute;
-  right: -24px;
+  right: -8px;
   top: 0;
   width: 32px;
   height: 40px;
@@ -57,20 +57,21 @@
   position: absolute;
   background: rgb(299, 299, 299);
   color: red;
-  width: 168px;
+  width: 152px;
   height: 56px;
   bottom: 96px;
-  border-radius: 6px;
+  border-radius: var(--border-radius);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2px;
+  font-size: smaller;
 }
 
 @media all and (max-width: 768px) {
   .fileAndFolderCreationContainer {
-    right: 16px;
-    bottom: 16px;
+    right: 8px;
+    bottom: 8px;
     gap: 6px;
   }
 
@@ -79,7 +80,7 @@
   .uploadFileButton,
   .uploadFileButton label {
     width: 120px;
-    height: 32px;
+    height: 30px;
   }
 
   .folderNameInput {

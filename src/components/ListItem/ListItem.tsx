@@ -7,14 +7,14 @@ import { type FileItem, type FolderItem } from '~/types/types'
 
 import styles from './ListItem.module.css'
 
-interface ListItemProps {
+export interface ListItemProps {
   item: FileItem | FolderItem
-  handleItemClick: () => void
-  handleDelete: () => void
-  handleRename: () => void
+  handleItemClick: React.MouseEventHandler<HTMLDivElement>
+  onRename: React.MouseEventHandler<HTMLButtonElement>
+  onDelete: React.MouseEventHandler<HTMLButtonElement>
 }
 
-export default function ListItem({ item, handleItemClick, handleDelete, handleRename }: ListItemProps) {
+export default function ListItem({ item, handleItemClick, onRename, onDelete }: ListItemProps) {
   const commonContent = (
     <>
       <div className={styles.infoContainer}>
@@ -51,30 +51,14 @@ export default function ListItem({ item, handleItemClick, handleDelete, handleRe
             </svg>
           </button>
         )}
-        <button
-          className={styles.renameButton}
-          onClick={(e) => {
-            e.stopPropagation()
-            e.preventDefault()
-            handleRename()
-          }}
-          aria-label="Rename item"
-        >
+        <button className={styles.renameButton} onClick={onRename} aria-label="Rename item">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M9 5H14M14 5H19M14 5V19M9 19H14M14 19H19" stroke="white" />
             <path d="M11 9H4C2.89543 9 2 9.89543 2 11V15H11" stroke="white" />
             <path d="M17 15H20C21.1046 15 22 14.1046 22 13V9H17" stroke="white" />
           </svg>
         </button>
-        <button
-          className={styles.deleteButton}
-          onClick={(e) => {
-            e.stopPropagation()
-            e.preventDefault()
-            handleDelete()
-          }}
-          aria-label="Delete file"
-        >
+        <button className={styles.deleteButton} onClick={onDelete} aria-label="Delete file">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M20.5001 6H3.5" stroke="white" strokeLinecap="round" />
             <path
@@ -102,7 +86,7 @@ export default function ListItem({ item, handleItemClick, handleDelete, handleRe
     )
   } else {
     return (
-      <div className={styles.listContainer} onClick={() => handleItemClick()}>
+      <div className={styles.listContainer} onClick={handleItemClick}>
         {commonContent}
       </div>
     )

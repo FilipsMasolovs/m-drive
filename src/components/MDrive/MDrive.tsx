@@ -1,38 +1,20 @@
 'use client'
 
-import { UserButton } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useEffect } from 'react'
 
-import AppLogo from '~/components/AppLogo/AppLogo'
 import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs'
 import FileFolderUploads from '~/components/FileFolderUploads/FileFolderUploads'
-import GlobalSearch from '~/components/GlobalSearch/GlobalSearch'
-import HeaderItemsContainer from '~/components/HeaderItemsContainer/HeaderItemsContainer'
 import ItemModal from '~/components/ItemModal/ItemModal'
 import ListItem from '~/components/ListItem/ListItem'
 import LoadingComponent from '~/components/LoadingComponent/LoadingComponent'
 import RenameModal from '~/components/RenameModal/RenameModal'
-import UsageIndicator from '~/components/UsageIndicator/UsageIndicator'
 
-import { handleDeleteItem } from '~/lib/utils/handleDeleteItem'
-import { useSessionPreloadedFiles } from '~/lib/utils/useSessionPreloadedFiles'
-import type { FolderItem, FileItem } from '~/types/types'
+import { getPreviewType } from '~/lib/utils/getPreviewType'
+import { useDriveStore } from '~/store/driveStore'
+import type { FolderItem, FileItem, DriveItem } from '~/types/types'
 
 import styles from './MDrive.module.css'
-
-export type DriveItem = FolderItem | FileItem
-
-interface ModalState {
-  open: boolean
-  id: number
-  type: string
-  realType: string
-  size: number
-  url: string
-  uploadThingUrl: string
-  name: string
-}
 
 interface MDriveProps {
   files: FileItem[]
@@ -46,225 +28,94 @@ interface MDriveProps {
 
 export default function MDrive({ files, folders, parents, currentFolderId, rootFolderId, capacityUsed, maxCapacity }: MDriveProps) {
   const router = useRouter()
-
   const currentItems: DriveItem[] = [...folders, ...files]
 
-  const { files: preloadedFiles, setFiles: setPreloadedFiles } = useSessionPreloadedFiles()
-
-  const blobUrlsRef = useRef<Record<number, string>>({})
-
-  const [deleting, setDeleting] = useState(false)
-
-  const [modal, setModal] = useState<ModalState>({
-    open: false,
-    id: 0,
-    type: '',
-    realType: '',
-    size: 0,
-    url: '',
-    uploadThingUrl: '',
-    name: '',
-  })
-
-  const [renameModal, setRenameModal] = useState<{
-    open: boolean
-    itemId: number
-    currentName: string
-  } | null>(null)
+  const {
+    modal,
+    renameModal,
+    isDeleting,
+    preloadedFiles,
+    handleItemClick,
+    handleModalClose,
+    handleRename,
+    handleRenameClick,
+    handleDelete,
+    preloadFiles,
+    clearBlobUrls,
+    setPreloadedFiles,
+    setModal,
+  } = useDriveStore()
 
   useEffect(() => {
-    async function preloadFiles() {
-      const fileItems = files.filter((file) => file.url !== '')
-
-      await Promise.all(
-        fileItems.map(async (file) => {
-          try {
-            if (!preloadedFiles[file.id] || preloadedFiles[file.id]!.originalUrl !== file.url) {
-              const res = await fetch(file.url)
-              if (res.ok) {
-                const blob = await res.blob()
-                const blobUrl = URL.createObjectURL(blob)
-
-                blobUrlsRef.current[file.id] = blobUrl
-
-                setPreloadedFiles((prev) => ({
-                  ...prev,
-                  [file.id]: {
-                    name: file.name,
-                    originalUrl: file.url,
-                  },
-                }))
-              } else {
-                console.warn(`Failed to preload file ${file.name}`)
-              }
-            } else {
-              if (!blobUrlsRef.current[file.id]) {
-                const res = await fetch(file.url)
-                if (res.ok) {
-                  const blob = await res.blob()
-                  blobUrlsRef.current[file.id] = URL.createObjectURL(blob)
-                }
-              }
-            }
-          } catch (error) {
-            console.error('Error preloading file', file.name, error)
-          }
-        }),
-      )
-    }
-    void preloadFiles()
-  }, [files, setPreloadedFiles])
+    void preloadFiles(files)
+  }, [files, preloadFiles])
 
   useEffect(() => {
     return () => {
-      Object.values(preloadedFiles).forEach((entry) => URL.revokeObjectURL(entry.originalUrl))
+      clearBlobUrls()
     }
-  }, [preloadedFiles])
-
-  const getPreviewType = (file: FileItem): string => {
-    if (file.type.includes('image')) return 'image'
-    if (file.type.includes('pdf')) return 'pdf'
-    if (file.type.includes('video')) return 'video'
-    if (file.type.includes('text/plain')) return 'text/plain'
-    if (file.type.includes('audio')) return 'audio'
-    if (file.type.includes('docx') || file.type.includes('officedocument')) return 'docx'
-    if (file.type.includes('zip') || file.type.includes('rar') || file.type.includes('application')) return 'application'
-    return file.type
-  }
-
-  useEffect(() => {
-    return () => {
-      Object.values(blobUrlsRef.current).forEach(URL.revokeObjectURL)
-      blobUrlsRef.current = {}
-    }
-  }, [])
-
-  const handleItemClick = (item: DriveItem) => {
-    if (typeof item.type === 'string' && !item.type.includes('folder')) {
-      const file = item as FileItem
-
-      if (!file.url) {
-        console.warn('No URL provided')
-        return
-      }
-
-      const preview = blobUrlsRef.current[file.id] ?? file.url
-      const currentName = preloadedFiles[file.id]?.name ?? file.name
-      const previewType = getPreviewType(file)
-
-      setModal({
-        open: true,
-        id: file.id,
-        type: previewType,
-        realType: file.type,
-        size: file.size,
-        url: preview,
-        uploadThingUrl: file.url,
-        name: currentName,
-      })
-    }
-  }
-
-  const handleRenameClick = (item: FileItem | FolderItem) => {
-    setRenameModal({ open: true, itemId: item.id, currentName: item.name })
-  }
-
-  const handleModalClose = useCallback((open: boolean) => {
-    setModal((prev) => ({ ...prev, open }))
-  }, [])
-
-  const handleRename = useCallback(() => {
-    if (modal.id) {
-      setRenameModal({ open: true, itemId: modal.id, currentName: modal.name })
-    }
-  }, [modal.id, modal.name])
-
-  const handleDelete = useCallback(async () => {
-    if (modal.id) {
-      setDeleting(true)
-      const fileToDelete = files.find((item) => item.id === modal.id)
-      if (fileToDelete) {
-        await handleDeleteItem(fileToDelete)
-      }
-      setDeleting(false)
-      setModal((prev) => ({ ...prev, open: false }))
-      router.refresh()
-    }
-  }, [modal.id, files, router])
+  }, [clearBlobUrls])
 
   return (
-    <div className={styles.pageContainer}>
-      {!modal.open && (
-        <>
-          <header className={styles.headerContainer}>
-            <HeaderItemsContainer>
-              <AppLogo redirectPath={`/m/${rootFolderId}`} />
-              <GlobalSearch handleItemClick={handleItemClick} />
-            </HeaderItemsContainer>
-            <HeaderItemsContainer>
-              <UsageIndicator capacityUsed={capacityUsed} maxCapacity={maxCapacity} />
-              <UserButton />
-            </HeaderItemsContainer>
-          </header>
-          <main className={styles.listContainer}>
-            <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
-            {currentItems.map((item, index) => {
-              const displayedItem = typeof item.type === 'string' && !item.type.includes('folder') ? { ...item, name: preloadedFiles[item.id]?.name ?? item.name } : item
-              return (
-                <ListItem
-                  key={`${item.id}-${index}`}
-                  item={displayedItem}
-                  handleItemClick={() => handleItemClick(item)}
-                  handleDelete={async () => {
-                    setDeleting(true)
-                    await handleDeleteItem(item)
-                    setDeleting(false)
-                  }}
-                  handleRename={() => handleRenameClick(item)}
-                />
-              )
-            })}
-          </main>
-        </>
-      )}
-      {!modal.open && capacityUsed <= maxCapacity && <FileFolderUploads currentFolderId={currentFolderId} />}
-      {modal.open && modal.type && (
-        <ItemModal
-          type={modal.type}
-          realType={modal.realType}
-          size={modal.size}
-          url={modal.url}
-          uploadThingUrl={modal.uploadThingUrl}
-          name={modal.name}
-          setIsModalOpen={handleModalClose}
-          onRename={handleRename}
-          onDelete={handleDelete}
-        />
-      )}
+    <main className={styles.pageContainer}>
+      <section className={styles.contentsContainer}>
+        <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
+        <div className={styles.listContainer}>
+          {currentItems.map((item, index) => {
+            const displayedItem =
+              typeof item.type === 'string' && !item.type.includes('folder')
+                ? {
+                    ...item,
+                    name: preloadedFiles[item.id]?.name ?? item.name,
+                  }
+                : item
+            return (
+              <ListItem
+                key={`${item.id}-${index}`}
+                item={displayedItem}
+                handleItemClick={() => handleItemClick(item, getPreviewType)}
+                onRename={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  handleRenameClick(item)
+                }}
+                onDelete={async (e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  await handleDelete(currentItems, router, item.id)
+                }}
+              />
+            )
+          })}
+        </div>
+      </section>
+      {capacityUsed <= maxCapacity && <FileFolderUploads currentFolderId={currentFolderId} />}
+      {modal.open && modal.type && <ItemModal {...modal} setIsModalOpen={handleModalClose} onRename={handleRename} onDelete={() => handleDelete(files, router)} />}
       {renameModal?.open && (
         <RenameModal
           currentName={renameModal.currentName}
           itemId={renameModal.itemId}
-          setIsModalOpen={(open) => setRenameModal((prev) => (prev ? { ...prev, open } : null))}
           onRenameSuccess={(newName: string) => {
-            setPreloadedFiles((prev) => {
-              if (prev[renameModal.itemId]) {
-                return {
-                  ...prev,
-                  [renameModal.itemId]: {
-                    originalUrl: prev[renameModal.itemId]!.originalUrl,
-                    name: newName,
-                  },
-                }
-              }
-              return prev
-            })
-            router.refresh()
+            if (preloadedFiles[renameModal.itemId]) {
+              setPreloadedFiles({
+                ...preloadedFiles,
+                [renameModal.itemId]: {
+                  name: newName,
+                  originalUrl: preloadedFiles[renameModal.itemId]!.originalUrl,
+                },
+              })
+            }
+
+            if (modal.id === renameModal.itemId) {
+              setModal({
+                ...modal,
+                name: newName,
+              })
+            }
           }}
-          setRenameModal={setRenameModal}
         />
       )}
-      {deleting && <LoadingComponent />}
-    </div>
+      {isDeleting && <LoadingComponent />}
+    </main>
   )
 }

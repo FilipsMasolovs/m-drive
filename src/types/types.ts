@@ -1,3 +1,5 @@
+export type DriveItem = FolderItem | FileItem
+
 export type FileItem = {
   id: number
   name: string

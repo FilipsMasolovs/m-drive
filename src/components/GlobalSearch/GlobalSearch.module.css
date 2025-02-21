@@ -1,6 +1,12 @@
+.searchContainer,
+.searchInput {
+  display: flex;
+  height: 20px;
+}
+
 .searchInput,
 .searchSuggestions {
-  width: 200px;
+  width: 160px;
   border-radius: var(--border-radius);
   font-size: 0.9rem;
   line-height: 1.25rem;
@@ -9,23 +15,18 @@
 }
 
 .searchInput {
-  height: 32px;
   padding: 4px;
   position: relative;
   outline: none;
   cursor: text;
-
-  &:focus-within {
-    outline: 2px solid var(--color-azul);
-  }
 }
 
 .searchSuggestions {
   max-height: 300px;
   overflow: hidden;
   position: absolute;
-  top: 82px;
-  overflow-y: scroll;
+  top: 36px;
+  overflow-y: auto;
 }
 
 .searchSuggestions::-webkit-scrollbar {
@@ -55,7 +56,7 @@
 .suggestionItem {
   display: flex;
   align-items: center;
-  width: 200px;
+  width: 160px;
   cursor: pointer;
   height: 24px;
   padding: 4px;
@@ -81,18 +82,27 @@
   width: 100%;
 }
 
-/* ONLY TEMPORARY STYLES */
-@media all and (max-width: 768px) {
+@media all and (min-width: 768px) {
+  .searchContainer,
   .searchInput {
-    width: 100px;
-    padding: 2px;
-    border-width: 1px;
-    font-size: 16px;
+    height: 40px;
+  }
+
+  .searchInput,
+  .searchSuggestions {
+    width: 400px;
+  }
+
+  .searchInput {
+    padding: 8px;
   }
 
   .searchSuggestions {
-    width: 100px;
-    max-height: 200px;
+    top: 72px;
+  }
+
+  .suggestionItem {
+    width: 400px;
   }
 }
 

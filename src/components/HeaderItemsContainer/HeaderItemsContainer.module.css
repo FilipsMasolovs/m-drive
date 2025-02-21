@@ -2,5 +2,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 8px;
+}
+
+@media all and (min-width: 768px) {
+  .headerItemsContainer {
+    gap: 16px;
+  }
 }

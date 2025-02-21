@@ -1,18 +1,23 @@
+'use client'
+
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-
-import type { DriveItem } from '~/components/MDrive/MDrive'
-
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import type { FileItem, FolderItem } from '~/types/types'
-
 import styles from './GlobalSearch.module.css'
 import { useDebounce } from '~/lib/utils/useDebounce'
+import { useDriveStore } from '~/store/driveStore'
+import { getPreviewType } from '~/lib/utils/getPreviewType'
 
 interface SearchResults {
   files: FileItem[]
   folders: FolderItem[]
 }
 
-export default function GlobalSearch({ handleItemClick }: { handleItemClick: (item: DriveItem) => void }) {
+export default function GlobalSearch() {
+  const router = useRouter()
+  const { handleItemClick, preloadFiles, clearBlobUrls } = useDriveStore()
+
   const [query, setQuery] = useState<string>('')
   const [results, setResults] = useState<SearchResults>({
     files: [],
@@ -49,30 +54,60 @@ export default function GlobalSearch({ handleItemClick }: { handleItemClick: (it
     void handleSearch(debouncedQuery)
   }, [debouncedQuery, handleSearch])
 
+  useEffect(() => {
+    if (results.files.length > 0) {
+      void preloadFiles(results.files)
+    }
+  }, [results.files, preloadFiles])
+
+  useEffect(() => {
+    return () => {
+      clearBlobUrls()
+    }
+  }, [clearBlobUrls])
+
+  const handleEnterKey = () => {
+    const totalItems = results.folders.length + results.files.length
+    if (selectedIndex < 0 || selectedIndex >= totalItems) return
+
+    if (selectedIndex < results.folders.length) {
+      const folder = results.folders[selectedIndex]
+      if (folder) {
+        router.push(`/m/${folder.id}`)
+        setQuery('')
+        setResults({ files: [], folders: [] })
+      }
+    } else {
+      const file = results.files[selectedIndex - results.folders.length]
+      if (file) {
+        handleItemClick(file, getPreviewType)
+        setQuery('')
+        setResults({ files: [], folders: [] })
+      }
+    }
+  }
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     const totalItems = results.folders.length + results.files.length
 
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault()
-        setSelectedIndex((prev) => (prev + 1) % totalItems)
+        if (totalItems > 0) setSelectedIndex((prev) => (prev + 1) % totalItems)
         break
       case 'ArrowUp':
         e.preventDefault()
-        setSelectedIndex((prev) => (prev - 1 + totalItems) % totalItems)
+        if (totalItems > 0) setSelectedIndex((prev) => (prev - 1 + totalItems) % totalItems)
         break
       case 'Enter':
         if (selectedIndex >= 0) {
           e.preventDefault()
-          const isFolder = selectedIndex < results.folders.length
-          const item = isFolder ? results.folders[selectedIndex] : results.files[selectedIndex - results.folders.length]
-          if (item) {
-            isFolder ? (window.location.href = `/m/${item.id}`) : handleItemClick(item)
-          }
+          handleEnterKey()
         }
         break
       case 'Escape':
         setQuery('')
+        setResults({ files: [], folders: [] })
         break
     }
   }
@@ -90,8 +125,13 @@ export default function GlobalSearch({ handleItemClick }: { handleItemClick: (it
                 onMouseEnter={() => setSelectedIndex(index)}
                 role="option"
                 aria-selected={selectedIndex === index}
+                onClick={() => {
+                  setQuery('')
+                }}
               >
-                <a href={`/m/${folder.id}`}>{folder.name}</a>
+                <Link href={`/m/${folder.id}`}>
+                  <span>{folder.name}</span>
+                </Link>
               </div>
             ))}
           </>
@@ -99,18 +139,25 @@ export default function GlobalSearch({ handleItemClick }: { handleItemClick: (it
         {results.files.length > 0 && (
           <>
             <h3 className={styles.suggestionType}>Files</h3>
-            {results.files.map((file, index) => (
-              <div
-                key={file.id}
-                className={`${styles.suggestionItem} ${selectedIndex === index + results.folders.length ? styles.selected : ''}`}
-                onMouseEnter={() => setSelectedIndex(index + results.folders.length)}
-                onClick={() => handleItemClick(file)}
-                role="option"
-                aria-selected={selectedIndex === index + results.folders.length}
-              >
-                <span>{file.name}</span>
-              </div>
-            ))}
+            {results.files.map((file, index) => {
+              const overallIndex = index + results.folders.length
+              return (
+                <div
+                  key={file.id}
+                  className={`${styles.suggestionItem} ${selectedIndex === overallIndex ? styles.selected : ''}`}
+                  onMouseEnter={() => setSelectedIndex(overallIndex)}
+                  onClick={() => {
+                    handleItemClick(file, getPreviewType)
+                    setQuery('')
+                    setResults({ files: [], folders: [] })
+                  }}
+                  role="option"
+                  aria-selected={selectedIndex === overallIndex}
+                >
+                  <span>{file.name}</span>
+                </div>
+              )
+            })}
           </>
         )}
       </>
@@ -118,7 +165,7 @@ export default function GlobalSearch({ handleItemClick }: { handleItemClick: (it
   }
 
   return (
-    <div role="search">
+    <div className={styles.searchContainer} role="search">
       <input
         type="text"
         placeholder="Search..."
@@ -127,7 +174,6 @@ export default function GlobalSearch({ handleItemClick }: { handleItemClick: (it
         onKeyDown={handleKeyDown}
         className={styles.searchInput}
         aria-label="Search files and folders"
-        aria-expanded={query.trim() !== ''}
         aria-controls="search-results"
       />
       {query.trim() !== '' && (

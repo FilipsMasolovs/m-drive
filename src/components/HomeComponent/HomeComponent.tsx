@@ -1,5 +1,3 @@
-import AppLogo from '~/components/AppLogo/AppLogo'
-
 import styles from './HomeComponent.module.css'
 
 interface HomeComponentProps {
@@ -9,9 +7,6 @@ interface HomeComponentProps {
 export default function HomeComponent({ buttonComponent }: HomeComponentProps) {
   return (
     <div className={styles.pageContainer}>
-      <div className={styles.logoContainer}>
-        <AppLogo redirectPath="/" />
-      </div>
       <h1 className={styles.title}>
         M-DRIVE
         <i aria-hidden="true">M-DRIVE</i>

@@ -1,8 +1,7 @@
 'use server'
 
-import type { DriveItem } from '~/components/MDrive/MDrive'
-
 import ACTIONS from '~/server/actions/actions'
+import { type DriveItem } from '~/types/types'
 
 export async function handleDeleteItem(item: DriveItem): Promise<void> {
   try {

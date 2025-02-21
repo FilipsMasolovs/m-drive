@@ -1,37 +1,24 @@
 .pageContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  padding: 32px;
+  padding: 8px;
+  padding-top: 46px;
   background-image: linear-gradient(to right bottom, rgb(17, 24, 39), rgb(0, 0, 0));
   color: rgb(209, 213, 219);
   min-height: 100vh;
 }
 
-.headerContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 56px;
-}
-
 .listContainer {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 }
 
-/* ONLY TEMPORARY STYLES */
-@media all and (max-width: 768px) {
+@media all and (min-width: 768px) {
   .pageContainer {
     padding: 16px;
-  }
-
-  .headerContainer {
-    height: 32px;
+    padding-top: 92px;
   }
 
   .listContainer {
-    gap: 8px;
+    gap: 16px;
   }
 }
