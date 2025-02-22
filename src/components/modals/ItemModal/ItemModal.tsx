@@ -50,7 +50,7 @@ export default React.memo(function ItemModal({ type, size, url, uploadThingUrl, 
         return <iframe src={url} title={name} className={styles.modalContent} width="100%" height="100%" />
       case 'audio':
         return (
-          <audio controls className={styles.modalContent}>
+          <audio controls className={styles.modalContent} style={{ height: '152px' }}>
             <source src={url} type="audio/mp3" />
             Your browser does not support the audio element.
           </audio>
