@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { ActionButton } from '~/components/common/ActionButton/ActionButton'
+import ActionButton from '~/components/common/ActionButton/ActionButton'
 import { ArrowLeftIcon, ArrowRightIcon, DeleteIcon, DownloadIcon, RenameIcon } from '~/components/common/Icons/Icons'
 import GenericModal from '~/components/modals/GenericModal/GenericModal'
 import { isMobileDevice } from '~/lib/utils/device/isMobileDevice'
@@ -25,6 +25,7 @@ interface ItemModalProps {
 }
 
 export default React.memo(function ItemModal({ type, size, url, uploadThingUrl, name, setIsModalOpen, onRename, onDelete, onPrev, onNext }: ItemModalProps) {
+	console.log('type: ', type)
 	const renderContent = () => {
 		switch (type) {
 			case FileTypes.IMAGE:

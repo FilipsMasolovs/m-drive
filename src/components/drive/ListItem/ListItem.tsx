@@ -5,6 +5,7 @@ import { formatSize } from '~/lib/utils/files/formatSize'
 import { getItemIcon } from '~/lib/utils/files/getItemIcon'
 
 import { DeleteIcon, DownloadIcon, RenameIcon } from '~/components/common/Icons/Icons'
+import { getPreviewType } from '~/lib/utils/files/getPreviewType'
 import { type FileItem, type FolderItem } from '~/types/drive'
 import styles from './ListItem.module.css'
 
@@ -26,9 +27,7 @@ export default function ListItem({ item, handleItemClick, onRename, onDelete }: 
 				{getItemIcon(item.type)}
 				<div className={styles.itemDetails}>
 					<span className={styles.itemName}>{item.name}</span>
-					<span className={styles.itemTypeSize}>
-						{`${item.type[0]?.toUpperCase()}${item.type.slice(1)}${item.type !== 'folder' && 'size' in item ? ` • ${formatSize(item.size)}` : ''}`}
-					</span>
+					<span className={styles.itemTypeSize}>{isFolder(item) ? 'folder' : `${getPreviewType(item)} • ${formatSize(item.size)} `}</span>
 				</div>
 			</div>
 			<div className={styles.actionButtons}>

@@ -11,7 +11,7 @@ export default function UsageIndicator({ capacityUsed, maxCapacity }: UsageIndic
 	const usedPercentage = Math.min((capacityUsed / maxCapacity) * 100, 100)
 
 	return (
-		<div className={styles.usageIndicatorContainer}>
+		<div className={styles.usageIndicatorContainer} aria-label={`Storage used: ${formatSize(capacityUsed)} of ${formatSize(maxCapacity)}`}>
 			<span>0 MB</span>
 			<div className={styles.usageBar}>
 				<div className={styles.usageFill} style={{ width: `${usedPercentage}%` }} />

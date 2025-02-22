@@ -7,10 +7,10 @@ const config = {
 	plugins: ['@typescript-eslint', 'drizzle'],
 	extends: ['next/core-web-vitals', 'plugin:@typescript-eslint/recommended-type-checked', 'plugin:@typescript-eslint/stylistic-type-checked'],
 	rules: {
-		"padding-line-between-statements": [
-			"error",
-			{ "blankLine": "always", "prev": "function", "next": "function" },
-			{ "blankLine": "always", "prev": "*", "next": "return" }
+		'padding-line-between-statements': [
+			'error',
+			{ blankLine: 'always', prev: 'function', next: 'function' },
+			{ blankLine: 'always', prev: '*', next: 'return' },
 		],
 		'@typescript-eslint/array-type': 'off',
 		'@typescript-eslint/consistent-type-definitions': 'off',

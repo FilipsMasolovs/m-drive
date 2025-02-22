@@ -7,7 +7,7 @@ interface ActionButtonProps {
 	isMobile: boolean
 }
 
-function ActionButtonComponent({ onClick, icon, label, isMobile }: ActionButtonProps) {
+export default React.memo(function ActionButton({ onClick, icon, label, isMobile }: ActionButtonProps) {
 	const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.stopPropagation()
 		e.preventDefault()
@@ -19,6 +19,4 @@ function ActionButtonComponent({ onClick, icon, label, isMobile }: ActionButtonP
 			{isMobile ? icon : label}
 		</button>
 	)
-}
-
-export const ActionButton = React.memo(ActionButtonComponent)
+})

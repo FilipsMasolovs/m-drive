@@ -47,7 +47,6 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
 			open: true,
 			id: prevFile.id,
 			type: previewType,
-			realType: prevFile.type,
 			size: prevFile.size,
 			url: prevFile.url,
 			uploadThingUrl: prevFile.url,
@@ -66,7 +65,6 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
 			open: true,
 			id: nextFile.id,
 			type: previewType,
-			realType: nextFile.type,
 			size: nextFile.size,
 			url: nextFile.url,
 			uploadThingUrl: nextFile.url,
@@ -125,7 +123,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
 					}}
 				/>
 			)}
-			{isDeleting && <LoadingComponent backgroundColor='rgba(0, 0, 0, 0.8)' />}
+			{isDeleting && <LoadingComponent backgroundColor="rgba(0, 0, 0, 0.8)" />}
 		</main>
 	)
 }

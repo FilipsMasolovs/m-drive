@@ -1,8 +1,9 @@
 import Link from 'next/link'
+import React from 'react'
 
 import styles from './AppLogo.module.css'
 
-export default function AppLogo({ redirectPath }: { redirectPath: string }) {
+export default React.memo(function AppLogo({ redirectPath }: { redirectPath: string }) {
 	return (
 		<Link href={redirectPath} className={styles.appLogo} aria-label="Home">
 			<svg viewBox="0 0 32 32" fill="none">
@@ -12,4 +13,4 @@ export default function AppLogo({ redirectPath }: { redirectPath: string }) {
 			</svg>
 		</Link>
 	)
-}
+})

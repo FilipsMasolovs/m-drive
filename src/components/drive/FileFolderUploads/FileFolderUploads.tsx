@@ -57,15 +57,13 @@ export default function FileFolderUploads({ currentFolderId }: FileFolderUploads
 		}
 	}
 
-	useClickOutside(
-		formRef,
-		() => {
-			setFolderName('')
-			setIsCreatingFolder(false)
-			setError(null)
-		},
-		isCreatingFolder,
-	)
+	const resetFolderCreation = () => {
+		setFolderName('')
+		setIsCreatingFolder(false)
+		setError(null)
+	}
+
+	useClickOutside(formRef, resetFolderCreation, isCreatingFolder)
 
 	const currentValidationError = validateFolderName(folderName)
 	const isFolderNameValid = !currentValidationError

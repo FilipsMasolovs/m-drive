@@ -15,6 +15,10 @@ export function getPreviewType(file: FileItem): FileType {
 		return FileTypes.TXT
 	} else if (fileType.includes('audio')) {
 		return FileTypes.AUDIO
+	} else if (fileType.endsWith('.document')) {
+		return FileTypes.DOCUMENT
+	} else if (fileType.endsWith('sheet')) {
+		return FileTypes.SPREADSHEET
 	} else if (FileExtensions.JSON.some((ext) => fileName.endsWith(ext))) {
 		return FileTypes.JSON
 	} else if (FileExtensions.MARKDOWN.some((ext) => fileName.endsWith(ext))) {

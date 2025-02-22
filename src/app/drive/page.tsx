@@ -9,7 +9,7 @@ export default async function DrivePage() {
 		return redirect('/')
 	}
 
-	const rootFolder = await QUERIES.getRootFolderForUser(session.userId) ?? { id: await MUTATIONS.onboardUser(session.userId) }
+	const rootFolder = (await QUERIES.getRootFolderForUser(session.userId)) ?? { id: await MUTATIONS.onboardUser(session.userId) }
 
 	return <DriveRedirector targetFolderId={rootFolder.id} />
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useDebounce } from '~/hooks/useDebounce'
 import { getPreviewType } from '~/lib/utils/files/getPreviewType'
@@ -84,7 +84,7 @@ export default function GlobalSearch() {
 				handleItemClick(file, getPreviewType)
 				setQuery('')
 				setResults({ files: [], folders: [] })
-				redirect(`/m/${file.parent}`)
+				router.push(`/m/${file.parent}`)
 			}
 		}
 	}
@@ -161,7 +161,7 @@ export default function GlobalSearch() {
 										handleItemClick(file, getPreviewType)
 										setQuery('')
 										setResults({ files: [], folders: [] })
-										redirect(`/m/${file.parent}`)
+										router.push(`/m/${file.parent}`)
 									}}
 									role="option"
 									aria-selected={selectedIndex === overallIndex}
@@ -182,7 +182,10 @@ export default function GlobalSearch() {
 				type="text"
 				placeholder="Search..."
 				value={query}
-				onChange={(e) => setQuery(e.target.value)}
+				onChange={(e) => {
+					setSelectedIndex(-1)
+					setQuery(e.target.value)
+				}}
 				onKeyDown={handleKeyDown}
 				className={styles.searchInput}
 				aria-label="Search files and folders"

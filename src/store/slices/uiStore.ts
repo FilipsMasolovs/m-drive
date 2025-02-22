@@ -7,7 +7,6 @@ interface ModalState {
 	open: boolean
 	id: number
 	type: string
-	realType: string
 	size: number
 	url: string
 	uploadThingUrl: string
@@ -38,7 +37,6 @@ const initialModalState: ModalState = {
 	open: false,
 	id: 0,
 	type: '',
-	realType: '',
 	size: 0,
 	url: '',
 	uploadThingUrl: '',
@@ -63,7 +61,6 @@ export const useUIStore = create<UIStore>((set, get) => ({
 				open: true,
 				id: file.id,
 				type: previewType,
-				realType: file.type,
 				size: file.size,
 				url: file.url,
 				uploadThingUrl: file.url,
