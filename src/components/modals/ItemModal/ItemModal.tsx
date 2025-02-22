@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react'
-import GenericModal from '~/components/modals/GenericModal/GenericModal'
-import styles from './ItemModal.module.css'
-import { forceDownload } from '~/lib/utils/files/forceDownload'
-import { isMobileDevice } from '~/lib/utils/device/isMobileDevice'
-import { formatSize } from '~/lib/utils/files/formatSize'
 import { ActionButton } from '~/components/common/ActionButton/ActionButton'
 import { ArrowLeftIcon, ArrowRightIcon, DeleteIcon, DownloadIcon, RenameIcon } from '~/components/common/Icons/Icons'
+import GenericModal from '~/components/modals/GenericModal/GenericModal'
+import { isMobileDevice } from '~/lib/utils/device/isMobileDevice'
+import { forceDownload } from '~/lib/utils/files/forceDownload'
+import { formatSize } from '~/lib/utils/files/formatSize'
+import styles from './ItemModal.module.css'
 
-import MarkdownPreview from '../previews/MarkdownPreview'
-import JsonPreview from '../previews/JsonPreview'
 import { FileTypes } from '~/lib/constants/fileTypes'
+import JsonPreview from '../previews/JsonPreview'
+import MarkdownPreview from '../previews/MarkdownPreview'
 
 interface ItemModalProps {
 	type: string

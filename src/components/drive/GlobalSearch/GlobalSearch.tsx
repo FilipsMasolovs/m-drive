@@ -1,13 +1,13 @@
 'use client'
 
-import React, { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { redirect, useRouter } from 'next/navigation'
-import styles from './GlobalSearch.module.css'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useDebounce } from '~/hooks/useDebounce'
-import { useDriveStore } from '~/store'
 import { getPreviewType } from '~/lib/utils/files/getPreviewType'
+import { useDriveStore } from '~/store'
 import { type FileItem, type FolderItem } from '~/types/drive'
+import styles from './GlobalSearch.module.css'
 
 interface SearchResults {
 	files: FileItem[]

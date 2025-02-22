@@ -1,12 +1,12 @@
 import Link from 'next/link'
 
-import { getItemIcon } from '~/lib/utils/files/getItemIcon'
-import { formatSize } from '~/lib/utils/files/formatSize'
 import { forceDownload } from '~/lib/utils/files/forceDownload'
+import { formatSize } from '~/lib/utils/files/formatSize'
+import { getItemIcon } from '~/lib/utils/files/getItemIcon'
 
-import styles from './ListItem.module.css'
 import { DeleteIcon, DownloadIcon, RenameIcon } from '~/components/common/Icons/Icons'
 import { type FileItem, type FolderItem } from '~/types/drive'
+import styles from './ListItem.module.css'
 
 export interface ListItemProps {
 	item: FileItem | FolderItem

@@ -1,5 +1,5 @@
 import { File, Folder } from 'lucide-react'
-import { FileTypes, FileIconColors } from '~/lib/constants/fileTypes'
+import { FileIconColors, FileTypes } from '~/lib/constants/fileTypes'
 
 export const getItemIcon = (type: string) => {
 	const lowerType = type.toLowerCase()

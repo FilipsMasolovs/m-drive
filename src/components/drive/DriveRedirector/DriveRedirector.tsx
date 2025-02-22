@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import LoadingComponent from '~/components/common/LoadingComponent/LoadingComponent'
 
 interface DriveRedirectorProps {

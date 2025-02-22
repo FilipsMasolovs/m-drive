@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { UploadButton } from '~/lib/api/uploadthing'
-import styles from './FileFolderUploads.module.css'
-import { handleCreateFolder } from '~/server/actions/files/handleCreateFolder'
+import React, { useRef, useState } from 'react'
 import useClickOutside from '~/hooks/useClickOutside'
+import { UploadButton } from '~/lib/api/uploadthing'
 import { FOLDER_VALIDATION } from '~/lib/constants/validation'
+import { handleCreateFolder } from '~/server/actions/files/handleCreateFolder'
+import styles from './FileFolderUploads.module.css'
 
 interface FileFolderUploadsProps {
 	currentFolderId: number

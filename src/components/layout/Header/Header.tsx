@@ -1,9 +1,9 @@
-import { UserButton, SignedIn } from '@clerk/nextjs'
+import { SignedIn, UserButton } from '@clerk/nextjs'
 import AppLogo from '~/components/common/AppLogo/AppLogo'
+import GlobalSearch from '~/components/drive/GlobalSearch/GlobalSearch'
+import UsageIndicator from '~/components/drive/UsageIndicator/UsageIndicator'
 import HeaderItemsContainer from '~/components/layout/HeaderItemsContainer/HeaderItemsContainer'
 import styles from './Header.module.css'
-import UsageIndicator from '~/components/drive/UsageIndicator/UsageIndicator'
-import GlobalSearch from '~/components/drive/GlobalSearch/GlobalSearch'
 
 interface HeaderProps {
 	redirectPath: string

@@ -1,7 +1,7 @@
-import { create } from 'zustand'
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
-import type { DriveItem, FileItem } from '~/types/drive'
+import { create } from 'zustand'
 import { handleDeleteItem } from '~/server/actions/files/handleDeleteItem'
+import type { DriveItem, FileItem } from '~/types/drive'
 
 interface ModalState {
 	open: boolean
@@ -55,7 +55,6 @@ export const useUIStore = create<UIStore>((set, get) => ({
 	handleItemClick: (item, getPreviewType) => {
 		const file = item as FileItem
 		if (!file.url) {
-			console.warn('No URL provided')
 			return
 		}
 		const previewType = getPreviewType(file)

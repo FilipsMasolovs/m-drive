@@ -1,20 +1,19 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import React from 'react'
 
+import LoadingComponent from '~/components/common/LoadingComponent/LoadingComponent'
 import Breadcrumbs from '~/components/drive/Breadcrumbs/Breadcrumbs'
 import FileFolderUploads from '~/components/drive/FileFolderUploads/FileFolderUploads'
-import ItemModal from '~/components/modals/ItemModal/ItemModal'
 import ListItem from '~/components/drive/ListItem/ListItem'
-import LoadingComponent from '~/components/common/LoadingComponent/LoadingComponent'
+import ItemModal from '~/components/modals/ItemModal/ItemModal'
 import RenameModal from '~/components/modals/RenameModal/RenameModal'
 
 import { getPreviewType } from '~/lib/utils/files/getPreviewType'
 import { useDriveStore } from '~/store'
 
+import { type DriveItem, type FileItem, type FolderItem } from '~/types/drive'
 import styles from './MDrive.module.css'
-import { type FileItem, type FolderItem, type DriveItem } from '~/types/drive'
 
 interface MDriveProps {
 	files: FileItem[]

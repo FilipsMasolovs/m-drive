@@ -1,9 +1,9 @@
 'use client'
 
-import { usePathname, useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
-import { usePostHog } from 'posthog-js/react'
 import { useUser } from '@clerk/nextjs'
+import { usePathname, useSearchParams } from 'next/navigation'
+import { usePostHog } from 'posthog-js/react'
+import { useEffect } from 'react'
 
 export default function PostHogPageView(): null {
 	const posthog = usePostHog()

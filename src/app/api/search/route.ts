@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
 import { QUERIES } from '~/server/db/queries'
 
 export async function GET(request: Request) {

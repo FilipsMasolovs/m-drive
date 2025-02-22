@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
-import { MUTATIONS, QUERIES } from '~/server/db/queries'
 import DriveRedirector from '~/components/drive/DriveRedirector/DriveRedirector'
+import { MUTATIONS, QUERIES } from '~/server/db/queries'
 
 export default async function DrivePage() {
 	const session = await auth()

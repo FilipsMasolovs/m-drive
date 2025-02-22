@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { ChevronRight, ChevronDown } from 'lucide-react'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
-import styles from './Breadcrumbs.module.css'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import useClickOutside from '~/hooks/useClickOutside'
 import useContainerWidth from '~/hooks/useContainerWidth'
 import { type FolderItem } from '~/types/drive'
+import styles from './Breadcrumbs.module.css'
 
 interface BreadcrumbsProps {
 	breadcrumbs: FolderItem[]

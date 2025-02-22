@@ -84,6 +84,7 @@ UPLOADTHING_APP_ID=
 ### Running the Project
 
 1. **Development**
+
 ```bash
 npm run dev
 # or
@@ -95,9 +96,9 @@ pnpm run dev
 Choose any means of production deploys you are comfortable with.\
 Recommended deployment platforms:
 
-* **[Vercel](https://vercel.com)**
-* **[Netlify](https://www.netlify.com)**
-* **[Railway](https://railway.com)**
+- **[Vercel](https://vercel.com)**
+- **[Netlify](https://www.netlify.com)**
+- **[Railway](https://railway.com)**
 
 ## 📁 Project Structure
 
@@ -126,23 +127,23 @@ src/
 
 ## 🔒 Security
 
-* **Authentication:** Protected routes and API endpoints using Clerk middleware
-* **File Access:** User-specific file access control
-* **API Security:** Rate limiting and request validation
-* **Database:** Prepared statements and input sanitization
+- **Authentication:** Protected routes and API endpoints using Clerk middleware
+- **File Access:** User-specific file access control
+- **API Security:** Rate limiting and request validation
+- **Database:** Prepared statements and input sanitization
 
 ## ⚡ Performance
 
-* **File Preloading:** Intelligent file preloading for faster previews
-* **Lazy Loading:** Components and modals loaded on demand
-* **Caching:** Browser and server-side caching strategies
-* **Image Optimization:** Next.js image optimization
+- **File Preloading:** Intelligent file preloading for faster previews
+- **Lazy Loading:** Components and modals loaded on demand
+- **Caching:** Browser and server-side caching strategies
+- **Image Optimization:** Next.js image optimization
 
 ## 📈 Monitoring
 
-* **Analytics:** PostHog dashboard for user behavior
-* **Error Tracking:** Console logging and error boundaries
-* **Performance Monitoring:** Built-in Next.js analytics
+- **Analytics:** PostHog dashboard for user behavior
+- **Error Tracking:** Console logging and error boundaries
+- **Performance Monitoring:** Built-in Next.js analytics
 
 ## 🤝 Contributing
 
@@ -158,13 +159,13 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🙏 Acknowledgments
 
-* [Next.js](https://nextjs.org/)
-* [Clerk](https://clerk.com)
-* [PostHog](https://posthog.com)
-* [UploadThing](https://uploadthing.com)
-* [Drizzle ORM](https://orm.drizzle.team)
-* [SingleStore](https://www.singlestore.com)
+- [Next.js](https://nextjs.org/)
+- [Clerk](https://clerk.com)
+- [PostHog](https://posthog.com)
+- [UploadThing](https://uploadthing.com)
+- [Drizzle ORM](https://orm.drizzle.team)
+- [SingleStore](https://www.singlestore.com)
 
-* And for the first steps **Theo**: [twitch.tv/theo](https://www.twitch.tv/theo) | [youtube.com/c/TheoBrowne1017](https://www.youtube.com/c/TheoBrowne1017)
+- And for the first steps **Theo**: [twitch.tv/theo](https://www.twitch.tv/theo) | [youtube.com/c/TheoBrowne1017](https://www.youtube.com/c/TheoBrowne1017)
 
 ### Made with ❤️ by Filips Masolovs [GitHub](https://github.com/FilipsMasolovs) | [LinkedIn](https://www.linkedin.com/in/filips-masolovs)
