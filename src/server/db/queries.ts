@@ -23,10 +23,12 @@ export const QUERIES = {
 			currentId = folder[0]?.parent
 		}
 		parents.shift()
+
 		return parents
 	},
 	getFolderById: async function (folderId: number) {
 		const folder = await db.select().from(foldersSchema).where(eq(foldersSchema.id, folderId))
+
 		return folder[0]
 	},
 	getRootFolderForUser: async function (userId: string) {
@@ -34,6 +36,7 @@ export const QUERIES = {
 			.select()
 			.from(foldersSchema)
 			.where(and(eq(foldersSchema.ownerId, userId), isNull(foldersSchema.parent)))
+
 		return folder[0]
 	},
 	getAllFiles: function (userId: string) {

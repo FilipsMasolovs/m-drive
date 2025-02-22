@@ -6,5 +6,6 @@ export default async function checkIfUserInSession() {
 	if (!session.userId) {
 		redirect('/')
 	}
+
 	return session
 }

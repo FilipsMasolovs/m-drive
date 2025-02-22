@@ -34,6 +34,7 @@ export default function GlobalSearch() {
 	const handleSearch = useCallback(async (searchQuery: string) => {
 		if (!searchQuery.trim()) {
 			setResults({ files: [], folders: [] })
+
 			return
 		}
 
@@ -115,6 +116,7 @@ export default function GlobalSearch() {
 
 	const renderResults = () => {
 		suggestionsRefs.current = []
+
 		return (
 			<>
 				{results.folders.length > 0 && (
@@ -146,6 +148,7 @@ export default function GlobalSearch() {
 						<h3 className={styles.suggestionType}>Files</h3>
 						{results.files.map((file, index) => {
 							const overallIndex = index + results.folders.length
+
 							return (
 								<div
 									key={file.id}

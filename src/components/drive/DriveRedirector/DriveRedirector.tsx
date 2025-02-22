@@ -15,6 +15,7 @@ export default function DriveRedirector({ targetFolderId }: DriveRedirectorProps
 		const timer = setTimeout(() => {
 			router.push(`/m/${targetFolderId}`)
 		}, 500)
+
 		return () => clearTimeout(timer)
 	}, [targetFolderId, router])
 

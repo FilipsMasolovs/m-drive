@@ -15,6 +15,7 @@ export default function GenericModal({ onClose, ariaLabel, children }: GenericMo
 			}
 		}
 		document.addEventListener('keydown', handleKeyDown)
+
 		return () => {
 			document.removeEventListener('keydown', handleKeyDown)
 		}

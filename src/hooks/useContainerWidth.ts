@@ -16,6 +16,7 @@ export default function useContainerWidth(ref: React.RefObject<HTMLElement>): nu
 			updateWidth()
 		})
 		resizeObserver.observe(node)
+
 		return () => {
 			resizeObserver.disconnect()
 		}

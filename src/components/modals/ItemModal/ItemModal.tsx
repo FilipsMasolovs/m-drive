@@ -92,6 +92,7 @@ export default React.memo(function ItemModal({ type, size, url, uploadThingUrl, 
 			}
 		}
 		document.addEventListener('keydown', handleKeyDown)
+
 		return () => {
 			document.removeEventListener('keydown', handleKeyDown)
 		}

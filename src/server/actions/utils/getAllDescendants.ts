@@ -15,6 +15,7 @@ export async function getAllDescendantFolders(parentId: number): Promise<FolderI
 		const descendants = await getAllDescendantFolders(folder.id)
 		allFolders = allFolders.concat(descendants)
 	}
+
 	return allFolders
 }
 
@@ -33,5 +34,6 @@ export async function getAllDescendantFiles(parentId: number): Promise<FileItem[
 		const descendantFiles = await getAllDescendantFiles(folder.id)
 		allFiles = allFiles.concat(descendantFiles)
 	}
+
 	return allFiles
 }

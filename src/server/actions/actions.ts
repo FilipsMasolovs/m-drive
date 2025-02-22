@@ -27,6 +27,7 @@ export default async function ACTIONS() {
 				}
 				await MUTATIONS.createFolder(folderName, parentFolder, session.userId)
 				await setForceRefreshCookie('create-folder-force-refresh')
+
 				return { success: true }
 			},
 		},
@@ -40,6 +41,7 @@ export default async function ACTIONS() {
 				await Promise.all(descendantFolders.map(async (folder) => await db.delete(folders_table).where(eq(folders_table.id, folder.id))))
 				await db.delete(folders_table).where(eq(folders_table.id, folderId))
 				await setForceRefreshCookie('delete-folder-force-refresh')
+
 				return { success: true }
 			},
 			deleteFile: async function (fileId: number) {
@@ -57,6 +59,7 @@ export default async function ACTIONS() {
 				await utApi.deleteFiles([file.url.replace('https://jb81yxad2w.ufs.sh/f/', '')])
 				await db.delete(files_table).where(eq(files_table.id, fileId))
 				await setForceRefreshCookie('delete-file-force-refresh')
+
 				return { success: true }
 			},
 		},
@@ -80,6 +83,7 @@ export default async function ACTIONS() {
 						.where(and(eq(files_table.id, itemId), eq(files_table.ownerId, session.userId)))
 				}
 				await setForceRefreshCookie('rename-item-force-refresh')
+
 				return { success: true }
 			},
 		},

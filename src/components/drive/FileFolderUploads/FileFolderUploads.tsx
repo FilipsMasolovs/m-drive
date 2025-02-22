@@ -28,6 +28,7 @@ export default function FileFolderUploads({ currentFolderId }: FileFolderUploads
 		if (!FOLDER_VALIDATION.NAME.PATTERN.test(name)) {
 			return FOLDER_VALIDATION.NAME.ERROR_MESSAGES.INVALID_CHARS
 		}
+
 		return null
 	}
 
@@ -36,6 +37,7 @@ export default function FileFolderUploads({ currentFolderId }: FileFolderUploads
 		const validationError = validateFolderName(folderName)
 		if (validationError) {
 			setError(validationError)
+
 			return
 		}
 
