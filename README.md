@@ -25,9 +25,9 @@ M-DRIVE is a visually appealing, Next.js–based file management application ins
 
 - 📷 Images (JPEG, PNG, GIF, WebP)
 - 📹 Videos (MP4, WebM, OGG)
-- 📄 Documents (DOCX, PDF, TXT)
+- 📄 Documents (PDF, TXT)
 - 🎵 Audio (MP3, WAV, OGG)
-- 📦 Other file types (with download option)
+- 📦 Other file types (with download option, no preview)
 
 ## 🛠 Setup
 

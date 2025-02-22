@@ -1,12 +1,15 @@
 import React from 'react'
 import GenericModal from '~/components/modals/GenericModal/GenericModal'
 import styles from './ItemModal.module.css'
-import DocxModal from '~/components/modals/DocxModal/DocxModal'
 import { forceDownload } from '~/lib/utils/files/forceDownload'
 import { isMobileDevice } from '~/lib/utils/device/isMobileDevice'
 import { formatSize } from '~/lib/utils/files/formatSize'
 import { ActionButton } from '~/components/common/ActionButton/ActionButton'
 import { DeleteIcon, DownloadIcon, RenameIcon } from '~/components/common/Icons/Icons'
+
+import MarkdownPreview from '../previews/MarkdownPreview'
+import JsonPreview from '../previews/JsonPreview'
+import { FileTypes } from '~/lib/constants/fileTypes'
 
 interface ItemModalProps {
   type: string
@@ -22,45 +25,54 @@ interface ItemModalProps {
 export default React.memo(function ItemModal({ type, size, url, uploadThingUrl, name, setIsModalOpen, onRename, onDelete }: ItemModalProps) {
   const renderContent = () => {
     switch (type) {
-      case 'image':
+      case FileTypes.IMAGE:
         // eslint-disable-next-line @next/next/no-img-element
         return <img src={url} alt={name} className={styles.modalContent} />
-      case 'pdf':
+      case FileTypes.PDF:
         return (
-          <object data={url} type="application/pdf" className={styles.modalContent} width="100%" height="100%">
+          <object data={url} type="application/pdf" className={styles.modalContent}>
             <p>
-              Your browser does not support PDFs. <a href={url}>Download the PDF</a>.
+              Unable to display PDF. <a href={url}>Download</a> instead.
             </p>
           </object>
         )
-      case 'video':
+      case FileTypes.VIDEO:
         return (
-          <video controls className={styles.modalContent} width="100%" height="100%">
+          <video controls className={styles.modalContent}>
             <source src={url} type="video/mp4" />
-            Your browser does not support the video tag.
+            Your browser does not support video playback.
           </video>
         )
-      case 'application':
+      case FileTypes.AUDIO:
         return (
-          <div className={styles.modalContent}>
-            <p>Preview is not available. Please download to view the contents.</p>
-          </div>
-        )
-      case 'text/plain':
-        return <iframe src={url} title={name} className={styles.modalContent} width="100%" height="100%" />
-      case 'audio':
-        return (
-          <audio controls className={styles.modalContent} style={{ height: '152px' }}>
-            <source src={url} type="audio/mp3" />
-            Your browser does not support the audio element.
+          <audio controls className={styles.modalContent}>
+            <source src={url} type="audio/mpeg" />
+            Your browser does not support audio playback.
           </audio>
         )
-      case 'docx':
-        return <DocxModal url={url} name={name} setIsModalOpen={setIsModalOpen} />
+      case FileTypes.JSON:
+        return (
+          <div className={styles.modalContent}>
+            <JsonPreview url={url} />
+          </div>
+        )
+      case FileTypes.MARKDOWN:
+        return (
+          <div className={styles.modalContent}>
+            <MarkdownPreview url={url} />
+          </div>
+        )
+      case FileTypes.TXT:
+        return (
+          <div className={styles.modalContent}>
+            <iframe src={url} title={name} className={styles.modalContent} sandbox="allow-same-origin" />
+          </div>
+        )
       default:
         return (
           <div className={styles.modalContent}>
-            <p>File preview not available. Please download to view the file.</p>
+            <p>Preview not available for this file type.</p>
+            <p>Download to view</p>
           </div>
         )
     }

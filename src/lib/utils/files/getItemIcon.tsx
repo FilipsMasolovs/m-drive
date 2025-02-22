@@ -6,10 +6,10 @@ export const getItemIcon = (type: string) => {
 
   if (lowerType === FileTypes.FOLDER) {
     return <Folder className={`h-6 w-6 ${FileIconColors[FileTypes.FOLDER]}`} />
-  } else if (lowerType.includes('document')) {
-    return <File className={`h-6 w-6 ${FileIconColors[FileTypes.DOCX]}`} />
-  } else if (lowerType.includes('spreadsheet')) {
-    return <File className={`h-6 w-6 ${FileIconColors[FileTypes.DOCX]}`} />
+  } else if (lowerType.endsWith('.document')) {
+    return <File className={`h-6 w-6 ${FileIconColors[FileTypes.TXT]}`} />
+  } else if (lowerType.endsWith('.sheet')) {
+    return <File className={`h-6 w-6 ${FileIconColors[FileTypes.SPREADSHEET]}`} />
   } else if (lowerType.includes('image')) {
     return <File className={`h-6 w-6 ${FileIconColors[FileTypes.IMAGE]}`} />
   } else if (lowerType.includes('audio')) {

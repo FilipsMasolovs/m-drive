@@ -1,0 +1,19 @@
+.markdownPreview {
+  padding: 1rem;
+  background: white;
+  color: black;
+  overflow-y: auto;
+  height: 100%;
+  width: 100%;
+}
+
+.jsonPreview {
+  padding: 1rem;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  overflow-y: auto;
+  height: 100%;
+  width: 100%;
+  font-family: 'Consolas', 'Monaco', monospace;
+  white-space: pre-wrap;
+}

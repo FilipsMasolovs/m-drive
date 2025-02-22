@@ -93,7 +93,7 @@
 }
 
 .text-purple-400 {
-  color: oklch(0.714 0.203 305.504)
+  color: oklch(0.714 0.203 305.504);
 }
 
 .text-red-400 {
@@ -101,5 +101,9 @@
 }
 
 .text-orange-400 {
-  color: oklch(0.75 0.183 55.934)
+  color: oklch(0.75 0.183 55.934);
+}
+
+.text-green-400 {
+  color: oklch(0.792 0.209 151.711);
 }
