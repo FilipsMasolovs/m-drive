@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import Breadcrumbs from '~/components/drive/Breadcrumbs/Breadcrumbs'
 import FileFolderUploads from '~/components/drive/FileFolderUploads/FileFolderUploads'
@@ -30,31 +30,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
   const router = useRouter()
   const currentItems: DriveItem[] = [...folders, ...files]
 
-  const {
-    modal,
-    renameModal,
-    isDeleting,
-    preloadedFiles,
-    handleItemClick,
-    handleModalClose,
-    handleRename,
-    handleRenameClick,
-    handleDelete,
-    preloadFiles,
-    clearBlobUrls,
-    setPreloadedFiles,
-    setModal,
-  } = useDriveStore()
-
-  useEffect(() => {
-    void preloadFiles(files)
-  }, [files, preloadFiles])
-
-  useEffect(() => {
-    return () => {
-      clearBlobUrls()
-    }
-  }, [clearBlobUrls])
+  const { modal, renameModal, isDeleting, handleItemClick, handleModalClose, handleRename, handleRenameClick, handleDelete, setModal } = useDriveStore()
 
   return (
     <main className={styles.pageContainer}>
@@ -62,17 +38,10 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
         <Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
         <div className={styles.listContainer}>
           {currentItems.map((item, index) => {
-            const displayedItem =
-              typeof item.type === 'string' && !item.type.includes('folder')
-                ? {
-                    ...item,
-                    name: preloadedFiles[item.id]?.name ?? item.name,
-                  }
-                : item
             return (
               <ListItem
                 key={`${item.id}-${index}`}
-                item={displayedItem}
+                item={item}
                 handleItemClick={() => handleItemClick(item, getPreviewType)}
                 onRename={(e) => {
                   e.stopPropagation()
@@ -98,16 +67,6 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
           currentName={renameModal.currentName}
           itemId={renameModal.itemId}
           onRenameSuccess={(newName: string) => {
-            if (preloadedFiles[renameModal.itemId]) {
-              setPreloadedFiles({
-                ...preloadedFiles,
-                [renameModal.itemId]: {
-                  name: newName,
-                  originalUrl: preloadedFiles[renameModal.itemId]!.originalUrl,
-                },
-              })
-            }
-
             if (modal.id === renameModal.itemId) {
               setModal({
                 ...modal,

@@ -16,7 +16,7 @@ interface SearchResults {
 
 export default function GlobalSearch() {
   const router = useRouter()
-  const { handleItemClick, preloadFiles, clearBlobUrls } = useDriveStore()
+  const { handleItemClick } = useDriveStore()
 
   const [query, setQuery] = useState<string>('')
   const [results, setResults] = useState<SearchResults>({
@@ -54,18 +54,6 @@ export default function GlobalSearch() {
   useEffect(() => {
     void handleSearch(debouncedQuery)
   }, [debouncedQuery, handleSearch])
-
-  useEffect(() => {
-    if (results.files.length > 0) {
-      void preloadFiles(results.files)
-    }
-  }, [results.files, preloadFiles])
-
-  useEffect(() => {
-    return () => {
-      clearBlobUrls()
-    }
-  }, [clearBlobUrls])
 
   useEffect(() => {
     if (selectedIndex >= 0 && suggestionsRefs.current[selectedIndex]) {

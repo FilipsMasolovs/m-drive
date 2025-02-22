@@ -2,7 +2,6 @@ import { create } from 'zustand'
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import type { DriveItem, FileItem } from '~/types/drive'
 import { handleDeleteItem } from '~/server/actions/files/handleDeleteItem'
-import { useFileStore } from './fileStore'
 
 interface ModalState {
   open: boolean
@@ -60,9 +59,6 @@ export const useUIStore = create<UIStore>((set, get) => ({
         console.warn('No URL provided')
         return
       }
-      const { blobUrls, preloadedFiles } = useFileStore.getState()
-      const preview = blobUrls[file.id] ?? file.url
-      const currentName = preloadedFiles[file.id]?.name ?? file.name
       const previewType = getPreviewType(file)
       set({
         modal: {
@@ -71,9 +67,9 @@ export const useUIStore = create<UIStore>((set, get) => ({
           type: previewType,
           realType: file.type,
           size: file.size,
-          url: preview,
+          url: file.url,
           uploadThingUrl: file.url,
-          name: currentName,
+          name: file.name,
         },
       })
     }
