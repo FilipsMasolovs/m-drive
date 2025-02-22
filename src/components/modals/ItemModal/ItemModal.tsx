@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import GenericModal from '~/components/modals/GenericModal/GenericModal'
 import styles from './ItemModal.module.css'
 import { forceDownload } from '~/lib/utils/files/forceDownload'
@@ -81,6 +81,21 @@ export default React.memo(function ItemModal({ type, size, url, uploadThingUrl, 
         )
     }
   }
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (onPrev && e.key === 'ArrowLeft') {
+        onPrev()
+      }
+      if (onNext && e.key === 'ArrowRight') {
+        onNext()
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [onPrev, onNext])
 
   return (
     <GenericModal onClose={() => setIsModalOpen(false)} ariaLabel={`${type} preview for ${name}`}>
