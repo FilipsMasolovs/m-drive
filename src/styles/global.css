@@ -79,3 +79,27 @@
     --modal-padding: 8px;
   }
 }
+
+.text-gray-400 {
+  color: oklch(0.707 0.022 261.325);
+}
+
+.text-blue-400 {
+  color: oklch(0.707 0.165 254.624);
+}
+
+.text-yellow-400 {
+  color: oklch(0.852 0.199 91.936);
+}
+
+.text-purple-400 {
+  color: oklch(0.714 0.203 305.504)
+}
+
+.text-red-400 {
+  color: oklch(0.704 0.191 22.216);
+}
+
+.text-orange-400 {
+  color: oklch(0.75 0.183 55.934)
+}

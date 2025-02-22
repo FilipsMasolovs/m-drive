@@ -4,7 +4,7 @@ import { GeistSans } from 'geist/font/sans'
 import { type Metadata } from 'next'
 
 import { PostHogProvider } from '~/app/_providers/PostHogProvider'
-import Header from '~/components/Header/Header'
+import Header from '~/components/layout/Header/Header'
 import { QUERIES } from '~/server/db/queries'
 
 import '~/styles/global.css'

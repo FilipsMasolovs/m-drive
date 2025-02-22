@@ -2,6 +2,7 @@ import { auth } from '@clerk/nextjs/server'
 import { createUploadthing, type FileRouter } from 'uploadthing/next'
 import { UploadThingError } from 'uploadthing/server'
 import { z } from 'zod'
+import { FILE_VALIDATION } from '~/lib/constants/validation'
 import { MUTATIONS, QUERIES } from '~/server/db/queries'
 
 const f = createUploadthing()
@@ -10,7 +11,7 @@ export const ourFileRouter = {
   driveUploader: f({
     blob: {
       maxFileSize: '128MB',
-      maxFileCount: 100,
+      maxFileCount: FILE_VALIDATION.UPLOAD.MAX_FILES,
     },
   })
     .input(
