@@ -5,7 +5,7 @@ import { forceDownload } from '~/lib/utils/files/forceDownload'
 import { isMobileDevice } from '~/lib/utils/device/isMobileDevice'
 import { formatSize } from '~/lib/utils/files/formatSize'
 import { ActionButton } from '~/components/common/ActionButton/ActionButton'
-import { DeleteIcon, DownloadIcon, RenameIcon } from '~/components/common/Icons/Icons'
+import { ArrowLeftIcon, ArrowRightIcon, DeleteIcon, DownloadIcon, RenameIcon } from '~/components/common/Icons/Icons'
 
 import MarkdownPreview from '../previews/MarkdownPreview'
 import JsonPreview from '../previews/JsonPreview'
@@ -20,14 +20,18 @@ interface ItemModalProps {
   setIsModalOpen: (open: boolean) => void
   onRename: () => void
   onDelete: () => void
+  onPrev?: () => void
+  onNext?: () => void
 }
 
-export default React.memo(function ItemModal({ type, size, url, uploadThingUrl, name, setIsModalOpen, onRename, onDelete }: ItemModalProps) {
+export default React.memo(function ItemModal({ type, size, url, uploadThingUrl, name, setIsModalOpen, onRename, onDelete, onPrev, onNext }: ItemModalProps) {
   const renderContent = () => {
     switch (type) {
       case FileTypes.IMAGE:
-        // eslint-disable-next-line @next/next/no-img-element
-        return <img src={url} alt={name} className={styles.modalContent} />
+        return (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={url} alt={name} className={styles.modalContent} />
+        )
       case FileTypes.PDF:
         return (
           <object data={url} type="application/pdf" className={styles.modalContent}>
@@ -86,7 +90,17 @@ export default React.memo(function ItemModal({ type, size, url, uploadThingUrl, 
           {type} • {formatSize(size)}
         </span>
       </div>
+      {onPrev && (
+        <button className={styles.prevButton} onClick={onPrev} aria-label="Previous file">
+          <ArrowLeftIcon />
+        </button>
+      )}
       {renderContent()}
+      {onNext && (
+        <button className={styles.nextButton} onClick={onNext} aria-label="Next file">
+          <ArrowRightIcon />
+        </button>
+      )}
       <div className={styles.itemActions}>
         <ActionButton onClick={() => void forceDownload(uploadThingUrl, name)} icon={<DownloadIcon />} label="Download" isMobile={isMobileDevice()} />
         <ActionButton onClick={onRename} icon={<RenameIcon />} label="Rename" isMobile={isMobileDevice()} />

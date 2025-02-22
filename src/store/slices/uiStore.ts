@@ -53,26 +53,24 @@ export const useUIStore = create<UIStore>((set, get) => ({
   setRenameModal: (modal) => set({ renameModal: modal }),
   setIsDeleting: (isDeleting) => set({ isDeleting }),
   handleItemClick: (item, getPreviewType) => {
-    if (typeof item.type === 'string' && !item.type.includes('folder')) {
-      const file = item as FileItem
-      if (!file.url) {
-        console.warn('No URL provided')
-        return
-      }
-      const previewType = getPreviewType(file)
-      set({
-        modal: {
-          open: true,
-          id: file.id,
-          type: previewType,
-          realType: file.type,
-          size: file.size,
-          url: file.url,
-          uploadThingUrl: file.url,
-          name: file.name,
-        },
-      })
+    const file = item as FileItem
+    if (!file.url) {
+      console.warn('No URL provided')
+      return
     }
+    const previewType = getPreviewType(file)
+    set({
+      modal: {
+        open: true,
+        id: file.id,
+        type: previewType,
+        realType: file.type,
+        size: file.size,
+        url: file.url,
+        uploadThingUrl: file.url,
+        name: file.name,
+      },
+    })
   },
   handleRenameClick: (item) => {
     set({

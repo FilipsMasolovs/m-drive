@@ -40,6 +40,29 @@
   right: 16px;
 }
 
+.prevButton,
+.nextButton {
+  background-color: var(--color-azul);
+  color: var(--color-cold-morning);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.prevButton {
+  left: 16px;
+}
+
+.nextButton {
+  right: 16px;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -59,5 +82,21 @@
   .itemActions button {
     width: 32px;
     height: 32px;
+  }
+
+  .prevButton,
+  .nextButton {
+    background-color: var(--color-azul);
+    color: var(--color-cold-morning);
+    width: 32px;
+    height: 32px;
+  }
+
+  .prevButton {
+    left: 8px;
+  }
+  
+  .nextButton {
+    right: 8px;
   }
 }

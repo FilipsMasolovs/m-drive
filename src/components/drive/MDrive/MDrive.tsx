@@ -32,6 +32,49 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
 
   const { modal, renameModal, isDeleting, handleItemClick, handleModalClose, handleRename, handleRenameClick, handleDelete, setModal } = useDriveStore()
 
+  const currentFileIndex = files.findIndex((file) => file.id === modal.id)
+  const totalFiles = files.length
+
+  const hasNavigation = totalFiles > 1
+
+  const handlePrevFile = () => {
+    if (!hasNavigation || currentFileIndex === -1) {
+      return
+    }
+    const prevIndex = (currentFileIndex - 1 + totalFiles) % totalFiles
+    const prevFile = files[prevIndex]!
+    const previewType = getPreviewType(prevFile)
+    setModal({
+      open: true,
+      id: prevFile.id,
+      type: previewType,
+      realType: prevFile.type,
+      size: prevFile.size,
+      url: prevFile.url,
+      uploadThingUrl: prevFile.url,
+      name: prevFile.name,
+    })
+  }
+
+  const handleNextFile = () => {
+    if (!hasNavigation || currentFileIndex === -1) {
+      return
+    }
+    const nextIndex = (currentFileIndex + 1) % totalFiles
+    const nextFile = files[nextIndex]!
+    const previewType = getPreviewType(nextFile)
+    setModal({
+      open: true,
+      id: nextFile.id,
+      type: previewType,
+      realType: nextFile.type,
+      size: nextFile.size,
+      url: nextFile.url,
+      uploadThingUrl: nextFile.url,
+      name: nextFile.name,
+    })
+  }
+
   return (
     <main className={styles.pageContainer}>
       <section className={styles.contentsContainer}>
@@ -60,7 +103,14 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
       </section>
       {capacityUsed <= maxCapacity && <FileFolderUploads currentFolderId={currentFolderId} />}
       {modal.open && modal.type && (
-        <ItemModal {...modal} setIsModalOpen={handleModalClose} onRename={handleRename} onDelete={() => handleDelete(files, router)} />
+        <ItemModal
+          {...modal}
+          setIsModalOpen={handleModalClose}
+          onRename={handleRename}
+          onDelete={() => handleDelete(files, router)}
+          onPrev={hasNavigation ? handlePrevFile : undefined}
+          onNext={hasNavigation ? handleNextFile : undefined}
+        />
       )}
       {renameModal?.open && (
         <RenameModal
