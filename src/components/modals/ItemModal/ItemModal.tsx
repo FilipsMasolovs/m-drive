@@ -34,7 +34,7 @@ export default React.memo(function ItemModal({ type, size, url, uploadThingUrl, 
 				)
 			case FileTypes.PDF:
 				return (
-					<object data={url} type="application/pdf" className={styles.modalContent}>
+					<object data={url} type="application/pdf" className={styles.modalContent} width="100%" height="100%">
 						<p>
 							Unable to display PDF. <a href={url}>Download</a> instead.
 						</p>
@@ -42,14 +42,14 @@ export default React.memo(function ItemModal({ type, size, url, uploadThingUrl, 
 				)
 			case FileTypes.VIDEO:
 				return (
-					<video controls className={styles.modalContent}>
+					<video controls className={styles.modalContent} width="100%" height="100%">
 						<source src={url} type="video/mp4" />
 						Your browser does not support video playback.
 					</video>
 				)
 			case FileTypes.AUDIO:
 				return (
-					<audio controls className={styles.modalContent}>
+					<audio controls className={styles.modalContent} style={{ height: '152px' }}>
 						<source src={url} type="audio/mpeg" />
 						Your browser does not support audio playback.
 					</audio>
@@ -69,7 +69,7 @@ export default React.memo(function ItemModal({ type, size, url, uploadThingUrl, 
 			case FileTypes.TXT:
 				return (
 					<div className={styles.modalContent}>
-						<iframe src={url} title={name} className={styles.modalContent} sandbox="allow-same-origin" />
+						<iframe src={url} title={name} className={styles.modalContent} sandbox="allow-same-origin" width="100%" height="100%" />
 					</div>
 				)
 			default:
