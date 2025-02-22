@@ -1,24 +1,24 @@
 .pageContainer {
-  padding: 8px;
-  padding-top: 46px;
-  background-image: linear-gradient(to right bottom, rgb(17, 24, 39), rgb(0, 0, 0));
-  color: rgb(209, 213, 219);
-  min-height: 100vh;
+	padding: 8px;
+	padding-top: 46px;
+	background-image: linear-gradient(to right bottom, rgb(17, 24, 39), rgb(0, 0, 0));
+	color: rgb(209, 213, 219);
+	min-height: 100vh;
 }
 
 .listContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 }
 
 @media all and (min-width: 768px) {
-  .pageContainer {
-    padding: 16px;
-    padding-top: 92px;
-  }
+	.pageContainer {
+		padding: 16px;
+		padding-top: 92px;
+	}
 
-  .listContainer {
-    gap: 16px;
-  }
+	.listContainer {
+		gap: 16px;
+	}
 }

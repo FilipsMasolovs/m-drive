@@ -1,107 +1,107 @@
 .listContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--color-midnight-express);
-  padding: 16px;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: all 0.4s ease;
-  overflow: hidden;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: var(--color-midnight-express);
+	padding: 16px;
+	border-radius: var(--border-radius);
+	cursor: pointer;
+	transition: all 0.4s ease;
+	overflow: hidden;
 }
 
 .infoContainer {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+	display: flex;
+	align-items: center;
+	gap: 16px;
 }
 
 .itemDetails {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .itemName {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 500;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	font-weight: 500;
 }
 
 .itemTypeSize {
-  font-size: 0.75rem;
-  line-height: 1rem;
-  color: rgb(156, 163, 175);
+	font-size: 0.75rem;
+	line-height: 1rem;
+	color: rgb(156, 163, 175);
 }
 
 .actionButtons {
-  display: none;
-  align-items: center;
-  gap: 4px;
+	display: none;
+	align-items: center;
+	gap: 4px;
 }
 
 .downloadButton,
 .renameButton,
 .deleteButton {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--border-radius);
-  transition: all 0.4s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	width: 32px;
+	height: 32px;
+	border-radius: var(--border-radius);
+	transition: all 0.4s ease;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 /* ONLY TEMPORARY STYLES */
 @media all and (max-width: 768px) {
-  .listContainer {
-    padding: 8px;
-  }
+	.listContainer {
+		padding: 8px;
+	}
 
-  .infoContainer {
-    min-width: 0;
-    gap: 8px;
-  }
+	.infoContainer {
+		min-width: 0;
+		gap: 8px;
+	}
 
-  .infoContainer svg {
-    flex-shrink: 0;
-  }
+	.infoContainer svg {
+		flex-shrink: 0;
+	}
 
-  .itemDetails {
-    min-width: 0;
-  }
+	.itemDetails {
+		min-width: 0;
+	}
 
-  .itemName {
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+	.itemName {
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 
-  .deleteButton {
-    display: flex;
-    flex-shrink: 0;
-  }
+	.deleteButton {
+		display: flex;
+		flex-shrink: 0;
+	}
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .listContainer:hover {
-    background-color: rgb(55, 65, 81);
+	.listContainer:hover {
+		background-color: rgb(55, 65, 81);
 
-    .actionButtons {
-      display: flex;
-    }
-  }
+		.actionButtons {
+			display: flex;
+		}
+	}
 
-  .downloadButton:hover,
-  .renameButton:hover,
-  .deleteButton:hover {
-    background-color: rgb(245, 245, 245);
-  }
+	.downloadButton:hover,
+	.renameButton:hover,
+	.deleteButton:hover {
+		background-color: rgb(245, 245, 245);
+	}
 
-  .renameButton:hover svg path,
-  .deleteButton:hover svg path {
-    stroke: black;
-  }
+	.renameButton:hover svg path,
+	.deleteButton:hover svg path {
+		stroke: black;
+	}
 
-  .downloadButton:hover svg path {
-    fill: black;
-  }
+	.downloadButton:hover svg path {
+		fill: black;
+	}
 }

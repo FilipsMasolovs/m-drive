@@ -1,40 +1,40 @@
 .modalOverlay {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: var(--color-overlay-black);
-  padding: var(--modal-padding);
-  height: 100vh;
-  animation: fadeIn 0.4s ease-in-out;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: var(--color-overlay-black);
+	padding: var(--modal-padding);
+	height: 100vh;
+	animation: fadeIn 0.4s ease-in-out;
 }
 
 .modalWrapper {
-  height: 100%;
-  width: 100%;
-  padding: var(--modal-padding);
-  border-radius: var(--border-radius);
-  background-color: var(--color-midnight-express);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  animation: fadeIn 0.8s ease-in-out;
+	height: 100%;
+	width: 100%;
+	padding: var(--modal-padding);
+	border-radius: var(--border-radius);
+	background-color: var(--color-midnight-express);
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	animation: fadeIn 0.8s ease-in-out;
 }
 
 .closeButton {
-  background-color: var(--color-azul);
-  color: var(--color-cold-morning);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  width: 32px;
-  height: 32px;
-  font-size: 20px;
-  border-radius: var(--border-radius);
+	background-color: var(--color-azul);
+	color: var(--color-cold-morning);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	top: -8px;
+	right: -8px;
+	width: 32px;
+	height: 32px;
+	font-size: 20px;
+	border-radius: var(--border-radius);
 }

@@ -1,50 +1,50 @@
 .usageIndicatorContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	position: relative;
 }
 
 .usageIndicatorContainer > span {
-  display: none;
-  color: #eee;
+	display: none;
+	color: #eee;
 }
 
 .usageBar {
-  width: 100px;
-  height: 20px;
-  background-color: #eee;
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  position: relative;
+	width: 100px;
+	height: 20px;
+	background-color: #eee;
+	border-radius: var(--border-radius);
+	overflow: hidden;
+	position: relative;
 }
 
 .usageFill {
-  height: 100%;
-  background-color: var(--color-azul);
-  transition: width 0.3s ease;
+	height: 100%;
+	background-color: var(--color-azul);
+	transition: width 0.3s ease;
 }
 
 .capacityUsed {
-  width: 50px;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.6rem;
-  line-height: 1.25rem;
+	width: 50px;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: 0.6rem;
+	line-height: 1.25rem;
 }
 
 @media all and (min-width: 768px) {
-  .usageIndicatorContainer {
-    gap: 8px;
-  }
+	.usageIndicatorContainer {
+		gap: 8px;
+	}
 
-  .usageIndicatorContainer > span {
-    display: block;
-  }
+	.usageIndicatorContainer > span {
+		display: block;
+	}
 
-  .usageBar {
-    height: 40px;
-  }
+	.usageBar {
+		height: 40px;
+	}
 }

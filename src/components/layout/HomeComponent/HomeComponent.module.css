@@ -1,68 +1,68 @@
 .pageContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 32px;
-  background-image: linear-gradient(to right bottom, rgb(17, 24, 39), rgb(0, 0, 0));
-  color: rgb(209, 213, 219);
-  min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 32px;
+	background-image: linear-gradient(to right bottom, rgb(17, 24, 39), rgb(0, 0, 0));
+	color: rgb(209, 213, 219);
+	min-height: 100vh;
 }
 
 .logoContainer {
-  position: absolute;
-  top: 32px;
-  left: 32px;
+	position: absolute;
+	top: 32px;
+	left: 32px;
 }
 
 .title {
-  font-weight: 900;
-  font-style: italic;
-  font-size: 12rem;
-  line-height: 1.2;
-  letter-spacing: -7px;
-  position: relative;
-  margin-bottom: 76px;
-  margin-top: -40px;
+	font-weight: 900;
+	font-style: italic;
+	font-size: 12rem;
+	line-height: 1.2;
+	letter-spacing: -7px;
+	position: relative;
+	margin-bottom: 76px;
+	margin-top: -40px;
 }
 
 .title i {
-  z-index: 10;
-  -webkit-text-stroke-width: 3px;
-  -webkit-text-stroke-color: #fff;
-  -webkit-text-fill-color: transparent;
-  position: absolute;
-  left: -30px;
-  display: block;
-  -webkit-clip-path: inset(56% 0 0 0);
-  clip-path: inset(56% 0 0 0);
-  box-sizing: border-box;
-  padding: 0 30px;
-  transition: all 0.85s cubic-bezier(0.25, 1, 0.33, 1);
-  white-space: nowrap;
+	z-index: 10;
+	-webkit-text-stroke-width: 3px;
+	-webkit-text-stroke-color: #fff;
+	-webkit-text-fill-color: transparent;
+	position: absolute;
+	left: -30px;
+	display: block;
+	-webkit-clip-path: inset(56% 0 0 0);
+	clip-path: inset(56% 0 0 0);
+	box-sizing: border-box;
+	padding: 0 30px;
+	transition: all 0.85s cubic-bezier(0.25, 1, 0.33, 1);
+	white-space: nowrap;
 }
 
 .title i:first-of-type {
-  top: 60px;
-  opacity: 0.5;
+	top: 60px;
+	opacity: 0.5;
 }
 
 .title i:last-of-type {
-  top: 120px;
-  opacity: 0.2;
+	top: 120px;
+	opacity: 0.2;
 }
 
 /* ONLY TEMPORARY STYLES */
 @media all and (max-width: 768px) {
-  .title {
-    font-size: 4rem;
-  }
+	.title {
+		font-size: 4rem;
+	}
 
-  .title i:first-of-type {
-    top: 16px;
-  }
+	.title i:first-of-type {
+		top: 16px;
+	}
 
-  .title i:last-of-type {
-    top: 35px;
-  }
+	.title i:last-of-type {
+		top: 35px;
+	}
 }

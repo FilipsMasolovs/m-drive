@@ -1,114 +1,114 @@
 .searchContainer,
 .searchInput {
-  display: flex;
-  height: 20px;
+	display: flex;
+	height: 20px;
 }
 
 .searchInput,
 .searchSuggestions {
-  width: 160px;
-  border-radius: var(--border-radius);
-  font-size: 0.9rem;
-  line-height: 1.25rem;
-  background-color: rgb(299, 299, 299);
-  color: var(--color-azul);
+	width: 160px;
+	border-radius: var(--border-radius);
+	font-size: 0.9rem;
+	line-height: 1.25rem;
+	background-color: rgb(299, 299, 299);
+	color: var(--color-azul);
 }
 
 .searchInput {
-  padding: 4px;
-  position: relative;
-  outline: none;
-  cursor: text;
+	padding: 4px;
+	position: relative;
+	outline: none;
+	cursor: text;
 }
 
 .searchSuggestions {
-  max-height: 300px;
-  overflow: hidden;
-  position: absolute;
-  top: 36px;
-  overflow-y: auto;
+	max-height: 300px;
+	overflow: hidden;
+	position: absolute;
+	top: 36px;
+	overflow-y: auto;
 }
 
 .searchSuggestions::-webkit-scrollbar {
-  width: 4px;
+	width: 4px;
 }
 
 .searchSuggestions::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: var(--border-radius);
+	background: #f1f1f1;
+	border-radius: var(--border-radius);
 }
 
 .searchSuggestions::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: var(--border-radius);
+	background: #888;
+	border-radius: var(--border-radius);
 }
 
 .searchSuggestionsPlaceholder {
-  padding: 4px;
+	padding: 4px;
 }
 
 .suggestionType {
-  color: rgb(299, 299, 299);
-  background-color: var(--color-azul);
-  padding: 4px;
+	color: rgb(299, 299, 299);
+	background-color: var(--color-azul);
+	padding: 4px;
 }
 
 .suggestionItem {
-  display: flex;
-  align-items: center;
-  width: 160px;
-  cursor: pointer;
-  height: 24px;
-  padding: 4px;
-  transition: background-color 0.2s ease;
+	display: flex;
+	align-items: center;
+	width: 160px;
+	cursor: pointer;
+	height: 24px;
+	padding: 4px;
+	transition: background-color 0.2s ease;
 }
 
 .suggestionItem.selected {
-  background-color: var(--color-azul);
-  color: rgb(299, 299, 299);
+	background-color: var(--color-azul);
+	color: rgb(299, 299, 299);
 }
 
 .suggestionItem.selected a,
 .suggestionItem.selected span {
-  color: rgb(299, 299, 299);
+	color: rgb(299, 299, 299);
 }
 
 .suggestionItem a,
 .suggestionItem span {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  min-width: 0;
-  width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	min-width: 0;
+	width: 100%;
 }
 
 @media all and (min-width: 768px) {
-  .searchContainer,
-  .searchInput {
-    height: 40px;
-  }
+	.searchContainer,
+	.searchInput {
+		height: 40px;
+	}
 
-  .searchInput,
-  .searchSuggestions {
-    width: 400px;
-  }
+	.searchInput,
+	.searchSuggestions {
+		width: 400px;
+	}
 
-  .searchInput {
-    padding: 8px;
-  }
+	.searchInput {
+		padding: 8px;
+	}
 
-  .searchSuggestions {
-    top: 72px;
-  }
+	.searchSuggestions {
+		top: 72px;
+	}
 
-  .suggestionItem {
-    width: 400px;
-  }
+	.suggestionItem {
+		width: 400px;
+	}
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .suggestionItem:hover {
-    color: rgb(299, 299, 299);
-    background-color: var(--color-azul);
-  }
+	.suggestionItem:hover {
+		color: rgb(299, 299, 299);
+		background-color: var(--color-azul);
+	}
 }

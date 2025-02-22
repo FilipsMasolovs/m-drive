@@ -1,9 +1,9 @@
 import { useUIStore } from './slices/uiStore'
 
 export const useDriveStore = () => {
-  const uiStore = useUIStore()
+	const uiStore = useUIStore()
 
-  return {
-    ...uiStore,
-  }
+	return {
+		...uiStore,
+	}
 }

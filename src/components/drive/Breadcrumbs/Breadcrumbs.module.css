@@ -1,108 +1,108 @@
 .breadcrumbsContainer {
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  gap: 8px;
-  margin: 16px 0;
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+	gap: 8px;
+	margin: 16px 0;
 }
 
 .breadcrumbsContainer a {
-  padding: 8px;
-  border-radius: var(--border-radius);
-  white-space: nowrap;
-  transition: all 0.4s ease;
+	padding: 8px;
+	border-radius: var(--border-radius);
+	white-space: nowrap;
+	transition: all 0.4s ease;
 }
 
 .breadcrumbsContainer div a {
-  margin-left: 8px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+	margin-left: 8px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .breadcrumbsContainer > div:last-of-type {
-  overflow: hidden;
+	overflow: hidden;
 }
 
 .breadcrumbContainer {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .breadcrumbContainer svg {
-  width: 16px;
-  height: 16px;
+	width: 16px;
+	height: 16px;
 }
 
 .breadcrumbDropdownoverlay {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: var(--color-overlay-black);
-  padding: var(--modal-padding);
-  height: 100vh;
-  animation: fadeIn 0.4s ease-in-out;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: var(--color-overlay-black);
+	padding: var(--modal-padding);
+	height: 100vh;
+	animation: fadeIn 0.4s ease-in-out;
 }
 
 .breadcrumbDropdown {
-  background-color: var(--color-midnight-express);
-  padding: var(--modal-padding);
-  border-radius: var(--border-radius);
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+	background-color: var(--color-midnight-express);
+	padding: var(--modal-padding);
+	border-radius: var(--border-radius);
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 }
 
 .breadcrumbDropdown a,
 .breadcrumbDropdown div {
-  margin: 0 !important;
-  padding: 0 !important;
+	margin: 0 !important;
+	padding: 0 !important;
 }
 
 .breadcrumbDropdown div {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
 }
 
 .dropdownItem {
-  padding: 4px 8px;
-  transition: background-color 0.2s ease;
+	padding: 4px 8px;
+	transition: background-color 0.2s ease;
 }
 
 .dropdownToggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: var(--border-radius);
-  color: inherit;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 8px;
+	border-radius: var(--border-radius);
+	color: inherit;
 }
 
 @media all and (max-width: 768px) {
-  .breadcrumbsContainer {
-    margin: 8px 0;
-    gap: 4px;
-  }
+	.breadcrumbsContainer {
+		margin: 8px 0;
+		gap: 4px;
+	}
 
-  .breadcrumbsContainer a {
-    padding: 4px;
-  }
+	.breadcrumbsContainer a {
+		padding: 4px;
+	}
 
-  .breadcrumbsContainer div a {
-    margin-left: 4px;
-  }
+	.breadcrumbsContainer div a {
+		margin-left: 4px;
+	}
 
-  .breadcrumbContainer svg {
-    width: 12px;
-    height: 12px;
-  }
+	.breadcrumbContainer svg {
+		width: 12px;
+		height: 12px;
+	}
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .breadcrumbsContainer a:hover {
-    background-color: var(--color-midnight-express);
-  }
+	.breadcrumbsContainer a:hover {
+		background-color: var(--color-midnight-express);
+	}
 }
