@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { UploadButton } from '~/components/UploadThing/uploadthing'
 import styles from './FileFolderUploads.module.css'
 import { handleCreateFolder } from '~/lib/utils/handleCreateFolder'
+import useClickOutside from '~/lib/utils/useClickOutside'
 
 const MAX_FOLDER_NAME_LENGTH = 255
 const FOLDER_NAME_PATTERN = /^[^<>:"/\\|?*\x00-\x1F]*$/
@@ -44,26 +45,24 @@ export default function FileFolderUploads({ currentFolderId }: FileFolderUploads
       router.refresh()
     } catch (err) {
       setError('Failed to create folder. Please try again. More details in the console.')
-      console.error('err: ', err)
+      console.error('Folder creation error:', err)
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  const handleOutsideClick = useCallback((e: MouseEvent) => {
-    if (formRef.current && !formRef.current.contains(e.target as Node)) {
+  useClickOutside(
+    formRef,
+    () => {
       setFolderName('')
       setIsCreatingFolder(false)
       setError(null)
-    }
-  }, [])
+    },
+    isCreatingFolder,
+  )
 
-  useEffect(() => {
-    if (!isCreatingFolder) return
-
-    document.addEventListener('click', handleOutsideClick)
-    return () => document.removeEventListener('click', handleOutsideClick)
-  }, [isCreatingFolder, handleOutsideClick])
+  const currentValidationError = validateFolderName(folderName)
+  const isFolderNameValid = !currentValidationError
 
   return (
     <div className={styles.fileAndFolderCreationContainer}>
@@ -87,7 +86,7 @@ export default function FileFolderUploads({ currentFolderId }: FileFolderUploads
               {error}
             </div>
           )}
-          <button className={styles.createFolderButton} type="submit" disabled={isSubmitting} aria-label="Confirm folder creation">
+          <button className={styles.createFolderButton} type="submit" disabled={isSubmitting || !isFolderNameValid} aria-label="Confirm folder creation">
             {isSubmitting ? '...' : '+'}
           </button>
         </form>

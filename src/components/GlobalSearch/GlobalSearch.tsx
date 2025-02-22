@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import type { FileItem, FolderItem } from '~/types/types'
 import styles from './GlobalSearch.module.css'
 import { useDebounce } from '~/lib/utils/useDebounce'
@@ -27,6 +27,8 @@ export default function GlobalSearch() {
   const [selectedIndex, setSelectedIndex] = useState<number>(-1)
   const resultsRef = useRef<HTMLDivElement>(null)
 
+  const suggestionsRefs = useRef<(HTMLDivElement | null)[]>([])
+
   const debouncedQuery = useDebounce(query, 300)
 
   const handleSearch = useCallback(async (searchQuery: string) => {
@@ -40,7 +42,6 @@ export default function GlobalSearch() {
     try {
       const res = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`)
       if (!res.ok) throw new Error('Search failed')
-
       const data = (await res.json()) as SearchResults
       setResults(data)
     } catch (err) {
@@ -66,6 +67,15 @@ export default function GlobalSearch() {
     }
   }, [clearBlobUrls])
 
+  useEffect(() => {
+    if (selectedIndex >= 0 && suggestionsRefs.current[selectedIndex]) {
+      suggestionsRefs.current[selectedIndex]?.scrollIntoView({
+        block: 'nearest',
+        behavior: 'smooth',
+      })
+    }
+  }, [selectedIndex])
+
   const handleEnterKey = () => {
     const totalItems = results.folders.length + results.files.length
     if (selectedIndex < 0 || selectedIndex >= totalItems) return
@@ -83,6 +93,7 @@ export default function GlobalSearch() {
         handleItemClick(file, getPreviewType)
         setQuery('')
         setResults({ files: [], folders: [] })
+        redirect(`/m/${file.parent}`)
       }
     }
   }
@@ -113,6 +124,7 @@ export default function GlobalSearch() {
   }
 
   const renderResults = () => {
+    suggestionsRefs.current = []
     return (
       <>
         {results.folders.length > 0 && (
@@ -121,6 +133,9 @@ export default function GlobalSearch() {
             {results.folders.map((folder, index) => (
               <div
                 key={folder.id}
+                ref={(el) => {
+                  suggestionsRefs.current[index] = el
+                }}
                 className={`${styles.suggestionItem} ${selectedIndex === index ? styles.selected : ''}`}
                 onMouseEnter={() => setSelectedIndex(index)}
                 role="option"
@@ -144,12 +159,16 @@ export default function GlobalSearch() {
               return (
                 <div
                   key={file.id}
+                  ref={(el) => {
+                    suggestionsRefs.current[overallIndex] = el
+                  }}
                   className={`${styles.suggestionItem} ${selectedIndex === overallIndex ? styles.selected : ''}`}
                   onMouseEnter={() => setSelectedIndex(overallIndex)}
                   onClick={() => {
                     handleItemClick(file, getPreviewType)
                     setQuery('')
                     setResults({ files: [], folders: [] })
+                    redirect(`/m/${file.parent}`)
                   }}
                   role="option"
                   aria-selected={selectedIndex === overallIndex}

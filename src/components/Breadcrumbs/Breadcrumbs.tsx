@@ -3,31 +3,8 @@ import { ChevronRight, ChevronDown } from 'lucide-react'
 import type { FolderItem } from '~/types/types'
 import Link from 'next/link'
 import styles from './Breadcrumbs.module.css'
-
-function useContainerWidth(ref: React.RefObject<HTMLElement>): number {
-  const [width, setWidth] = useState<number>(0)
-
-  useEffect(() => {
-    const node = ref.current
-
-    if (!node) return
-
-    const updateWidth = () => {
-      setWidth(node.getBoundingClientRect().width)
-    }
-
-    updateWidth()
-
-    const resizeObserver = new ResizeObserver(() => updateWidth())
-    resizeObserver.observe(node)
-
-    return () => {
-      resizeObserver.unobserve(node)
-    }
-  }, [ref])
-
-  return width
-}
+import useClickOutside from '~/lib/utils/useClickOutside'
+import useContainerWidth from '~/lib/utils/useContainerWidth'
 
 interface BreadcrumbsProps {
   breadcrumbs: FolderItem[]
@@ -39,6 +16,8 @@ export default function Breadcrumbs({ breadcrumbs, rootFolderId }: BreadcrumbsPr
   const containerWidth = useContainerWidth(containerRef)
   const [collapsed, setCollapsed] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
+
+  useClickOutside(containerRef, () => setDropdownOpen(false), dropdownOpen)
 
   useEffect(() => {
     if (containerRef.current && containerWidth) {
@@ -54,18 +33,6 @@ export default function Breadcrumbs({ breadcrumbs, rootFolderId }: BreadcrumbsPr
       setCollapsed(totalWidth > containerWidth)
     }
   }, [breadcrumbs, containerWidth])
-
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setDropdownOpen(false)
-      }
-    }
-    if (dropdownOpen) {
-      document.addEventListener('click', handleClickOutside)
-    }
-    return () => document.removeEventListener('click', handleClickOutside)
-  }, [dropdownOpen])
 
   const renderFullBreadcrumbs = useCallback(
     () => (
@@ -92,7 +59,12 @@ export default function Breadcrumbs({ breadcrumbs, rootFolderId }: BreadcrumbsPr
       {breadcrumbs.length > 1 && (
         <div className={styles.breadcrumbContainer} style={{ position: 'relative' }}>
           <ChevronRight />
-          <button className={styles.dropdownToggle} onClick={() => setDropdownOpen((prev) => !prev)} aria-label="Show full breadcrumb list" aria-expanded={dropdownOpen}>
+          <button
+            className={styles.dropdownToggle}
+            onClick={() => setDropdownOpen((prev) => !prev)}
+            aria-label="Show full breadcrumb list"
+            aria-expanded={dropdownOpen}
+          >
             ...
           </button>
           {dropdownOpen && (

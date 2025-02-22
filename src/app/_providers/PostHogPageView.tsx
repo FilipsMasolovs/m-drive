@@ -9,6 +9,7 @@ export default function PostHogPageView(): null {
   const posthog = usePostHog()
 
   const userInfo = useUser()
+
   useEffect(() => {
     if (userInfo.user?.id) {
       posthog.identify(userInfo.user.id, {
@@ -20,15 +21,15 @@ export default function PostHogPageView(): null {
   }, [posthog, userInfo.user])
 
   const pathname = usePathname()
+
   const searchParams = useSearchParams()
-  // Track pageviews
+
   useEffect(() => {
     if (pathname && posthog) {
       let url = window.origin + pathname
       if (searchParams.toString()) {
         url = url + `?${searchParams.toString()}`
       }
-
       posthog.capture('$pageview', { $current_url: url })
     }
   }, [pathname, searchParams, posthog])
