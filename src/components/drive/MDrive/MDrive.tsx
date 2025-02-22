@@ -125,7 +125,7 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
 					}}
 				/>
 			)}
-			{isDeleting && <LoadingComponent />}
+			{isDeleting && <LoadingComponent backgroundColor='rgba(0, 0, 0, 0.8)' />}
 		</main>
 	)
 }

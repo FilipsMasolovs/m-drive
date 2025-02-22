@@ -19,5 +19,5 @@ export default function DriveRedirector({ targetFolderId }: DriveRedirectorProps
 		return () => clearTimeout(timer)
 	}, [targetFolderId, router])
 
-	return <LoadingComponent />
+	return <LoadingComponent backgroundColor='black'/>
 }
