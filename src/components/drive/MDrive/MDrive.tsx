@@ -1,3 +1,4 @@
+// src/components/drive/MDrive/MDrive.tsx
 'use client'
 
 import { useRouter } from 'next/navigation'
@@ -12,7 +13,7 @@ import RenameModal from '~/components/modals/RenameModal/RenameModal'
 import { getPreviewType } from '~/lib/utils/files/getPreviewType'
 import { useDriveStore } from '~/store'
 
-import { type DriveItem, type FileItem, type FolderItem } from '~/types/drive'
+import { type FileItem, type FolderItem } from '~/types/drive'
 import styles from './MDrive.module.css'
 
 interface MDriveProps {
@@ -27,13 +28,11 @@ interface MDriveProps {
 
 export default function MDrive({ files, folders, parents, currentFolderId, rootFolderId, capacityUsed, maxCapacity }: MDriveProps) {
 	const router = useRouter()
-	const currentItems: DriveItem[] = [...folders, ...files]
-
 	const { modal, renameModal, isDeleting, handleItemClick, handleModalClose, handleRename, handleRenameClick, handleDelete, setModal } = useDriveStore()
 
+	// For file item navigation in the modal
 	const currentFileIndex = files.findIndex((file) => file.id === modal.id)
 	const totalFiles = files.length
-
 	const hasNavigation = totalFiles > 1
 
 	const handlePrevFile = () => {
@@ -77,25 +76,46 @@ export default function MDrive({ files, folders, parents, currentFolderId, rootF
 			<section className={styles.contentsContainer}>
 				<Breadcrumbs breadcrumbs={parents} rootFolderId={rootFolderId} />
 				<div className={styles.listContainer}>
-					{currentItems.map((item, index) => {
-						return (
-							<ListItem
-								key={`${item.id}-${index}`}
-								item={item}
-								handleItemClick={() => handleItemClick(item, getPreviewType)}
-								onRename={(e) => {
-									e.stopPropagation()
-									e.preventDefault()
-									handleRenameClick(item)
-								}}
-								onDelete={async (e) => {
-									e.stopPropagation()
-									e.preventDefault()
-									await handleDelete(currentItems, router, item.id)
-								}}
-							/>
-						)
-					})}
+					{/* Render folder items */}
+					{folders.map((item, index) => (
+						<ListItem
+							key={`folder-${item.id}-${index}`}
+							item={item}
+							handleItemClick={() => handleItemClick(item, getPreviewType)}
+							onRename={(e) => {
+								e.stopPropagation()
+								e.preventDefault()
+								handleRenameClick(item)
+							}}
+							onDelete={async (e) => {
+								e.stopPropagation()
+								e.preventDefault()
+								await handleDelete([...folders, ...files], router, item.id)
+							}}
+						/>
+					))}
+
+					{/* Render separator if both folders and files exist */}
+					{folders.length > 0 && files.length > 0 && <hr className={styles.separator} />}
+
+					{/* Render file items */}
+					{files.map((item, index) => (
+						<ListItem
+							key={`file-${item.id}-${index}`}
+							item={item}
+							handleItemClick={() => handleItemClick(item, getPreviewType)}
+							onRename={(e) => {
+								e.stopPropagation()
+								e.preventDefault()
+								handleRenameClick(item)
+							}}
+							onDelete={async (e) => {
+								e.stopPropagation()
+								e.preventDefault()
+								await handleDelete([...folders, ...files], router, item.id)
+							}}
+						/>
+					))}
 				</div>
 			</section>
 			{capacityUsed <= maxCapacity && <FileFolderUploads currentFolderId={currentFolderId} />}
